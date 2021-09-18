@@ -1,0 +1,75 @@
+<html>
+<!DOCTYPE html>
+  <head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.0.4/aframe.min.js'></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+    
+    <script src='poi.js'></script>    
+    <script src='imagegallery.js'></script>
+    <script src='mediacircle.js'></script>
+  </head>
+  <body>
+    <script src='script.js' defer></script>
+
+    <!-- Main scene -->
+    <a-scene id='scene'>
+
+      <!-- Asset Management System -->
+      <a-assets id='AMS'>
+        <img id='exit' src='assets/icons/close2.svg'>
+
+        <img id='videosIcon'  src='assets/icons/videos_icon.svg'>
+        <img id='audioIcon'   src='assets/icons/audios_icon.svg'>
+        <img id='galleryIcon' src='assets/icons/images_icon.svg'>
+        <img id='storiesIcon' src='assets/icons/stories_icon.svg'>
+
+        <img id='d1' class='dalek' src='assets/images/random/daleks/dalek1.jpg'>
+        <img id='d2' class='dalek' src='assets/images/random/daleks/dalek2.jpg'>
+        <img id='d3' class='dalek' src='assets/images/random/daleks/dalek3.jpg'>
+        <img id='d4' class='dalek' src='assets/images/random/daleks/dalek4.jpg'>
+        <img id='d5' class='dalek' src='assets/images/random/daleks/dalek5.jpg'>
+        <img id='d6' class='dalek' src='assets/images/random/daleks/dalek6.jpg'>
+      </a-assets>
+      
+      <!-- Camera Rig -->
+      <a-entity id='rig' position='0 1.6 0'>
+        <a-entity id='camera' camera='active: true' 
+        look-controls wasd-controls='enabled: true; fly: true; acceleration: 150;'
+        raycaster='objects: .clickable' cursor='rayOrigin: mouse;'>
+        </a-entity>
+      </a-entity>
+
+      <a-sky color='skyblue'></a-sky>
+
+      <a-poi id='daleksRPog' color="red" toggle-cast="needsInteract1" toggles="poi-1" raycast-collider="clickable" position='-2 2 -2' class="clickable">
+        <a-plane class="poi-child" position="0 0 0.1" scale="1.1 1.1" opacity="0" src="#d1"></a-plane>
+      </a-poi>
+
+      <a-media-circle position='1 2.5 -2' num-video='0' num-audio='0' num-gallery='3'></a-media-circle>
+
+    </a-scene>
+    <script>
+      document.getElementById('daleksRPog').addEventListener('poiClicked', function (e) {
+        console.log(e.details);
+      }, false);
+    </script>
+  </body>
+</html>
+
+<!--a-box id='block'
+        galleryizable__red='images: slide1 slide2 slide3; bubbleText: Block;'
+        class='clickable'
+        material='color: #e3748a;'
+        width='1' height='1' depth='1' position='2 0.5 -1'>
+      </a-box-->
+
+      <!--a-sphere id='sphere'
+        galleryizable__blue='images: slide1 slide2 earth; bubbleText: Sphere;'
+        class='clickable'
+        color='#0a24c9'
+        radius='0.5' position='-1.75 0.5 -1'>
+        <!--a-entity rotation='140 0 0' position='0 0 0' 
+        particle-system='preset: dust;positionSpread: 0.5 0.5 0.5;
+        maxAge:1.5;size:0.25;particleCount:10;'></a-entity>
+      </a-sphere-->
