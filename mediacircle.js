@@ -20,13 +20,11 @@ AFRAME.registerPrimitive('a-media-circle', {
   // Default components
   defaultComponents: {
     'media-circle': {},
-    'look-at': '#camera'
+    'look-at': ''
   },
 
   // Property mappings
   mappings: {
-    'geometry'    : 'media-circle.geometry',
-    'scale'       : 'media-circle.scale',
     'color'       : 'media-circle.color',
     'transparent' : 'media-circle.material.transparent',
     'opacity'     : 'media-circle.material.opacity',
@@ -62,7 +60,7 @@ AFRAME.registerComponent('media-circle', {
 
     // Graphical stuff
     el.setAttribute('geometry', 'primitive:circle; radius:1; scale: 1 1 1');
-    el.setAttribute('material', 'color: #180647; transparent: true; opacity: 0.9; shader: flat');
+    el.setAttribute('material', 'color: #180647; transparent: true; opacity: 1; shader: flat');
   
     // Get number of medias
     this.numVideo   = data.numVideo;

@@ -17,8 +17,6 @@ AFRAME.registerPrimitive('a-image-gallery', {
 
   // Property mappings
   mappings: {
-    'geometry'  : 'image-gallery.geometry',
-    'scale'     : 'image-gallery.scale',
     'name'      : 'image-gallery.name',
   }
 });

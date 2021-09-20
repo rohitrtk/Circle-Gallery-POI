@@ -64,7 +64,7 @@ AFRAME.registerComponent('poi', {
     el.setAttribute('material', `color: ${data.color}; shader: flat;`);
     el.setAttribute('src', data.src);
     el.setAttribute('class', 'clickable');
-
+    
     // Used for opacity animation
     this.opacity = 0;
 
@@ -78,6 +78,8 @@ AFRAME.registerComponent('poi', {
       throw new Error('POI has no child component.');
     }
 
+    this.o.setAttribute('visible', false);
+    this.o.setAttribute('opacity', this.opacity);
     if(this.o.getAttribute('class') !== 'clickable')
     {
       this.o.setAttribute('class', 'clickable');
@@ -88,20 +90,24 @@ AFRAME.registerComponent('poi', {
       if(event.target !== this.o) {
         return;
       }
-
+      this.o.setAttribute('visible', true);
       this.opacity = Math.min(this.opacity + 1, 100);
+      console.log('Mouse Enter!');
     });
 
     this.o.addEventListener('mouseleave', (event) => {
       if(event.target !== this.o) {
         return;
       }
-
+      this.o.setAttribute('visible', false);
       this.opacity = Math.max(this.opacity - 1, 0);
+      console.log('Mouse Leave!');
     });
   },
 
   tick: function(t, dt) {
-    this.o.setAttribute('animation__fade', `property: opacity; to: ${this.opacity}; dur: 1000; easing: easeInOutSine`);
+    if(this.o !== undefined) {
+      this.o.setAttribute('animation__fade', `property: opacity; to: ${this.opacity}; dur: 1000; easing: easeInOutSine`);
+    }
   }
 });
