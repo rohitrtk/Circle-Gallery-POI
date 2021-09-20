@@ -62,7 +62,9 @@ AFRAME.registerComponent('image-gallery', {
     // If there is no open viewer, create a new image gallery viewer and
     // append it to the camera as a child
     click: function(event) {
-      if(this.isViewerOpen()) return;
+      if(this.isViewerOpen() || this.el.getAttribute('material').opacity < 0.5) {
+        return;
+      } 
 
       let camera = document.getElementById('camera');
       let viewer = document.createElement('a-entity');

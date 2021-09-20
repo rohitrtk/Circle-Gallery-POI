@@ -86,23 +86,25 @@ AFRAME.registerComponent('poi', {
 
     // Setting child event listeners for fading in/out
     this.o.addEventListener('mouseenter', (event) => {
-      if(event.target !== this.o) {
-        return;
-      }
-      
       this.opacity = Math.min(this.opacity + 1, 100);
-      console.log('Mouse Enter!');
     });
 
     this.o.addEventListener('mouseleave', (event) => {
-      if(event.target !== this.o) {
-        return;
-      }
-      
       this.opacity = Math.max(this.opacity - 1, 0);
-      console.log('Mouse Leave!');
     });
   },
+  
+  /* // TODO: Fix opacity highlighting
+  events: {
+    mouseenter: function(event) {
+      console.log(event.target);
+      console.log(this.o.children);
+      if(event.target !== this.o && this.o.children[event.target] !== undefined)
+      {
+        this.opacity = Math.min(this.opacity + 1, 100);
+      }
+    }
+  },*/
 
   tick: function(t, dt) {
     if(this.o !== undefined) {

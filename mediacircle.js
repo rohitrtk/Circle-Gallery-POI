@@ -62,7 +62,7 @@ AFRAME.registerComponent('media-circle', {
     // Graphical stuff
     el.setAttribute('geometry', 'primitive:circle; radius:1; scale: 1 1 1');
     el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
-  
+
     // Get number of medias
     this.numVideo   = data.numVideo;
     this.numAudio   = data.numAudio;
@@ -107,19 +107,44 @@ AFRAME.registerComponent('media-circle', {
 
       // Draw lines
       let line = document.createElement('a-entity');
-      line.setAttribute('line', `start:0 0 0.001; end: ${x / f} ${y / f} 0.001; color: #000000`);
+      line.setAttribute('class', 'line');
+      line.setAttribute('line', `start:0 0 0.001; end: ${x / f} ${y / f} 0.001; color: #000000; opacity: ${data.opacity}`);
       line.setAttribute('rotation', `0 0 ${THREE.Math.radToDeg(1.5 * angle)}`);
-      line.setAttribute('opacity', data.opacity);
+      
       el.appendChild(line);
     }
 
     // Draw outline
     let outline = document.createElement('a-ring');
+    outline.setAttribute('class', 'ring');
     outline.setAttribute('color', '#000000');
     outline.setAttribute('radius-inner', '0.99');
     outline.setAttribute('radius-outer', '1.01');
     outline.setAttribute('opacity', data.opacity);
     
     el.appendChild(outline);
+  },
+
+  update: function() {
+    let el = this.el;
+    let data = this.data;
+    
+    try {
+      el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
+      for(let child of el.children) {
+        let childClass = child.getAttribute('class');
+
+        if(childClass == 'clickable') {
+          child.setAttribute('material', `opacity: ${data.opacity};`);
+        } else if(childClass == 'line') {
+          // TODO: Fix issue with lines not being rendered despite opacity changing
+          child.setAttribute('line.opacity', data.opacity);
+        } else if(childClass == 'ring') {
+          child.setAttribute('opacity', data.opacity);
+        }
+      }
+    } catch(error) {
+      console.log(error.details);
+    }
   }
 });
