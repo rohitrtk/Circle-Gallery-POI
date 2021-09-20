@@ -27,7 +27,7 @@ AFRAME.registerPrimitive('a-media-circle', {
   mappings: {
     'color'       : 'media-circle.color',
     'transparent' : 'media-circle.material.transparent',
-    'opacity'     : 'media-circle.material.opacity',
+    'opacity'     : 'media-circle.opacity',
     'num-video'   : 'media-circle.numVideo',
     'num-audio'   : 'media-circle.numAudio',
     'num-gallery' : 'media-circle.numGallery'
@@ -51,7 +51,8 @@ AFRAME.registerComponent('media-circle', {
   schema: {
     numVideo      : {type: 'number', default: 0},
     numAudio      : {type: 'number', default: 0},
-    numGallery    : {type: 'number', default: 0}
+    numGallery    : {type: 'number', default: 0},
+    opacity       : {type: 'number', default: 1.0}
   },
 
   init: function() {
@@ -60,7 +61,7 @@ AFRAME.registerComponent('media-circle', {
 
     // Graphical stuff
     el.setAttribute('geometry', 'primitive:circle; radius:1; scale: 1 1 1');
-    el.setAttribute('material', 'color: #180647; transparent: true; opacity: 1; shader: flat');
+    el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
   
     // Get number of medias
     this.numVideo   = data.numVideo;
@@ -100,6 +101,7 @@ AFRAME.registerComponent('media-circle', {
 
       temp.setAttribute('position', `${x} ${y} 0.001`);
       temp.setAttribute('scale', '0.4 0.4 0.4');
+      temp.setAttribute('material', `opacity: ${data.opacity};`);
       
       el.appendChild(temp);
 
@@ -107,6 +109,7 @@ AFRAME.registerComponent('media-circle', {
       let line = document.createElement('a-entity');
       line.setAttribute('line', `start:0 0 0.001; end: ${x / f} ${y / f} 0.001; color: #000000`);
       line.setAttribute('rotation', `0 0 ${THREE.Math.radToDeg(1.5 * angle)}`);
+      line.setAttribute('opacity', data.opacity);
       el.appendChild(line);
     }
 
@@ -115,6 +118,7 @@ AFRAME.registerComponent('media-circle', {
     outline.setAttribute('color', '#000000');
     outline.setAttribute('radius-inner', '0.99');
     outline.setAttribute('radius-outer', '1.01');
+    outline.setAttribute('opacity', data.opacity);
     
     el.appendChild(outline);
   }

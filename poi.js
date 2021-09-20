@@ -78,7 +78,6 @@ AFRAME.registerComponent('poi', {
       throw new Error('POI has no child component.');
     }
 
-    this.o.setAttribute('visible', false);
     this.o.setAttribute('opacity', this.opacity);
     if(this.o.getAttribute('class') !== 'clickable')
     {
@@ -90,7 +89,7 @@ AFRAME.registerComponent('poi', {
       if(event.target !== this.o) {
         return;
       }
-      this.o.setAttribute('visible', true);
+      
       this.opacity = Math.min(this.opacity + 1, 100);
       console.log('Mouse Enter!');
     });
@@ -99,7 +98,7 @@ AFRAME.registerComponent('poi', {
       if(event.target !== this.o) {
         return;
       }
-      this.o.setAttribute('visible', false);
+      
       this.opacity = Math.max(this.opacity - 1, 0);
       console.log('Mouse Leave!');
     });
