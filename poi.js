@@ -1,24 +1,27 @@
-/*
-  Jarrod W. - September 16th, 2021; Updated September 17th, 2021
-  POI Component to allow for toggling any children of the primary object.
-*/
-
 if (typeof AFRAME === 'undefined') {
   throw new Error('Component attempted to register before AFRAME was available.')
 }
 
 /*
- * POI Primitive
+ * POI(Point of Interest) Primitive : <a-poi>
  * 
- * 
+ * Indicates a point of interest in the scene. POI will have a child
+ * object which is to be faded in or out upon cursor hover. That child
+ * object can then be interacted with, usually it'll be a mediacircle,
+ * to display images, video, etc.
  *
+ * Properties:
+ *  - poi: The main component for this primitive. Contains all logic and functionallity
+ *  - geometry: Contains info for the geometry of this object
  */
 AFRAME.registerPrimitive('a-poi', {
+  // Default components
   defaultComponents: {
     poi                 :{},
     geometry            :{primitive:'plane'},
   },
 
+  // Default mappings
   mappings: {
     'src'               :'poi.src',
     'raycast-collider'  :'poi.raycastCollider',
@@ -29,100 +32,76 @@ AFRAME.registerPrimitive('a-poi', {
 });
 
 /*
- * POI Component
+ * POI(Point of Interest) Component : poi
  * 
- * Controls displaying and hiding POI children and specific classes
- * Children with the poi-child class will fade in or out on focus
- * Elements with the <needsCast> class will be faded in or out on click
+ * Contains functionallity for fading in and out when cursor is hovered
+ * over component. The mediacircle, or whatever wants to be displayed
+ * when cursour is over component, should be defined as a child of this
+ * object in the html. Note that the code only takes the first child
+ * element, so any other elements after the first child will not be
+ * taken into consideration for fade in/out.
+ *  
+ * Example:
+ *  <a-poi ...>
+ *    <a-media-circle ...> <== THIS IS DISPLAYED ON HOVER
+ *  </a-poi>
  * 
- * Available properties are:
- *  -src
- *  -color: (Color) The colour of the main POI point
- *  -hovering: (number) Used to determine POI visiblity
- *  -displaying: (boolean) Used to determine POI visiblity
- *  -raycastCollider: (string) The classname used for the raycaster
- *  -needsCast: (string) Classes to give raycast colliders on toggle
- *  -toggles: (string) The class to toggle on or off on POI click
+ * Properties:
+ *  - src: Default src for component
+ *  - color: Default colour for component
  */
 AFRAME.registerComponent('poi', {
+  // Default components
   schema: {
-    src             :{type: 'string'},
-    color           :{default: 'red'},
-    hovering        :{type: 'number', default: 0},
-    displaying      :{type: 'boolean', default: false},
-    raycastCollider :{type: 'string', default: 'interactable'},
-    needsCast       :{type: 'string'},
-    toggles         :{type: 'string'},
+    src     :{type: 'string'},
+    color   :{type: 'string', default: 'red'}
   },
 
-  init () {
-    console.log("a");
-    let el = this.el; // the HTML object of the poi
-    let data = this.data; // the schema of the poi
-    el.setAttribute('src', data.src);
-
-    // event handlers
-    el.addEventListener("mouseenter", (e) => {
-      if (e.target !== this.el) return; // if the target isn't this exact object
-      if (el.getAttribute('visible') !== true) return; // if it isn't visble
-      //event.stopPropagation();
-      data.hovering += 1;
-      //console.log(data.hovering)
-    })
-    el.addEventListener("mouseleave", (e) => {
-      if (e.target !== this.el) return;
-      if (el.getAttribute('visible') !== true) return;
-      //event.stopPropagation();
-      data.hovering -= 1;
-      //console.log(data.hovering)
-    })
-    el.addEventListener("click", (e) => {
-      el.dispatchEvent(new CustomEvent('poiClicked', { details: el.getAttribute('id') }));
-      /*let toToggle = document.getElementsByClassName(data.toggles);
-      for (const elem of toToggle) {
-        if (elem.classList.contains(data.needsCast)) {
-          if (elem.getAttribute('opacity') == 0) elem.classList.add(data.raycastCollider);
-          else elem.classList.remove(data.raycastCollider);
-        }
-        elem.setAttribute('animation', `property: opacity; to: ${elem.getAttribute('opacity') > 0 ? 0 : 1}; dur: 1000; easing: easeInOutSine`);//'visible', !elem.getAttribute('visible'))
-      }*/
-    });
-    console.log("b")
-    for (const child of el.children) { // run through children and set up any necessary code
-      console.log("ba")
-      if (!child.classList.contains("poi-child")) return; // return if this isn't meant to be toggled by the POI
-      console.log("bb")
-      child.addEventListener("mouseenter", (e) => {
-        if (e.target !== child) return;
-        if (data.displaying === false) return;
-        data.hovering += 1;
-      })
-      child.addEventListener("mouseleave", (e) => {
-        if (e.target !== child) return;
-        if (data.displaying === false) return;
-        data.hovering -= 1;
-      })
-    }
-    console.log("c");
-    el.setAttribute('material', `color:${data.color}`); // need to set material rather than colour
-    console.log("d")
-    if (data.src) el.setAttribute('material', `src:${data.src}`);
-  },
-  tick(t, dT) {
+  init: function() {
+    let el = this.el;
     let data = this.data;
-    if (data.hovering < 0) data.hovering = 0;
-    if ((data.hovering == 0 && data.displaying)
-    || (data.hovering > 0 && !data.displaying)) { // should we switch visiblities?
-      data.displaying = !data.displaying;
-      for (const child of this.el.children) {
-        if (!child.classList.contains("poi-child")) return;
-        
-        child.setAttribute('animation__fade', `property: opacity; to: ${data.displaying ? 1 : 0}; dur: 1000; easing: easeInOutSine`);
-        // add or remove the raycasting collider to allow for objects to be looked at without interfering with original POI
-        if (data.displaying) child.classList.add(data.raycastCollider);
-        else child.classList.remove(data.raycastCollider);
-        //child.setAttribute('visible', !child.getAttribute('visible'));
-      }
+
+    el.setAttribute('material', `color: ${data.color}; shader: flat;`);
+    el.setAttribute('src', data.src);
+    el.setAttribute('class', 'clickable');
+
+    // Used for opacity animation
+    this.opacity = 0;
+
+    // Throttling tick function to run twice per second as opposed to 90 times per second
+    // https://aframe.io/docs/1.2.0/introduction/best-practices.html#tick-handlers
+    this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
+
+    // Get first child element and use that for fade in/out
+    this.o = el.children[0];
+    if(this.o === undefined) {
+      throw new Error('POI has no child component.');
     }
+
+    if(this.o.getAttribute('class') !== 'clickable')
+    {
+      this.o.setAttribute('class', 'clickable');
+    }
+
+    // Setting child event listeners for fading in/out
+    this.o.addEventListener('mouseenter', (event) => {
+      if(event.target !== this.o) {
+        return;
+      }
+
+      this.opacity = Math.min(this.opacity + 1, 100);
+    });
+
+    this.o.addEventListener('mouseleave', (event) => {
+      if(event.target !== this.o) {
+        return;
+      }
+
+      this.opacity = Math.max(this.opacity - 1, 0);
+    });
+  },
+
+  tick: function(t, dt) {
+    this.o.setAttribute('animation__fade', `property: opacity; to: ${this.opacity}; dur: 1000; easing: easeInOutSine`);
   }
 });
