@@ -13,8 +13,7 @@ if (typeof AFRAME === 'undefined') {
  * Properties:
  *  - media-circle: The main component of the primitive. Most functionality
  *      stems from this component.
- *  - look-at: Makes the primitive look at the specified target. By default,
- *      the target is the camera. This should not be changed.
+ *  - look-at: Makes the primitive look at the specified target.
  */
 AFRAME.registerPrimitive('a-media-circle', {
   // Default components
@@ -45,6 +44,7 @@ AFRAME.registerPrimitive('a-media-circle', {
  *  - numVideo: The number of videos this media circle has available to watch
  *  - numAudio: The number of audios this media circle has available to listen
  *  - numGallery: The number of galleries this media circle has available to browse
+ *  - opacity: Components opacity level
  */
 AFRAME.registerComponent('media-circle', {
   // Editable properties
@@ -85,16 +85,16 @@ AFRAME.registerComponent('media-circle', {
 
       // Draw buttons
       let temp = null;
-      
+      console.log(`VC: ${vc} AC: ${ac} GC: ${gc}`);
       // Load all videos, then all audio, then all galleries
       if(vc > 0) {        // Load videos if we still have videos to load
-        //temp = document.createElement('...');
+        temp = document.createElement('a-video-player');
+        temp.setAttribute('name', 'testing');
         vc--;
-        continue;
       } else if(ac > 0) { // Load audio if we still have audio to load
-        // temp = document.createElement('...');
+        temp = document.createElement('a-audio-player');
+        temp.setAttribute('name', 'testing');
         ac--;
-        continue;
       } else if(gc > 0) { // Load galleries if we still have galleries to load
         temp = document.createElement('a-image-gallery');
         temp.setAttribute('name', 'dalek');
@@ -127,6 +127,11 @@ AFRAME.registerComponent('media-circle', {
     el.appendChild(outline);
   },
 
+  // Class name button check
+  cnbCheck: function(cn) {
+    return cn.includes('imagegallery') || cn.includes('videoplayer') || cn.includes('audioplayer');
+  },
+
   update: function() {
     let el = this.el;
     let data = this.data;
@@ -135,8 +140,13 @@ AFRAME.registerComponent('media-circle', {
       el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
       for(let child of el.children) {
         let childClass = child.getAttribute('class');
+        
+        if(childClass === null) {
+          console.log('Child class null!');
+          continue;
+        }
 
-        if(childClass.includes('imagegallery')) {
+        if(this.cnbCheck(childClass)) {
           child.setAttribute('material', `opacity: ${data.opacity};`);
         } else if(childClass == 'line') {
           child.setAttribute('line', `opacity: ${data.opacity}`);
@@ -145,7 +155,7 @@ AFRAME.registerComponent('media-circle', {
         }
       }
     } catch(error) {
-      console.log(error.details);
+      console.log(error);
     }
   }
 });

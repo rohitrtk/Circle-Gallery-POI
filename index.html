@@ -6,6 +6,8 @@
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
     
     <script src='poi.js'></script>    
+    <script src='videoplayer.js'></script>
+    <script src='audioplayer.js'></script>
     <script src='imagegallery.js'></script>
     <script src='mediacircle.js'></script>
   </head>
@@ -42,11 +44,13 @@
 
       <a-sky color='skyblue'></a-sky>
 
-      <a-media-circle position='1 2.5 -2' num-video='0' num-audio='0' num-gallery='3' opacity='0.8'></a-media-circle>
+      <a-media-circle position='1 2.5 -2' num-video='1' num-audio='2' num-gallery='2' opacity='0.8'></a-media-circle>
 
-      <a-poi color="red" position='-2 2 -2'>
-        <a-media-circle position='0 0 0.01' num-video='0' num-audio='0' num-gallery='6' opacity='0'></a-media-circle>
+      <a-poi color="#585685" position='-2 2 -2'>
+        <a-media-circle position='0 0 0.01' num-video='1' num-audio='1' num-gallery='2' opacity='0'></a-media-circle>
       </a-poi>
+
+      <a-video-player position='1 1 1'></a-video-player>
 
     </a-scene>
   </body>

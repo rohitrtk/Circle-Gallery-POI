@@ -34,7 +34,7 @@ AFRAME.registerPrimitive('a-image-gallery', {
 AFRAME.registerComponent('image-gallery', {
   // Editable properties
   schema: {
-    name: {type: 'string'}
+    name: { type: 'string' }
   },
 
   init: function() {
