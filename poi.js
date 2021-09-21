@@ -43,7 +43,8 @@ AFRAME.registerPrimitive('a-poi', {
  *  
  * Example:
  *  <a-poi ...>
- *    <a-media-circle ...> <== THIS IS DISPLAYED ON HOVER
+ *    <a-media-circle ...></...> <== THIS IS DISPLAYED ON HOVER
+ *    <a-some-thing-else></...>  <== THIS DOES NOT GET DISPLAYED ON HOVER
  *  </a-poi>
  * 
  * Properties:
@@ -63,7 +64,7 @@ AFRAME.registerComponent('poi', {
 
     el.setAttribute('material', `color: ${data.color}; shader: flat;`);
     el.setAttribute('src', data.src);
-    el.setAttribute('class', 'clickable');
+    el.classList.add('clickable');
     
     // Used for opacity animation
     this.opacity = 0;
@@ -73,42 +74,42 @@ AFRAME.registerComponent('poi', {
     this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
 
     // Get first child element and use that for fade in/out
-    this.o = el.children[0];
-    if(this.o === undefined) {
+    this.fadeComp = el.children[0];
+    if(this.fadeComp === undefined) {
       throw new Error('POI has no child component.');
     }
 
-    this.o.setAttribute('opacity', this.opacity);
-    if(this.o.getAttribute('class') !== 'clickable')
-    {
-      this.o.setAttribute('class', 'clickable');
-    }
-
-    // Setting child event listeners for fading in/out
-    this.o.addEventListener('mouseenter', (event) => {
-      this.opacity = Math.min(this.opacity + 1, 100);
-    });
-
-    this.o.addEventListener('mouseleave', (event) => {
-      this.opacity = Math.max(this.opacity - 1, 0);
-    });
+    this.fadeComp.setAttribute('opacity', this.opacity);
   },
   
-  /* // TODO: Fix opacity highlighting
   events: {
+    // Setting child event listeners for fading in/out
     mouseenter: function(event) {
-      console.log(event.target);
-      console.log(this.o.children);
-      if(event.target !== this.o && this.o.children[event.target] !== undefined)
-      {
-        this.opacity = Math.min(this.opacity + 1, 100);
+      this.opacity = Math.min(this.opacity + 1, 100);
+      this.fadeComp.classList.add('clickable');
+      
+      for(const child of this.fadeComp.children) {
+        if(child.getAttribute('class').includes('imagegallery')) {
+          child.classList.add('clickable');
+        }
+      }
+    },
+
+    mouseleave: function(event) {
+      this.opacity = Math.max(this.opacity - 1, 0);
+      this.fadeComp.classList.remove('clickable');
+      
+      for(const child of this.fadeComp.children) {
+        if(child.getAttribute('class').includes('imagegallery')) {
+          child.classList.remove('clickable');
+        }
       }
     }
-  },*/
+  },
 
   tick: function(t, dt) {
-    if(this.o !== undefined) {
-      this.o.setAttribute('animation__fade', `property: opacity; to: ${this.opacity}; dur: 1000; easing: easeInOutSine`);
+    if(this.fadeComp !== undefined) {
+      this.fadeComp.setAttribute('animation__fade', `property: opacity; to: ${this.opacity}; dur: 1000; easing: easeInOutSine`);
     }
   }
 });

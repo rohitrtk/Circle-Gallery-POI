@@ -47,10 +47,11 @@ AFRAME.registerComponent('image-gallery', {
     this.srcImage         = '#galleryIcon'; 
 
     el.setAttribute('geometry', 'primitive:plane; width:1; height:1');
-    el.setAttribute('class', 'clickable');
     el.setAttribute('material', `color: ${this.defaultColour}; src: ${this.srcImage}; transparent: true`);
+    el.classList.add('imagegallery');
+    el.classList.add('clickable');
     
-    this.name = this.data.name;
+    this.name = data.name;
   },
 
   // Returns true if an image gallery viewer is already open
@@ -107,7 +108,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
     let el = this.el;
     let data = this.data;
     
-    this.name = this.data.name;
+    this.name = data.name;
 
     // Must be called before setting images!
     this.loadImages();

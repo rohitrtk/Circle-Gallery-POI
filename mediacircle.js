@@ -62,6 +62,7 @@ AFRAME.registerComponent('media-circle', {
     // Graphical stuff
     el.setAttribute('geometry', 'primitive:circle; radius:1; scale: 1 1 1');
     el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
+    el.classList.remove('clickable');
 
     // Get number of medias
     this.numVideo   = data.numVideo;
@@ -93,7 +94,7 @@ AFRAME.registerComponent('media-circle', {
         // temp = document.createElement('...');
         ac--;
         continue;
-      } else if(gc > 0) { // Load galleries if we still have galleries to laod
+      } else if(gc > 0) { // Load galleries if we still have galleries to load
         temp = document.createElement('a-image-gallery');
         temp.setAttribute('name', 'dalek');
         gc--;
@@ -134,7 +135,7 @@ AFRAME.registerComponent('media-circle', {
       for(let child of el.children) {
         let childClass = child.getAttribute('class');
 
-        if(childClass == 'clickable') {
+        if(childClass.includes('imagegallery')) {
           child.setAttribute('material', `opacity: ${data.opacity};`);
         } else if(childClass == 'line') {
           // TODO: Fix issue with lines not being rendered despite opacity changing
