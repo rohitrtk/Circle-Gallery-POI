@@ -85,7 +85,7 @@ AFRAME.registerComponent('media-circle', {
 
       // Draw buttons
       let temp = null;
-      console.log(`VC: ${vc} AC: ${ac} GC: ${gc}`);
+      
       // Load all videos, then all audio, then all galleries
       if(vc > 0) {        // Load videos if we still have videos to load
         temp = document.createElement('a-video-player');

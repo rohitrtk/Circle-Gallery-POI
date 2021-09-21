@@ -76,7 +76,9 @@ AFRAME.registerComponent('image-gallery', {
     },
 
     mouseenter: function(event) {
-      if(this.isViewerOpen()) return;
+      if(this.isViewerOpen()) {
+        return;
+      }
 
       this.el.setAttribute('material', `color: ${this.selectedColour}`);
     },
@@ -177,7 +179,6 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.cwb.setAttribute('color', '#000000');
     this.cwb.setAttribute('radius', '0.1');
     
-
     this.updateWindows();
   },
 
