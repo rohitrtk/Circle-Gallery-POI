@@ -78,9 +78,10 @@ AFRAME.registerComponent('media-circle', {
     let angle = 2 * Math.PI / this.numMedia;
     for(let i = 0; i < this.numMedia; i++) {
       // Math stuff
-      let f = 0.6;
-      let x = f * Math.cos(angle * i);
-      let y = f * Math.sin(angle * i);
+      let x = Math.cos(angle * i);
+      let y = Math.sin(angle * i);
+      let f = 0.6;    // Controls the placement of the buttons
+      let g = 0.985   // Controls the ending placement of the lines
 
       // Draw buttons
       let temp = null;
@@ -100,7 +101,7 @@ AFRAME.registerComponent('media-circle', {
         gc--;
       }
 
-      temp.setAttribute('position', `${x} ${y} 0.001`);
+      temp.setAttribute('position', `${f * x} ${f * y} 0.001`);
       temp.setAttribute('scale', '0.4 0.4 0.4');
       temp.setAttribute('material', `opacity: ${data.opacity};`);
       
@@ -109,9 +110,9 @@ AFRAME.registerComponent('media-circle', {
       // Draw lines
       let line = document.createElement('a-entity');
       line.setAttribute('class', 'line');
-      line.setAttribute('line', `start:0 0 0.001; end: ${x / f} ${y / f} 0.001; color: #000000; opacity: ${data.opacity}`);
+      line.setAttribute('line', `start:0 0 0.001; end: ${g * x} ${g * y} 0.001; color: #FFFFFF; opacity: ${data.opacity}`);
       line.setAttribute('rotation', `0 0 ${THREE.Math.radToDeg(1.5 * angle)}`);
-      
+
       el.appendChild(line);
     }
 
@@ -138,8 +139,7 @@ AFRAME.registerComponent('media-circle', {
         if(childClass.includes('imagegallery')) {
           child.setAttribute('material', `opacity: ${data.opacity};`);
         } else if(childClass == 'line') {
-          // TODO: Fix issue with lines not being rendered despite opacity changing
-          child.setAttribute('line.opacity', data.opacity);
+          child.setAttribute('line', `opacity: ${data.opacity}`);
         } else if(childClass == 'ring') {
           child.setAttribute('opacity', data.opacity);
         }
