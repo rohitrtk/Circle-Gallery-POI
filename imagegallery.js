@@ -17,8 +17,6 @@ AFRAME.registerPrimitive('a-image-gallery', {
 
   // Property mappings
   mappings: {
-    'geometry'  : 'image-gallery.geometry',
-    'scale'     : 'image-gallery.scale',
     'name'      : 'image-gallery.name',
   }
 });
@@ -49,10 +47,11 @@ AFRAME.registerComponent('image-gallery', {
     this.srcImage         = '#galleryIcon'; 
 
     el.setAttribute('geometry', 'primitive:plane; width:1; height:1');
-    el.setAttribute('class', 'clickable');
     el.setAttribute('material', `color: ${this.defaultColour}; src: ${this.srcImage}; transparent: true`);
+    el.classList.add('imagegallery');
+    el.classList.add('clickable');
     
-    this.name = this.data.name;
+    this.name = data.name;
   },
 
   // Returns true if an image gallery viewer is already open
@@ -64,7 +63,9 @@ AFRAME.registerComponent('image-gallery', {
     // If there is no open viewer, create a new image gallery viewer and
     // append it to the camera as a child
     click: function(event) {
-      if(this.isViewerOpen()) return;
+      if(this.isViewerOpen() || this.el.getAttribute('material').opacity < 0.5) {
+        return;
+      } 
 
       let camera = document.getElementById('camera');
       let viewer = document.createElement('a-entity');
@@ -107,7 +108,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
     let el = this.el;
     let data = this.data;
     
-    this.name = this.data.name;
+    this.name = data.name;
 
     // Must be called before setting images!
     this.loadImages();

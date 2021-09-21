@@ -20,16 +20,14 @@ AFRAME.registerPrimitive('a-media-circle', {
   // Default components
   defaultComponents: {
     'media-circle': {},
-    'look-at': '#camera'
+    'look-at': ''
   },
 
   // Property mappings
   mappings: {
-    'geometry'    : 'media-circle.geometry',
-    'scale'       : 'media-circle.scale',
     'color'       : 'media-circle.color',
     'transparent' : 'media-circle.material.transparent',
-    'opacity'     : 'media-circle.material.opacity',
+    'opacity'     : 'media-circle.opacity',
     'num-video'   : 'media-circle.numVideo',
     'num-audio'   : 'media-circle.numAudio',
     'num-gallery' : 'media-circle.numGallery'
@@ -53,7 +51,8 @@ AFRAME.registerComponent('media-circle', {
   schema: {
     numVideo      : {type: 'number', default: 0},
     numAudio      : {type: 'number', default: 0},
-    numGallery    : {type: 'number', default: 0}
+    numGallery    : {type: 'number', default: 0},
+    opacity       : {type: 'number', default: 1.0}
   },
 
   init: function() {
@@ -62,8 +61,9 @@ AFRAME.registerComponent('media-circle', {
 
     // Graphical stuff
     el.setAttribute('geometry', 'primitive:circle; radius:1; scale: 1 1 1');
-    el.setAttribute('material', 'color: #180647; transparent: true; opacity: 0.9; shader: flat');
-  
+    el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
+    el.classList.remove('clickable');
+
     // Get number of medias
     this.numVideo   = data.numVideo;
     this.numAudio   = data.numAudio;
@@ -78,9 +78,10 @@ AFRAME.registerComponent('media-circle', {
     let angle = 2 * Math.PI / this.numMedia;
     for(let i = 0; i < this.numMedia; i++) {
       // Math stuff
-      let f = 0.6;
-      let x = f * Math.cos(angle * i);
-      let y = f * Math.sin(angle * i);
+      let x = Math.cos(angle * i);
+      let y = Math.sin(angle * i);
+      let f = 0.6;    // Controls the placement of the buttons
+      let g = 0.985   // Controls the ending placement of the lines
 
       // Draw buttons
       let temp = null;
@@ -94,30 +95,57 @@ AFRAME.registerComponent('media-circle', {
         // temp = document.createElement('...');
         ac--;
         continue;
-      } else if(gc > 0) { // Load galleries if we still have galleries to laod
+      } else if(gc > 0) { // Load galleries if we still have galleries to load
         temp = document.createElement('a-image-gallery');
         temp.setAttribute('name', 'dalek');
         gc--;
       }
 
-      temp.setAttribute('position', `${x} ${y} 0.001`);
+      temp.setAttribute('position', `${f * x} ${f * y} 0.001`);
       temp.setAttribute('scale', '0.4 0.4 0.4');
+      temp.setAttribute('material', `opacity: ${data.opacity};`);
       
       el.appendChild(temp);
 
       // Draw lines
       let line = document.createElement('a-entity');
-      line.setAttribute('line', `start:0 0 0.001; end: ${x / f} ${y / f} 0.001; color: #000000`);
+      line.setAttribute('class', 'line');
+      line.setAttribute('line', `start:0 0 0.001; end: ${g * x} ${g * y} 0.001; color: #FFFFFF; opacity: ${data.opacity}`);
       line.setAttribute('rotation', `0 0 ${THREE.Math.radToDeg(1.5 * angle)}`);
+
       el.appendChild(line);
     }
 
     // Draw outline
     let outline = document.createElement('a-ring');
+    outline.setAttribute('class', 'ring');
     outline.setAttribute('color', '#000000');
     outline.setAttribute('radius-inner', '0.99');
     outline.setAttribute('radius-outer', '1.01');
+    outline.setAttribute('opacity', data.opacity);
     
     el.appendChild(outline);
+  },
+
+  update: function() {
+    let el = this.el;
+    let data = this.data;
+    
+    try {
+      el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
+      for(let child of el.children) {
+        let childClass = child.getAttribute('class');
+
+        if(childClass.includes('imagegallery')) {
+          child.setAttribute('material', `opacity: ${data.opacity};`);
+        } else if(childClass == 'line') {
+          child.setAttribute('line', `opacity: ${data.opacity}`);
+        } else if(childClass == 'ring') {
+          child.setAttribute('opacity', data.opacity);
+        }
+      }
+    } catch(error) {
+      console.log(error.details);
+    }
   }
 });

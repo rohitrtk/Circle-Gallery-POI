@@ -42,18 +42,13 @@
 
       <a-sky color='skyblue'></a-sky>
 
-      <a-poi id='daleksRPog' color="red" toggle-cast="needsInteract1" toggles="poi-1" raycast-collider="clickable" position='-2 2 -2' class="clickable">
-        <a-plane class="poi-child" position="0 0 0.1" scale="1.1 1.1" opacity="0" src="#d1"></a-plane>
+      <a-media-circle position='1 2.5 -2' num-video='0' num-audio='0' num-gallery='3' opacity='0.8'></a-media-circle>
+
+      <a-poi color="red" position='-2 2 -2'>
+        <a-media-circle position='0 0 0.01' num-video='0' num-audio='0' num-gallery='6' opacity='0'></a-media-circle>
       </a-poi>
 
-      <a-media-circle position='1 2.5 -2' num-video='0' num-audio='0' num-gallery='3'></a-media-circle>
-
     </a-scene>
-    <script>
-      document.getElementById('daleksRPog').addEventListener('poiClicked', function (e) {
-        console.log(e.details);
-      }, false);
-    </script>
   </body>
 </html>
 
