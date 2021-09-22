@@ -27,9 +27,7 @@ AFRAME.registerPrimitive('a-media-circle', {
     'color'       : 'media-circle.color',
     'transparent' : 'media-circle.material.transparent',
     'opacity'     : 'media-circle.opacity',
-    'num-video'   : 'media-circle.numVideo',
-    'num-audio'   : 'media-circle.numAudio',
-    'num-gallery' : 'media-circle.numGallery'
+    'names'   : 'media-circle.names'
   }
 });
 
@@ -49,9 +47,7 @@ AFRAME.registerPrimitive('a-media-circle', {
 AFRAME.registerComponent('media-circle', {
   // Editable properties
   schema: {
-    numVideo      : {type: 'number', default: 0},
-    numAudio      : {type: 'number', default: 0},
-    numGallery    : {type: 'number', default: 0},
+    names         : {type: 'string', default: ''},
     opacity       : {type: 'number', default: 1.0}
   },
 
@@ -64,11 +60,39 @@ AFRAME.registerComponent('media-circle', {
     el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
     el.classList.remove('clickable');
 
-    // Get number of medias
-    this.numVideo   = data.numVideo;
-    this.numAudio   = data.numAudio;
-    this.numGallery = data.numGallery;
-    this.numMedia   = this.numVideo + this.numAudio + this.numGallery;
+    // Get names array by splitting the data on space
+    names = data.names.split(' ');
+    if(names === '') {
+      throw new Error('Media circle needs names');
+    }
+    console.log(names);
+    this.numMedia = names.length;
+
+    // Array of video, audio, and gallery names
+    this.vNames = [];
+    this.aNames = [];
+    this.gNames = [];
+
+    for(const n of names) {
+      let prefix = n.substring(0, 2);
+      let name = n.substring(2, n.length);
+
+      switch(prefix) {
+        case 'v_':
+          this.vNames.push(name);
+          break;
+        case 'a_':
+          this.aNames.push(name);
+          break;
+        case 'g_':
+          this.gNames.push(name);
+          break;
+      }
+    }
+
+    this.numVideo   = this.vNames.length;
+    this.numAudio   = this.aNames.length;
+    this.numGallery = this.gNames.length;
 
     // Media counters
     let vc = this.numVideo;
@@ -88,19 +112,19 @@ AFRAME.registerComponent('media-circle', {
       
       // Load all videos, then all audio, then all galleries
       if(vc > 0) {        // Load videos if we still have videos to load
-        temp = document.createElement('a-video-player');
-        temp.setAttribute('name', 'testing');
         vc--;
+        temp = document.createElement('a-video-player');
+        temp.setAttribute('name', `${this.vNames[vc]}`);
       } else if(ac > 0) { // Load audio if we still have audio to load
-        temp = document.createElement('a-audio-player');
-        temp.setAttribute('name', 'testing');
         ac--;
+        temp = document.createElement('a-audio-player');
+        temp.setAttribute('name', `${this.aNames[ac]}`);
       } else if(gc > 0) { // Load galleries if we still have galleries to load
-        temp = document.createElement('a-image-gallery');
-        temp.setAttribute('name', 'dalek');
         gc--;
+        temp = document.createElement('a-image-gallery');
+        temp.setAttribute('name', `${this.gNames[gc]}`);
       }
-
+      
       temp.setAttribute('position', `${f * x} ${f * y} 0.001`);
       temp.setAttribute('scale', '0.4 0.4 0.4');
       temp.setAttribute('material', `opacity: ${data.opacity};`);

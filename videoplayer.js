@@ -119,7 +119,7 @@ AFRAME.registerComponent('video-player-viewer', {
     this.vid.setAttribute('src', '#csclip1');
     this.vid.setAttribute('width', 2);
     this.vid.setAttribute('height', 9/8);
-    this.vid.setAttribute('volume-slider', '');
+    this.vid.setAttribute('volume-controller', `video: ${document.querySelector('#csclip1')}`);
     this.vid.classList.add('clickable');
     
     // Click closes the video viewer
@@ -152,7 +152,7 @@ AFRAME.registerComponent('video-player-viewer', {
 });
 
 /*
- * Play pause component : play-pausre
+ * Play pause component : play-pause
  *
  * Simple play/pause component.
  */
@@ -167,7 +167,7 @@ AFRAME.registerComponent('play-pause', {
     // === === Should probably move this section
     this.video = document.querySelector('#csclip1');
     this.video.loop = true;
-    this.video.volume = 0.1;
+    this.video.volume = 1;
     
     // Play and then pause to get the first frame of the video to appear
     // as opposed to a black screen
@@ -197,26 +197,47 @@ AFRAME.registerComponent('play-pause', {
   multiple: false
 });
 
-AFRAME.registerComponent('volume-slider', {
+/*
+ * Volume controller component : volume-controller
+ *
+ *
+ */
+AFRAME.registerComponent('volume-controller', {
   schema: {
-
+    video : {}
   },
 
   init: function() {
     let el = this.el;
-    let data = this.data;
+    let video = document.querySelector('#csclip1');
+    let volDelta = 0.2;
 
-    this.volumeBar = document.createElement('a-plane');
-    el.appendChild(this.volumeBar);
-    this.volumeBar.setAttribute('position', '0 -0.62 0');
-    this.volumeBar.setAttribute('width', 0.25);
-    this.volumeBar.setAttribute('height', 0.0075);
+    this.volUp = document.createElement('a-image');
+    el.appendChild(this.volUp);
+    this.volUp.setAttribute('src', '#volumeUpIcon');
+    this.volUp.setAttribute('position', '0.2 -0.6 0.1');
+    this.volUp.setAttribute('scale', '0.075 0.075');
+    this.volUp.classList.add('clickable');
+    this.volUp.addEventListener('click', (event) => {
+      video.volume = Math.min(video.volume + volDelta, 1);
+      
+      if(video.volume > 0) {
+        this.volDown.setAttribute('src', '#volumeDownIcon');
+      }
+    });
 
-    this.volumeCir = document.createElement('a-circle');
-    this.volumeBar.appendChild(this.volumeCir);
-    this.volumeCir.setAttribute('position', '0 0 0.001');
-    this.volumeCir.setAttribute('radius', 0.025);
-    this.volumeCir.setAttribute('color', '#000000');
-    this.volumeCir.classList.add('clickable');
+    this.volDown = document.createElement('a-image');
+    el.appendChild(this.volDown);
+    this.volDown.setAttribute('src', '#volumeDownIcon');
+    this.volDown.setAttribute('position', '-0.2 -0.6 0.1');
+    this.volDown.setAttribute('scale', '0.075 0.075');
+    this.volDown.classList.add('clickable');
+    this.volDown.addEventListener('click', (event) => {
+      video.volume = Math.max(video.volume - volDelta, 0);
+      
+      if(video.volume < volDelta) {
+        this.volDown.setAttribute('src', '#volumeMuteIcon');
+      }
+    });
   }
 });

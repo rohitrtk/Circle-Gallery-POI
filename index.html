@@ -20,24 +20,33 @@
       <!-- Asset Management System -->
       <a-assets id='AMS'>
         
-        <!-- Load Icons -->
-        <img id='exit'        src='assets/icons/close2.svg'>
-        <img id='videosIcon'  src='assets/icons/videos_icon.svg'>
-        <img id='audioIcon'   src='assets/icons/audios_icon.svg'>
-        <img id='galleryIcon' src='assets/icons/images_icon.svg'>
-        <img id='storiesIcon' src='assets/icons/stories_icon.svg'>
-        <img id='playIcon'    src='assets/icons/play_icon.svg'>
-        <img id='pauseIcon'   src='assets/icons/pause_icon.svg'>
+        <!-- Icons -->
+        <img id='exit'              src='assets/icons/close2.svg'>
+        <img id='videosIcon'        src='assets/icons/videos_icon.svg'>
+        <img id='audioIcon'         src='assets/icons/audios_icon.svg'>
+        <img id='galleryIcon'       src='assets/icons/images_icon.svg'>
+        <img id='storiesIcon'       src='assets/icons/stories_icon.svg'>
+        <img id='playIcon'          src='assets/icons/play_icon.svg'>
+        <img id='pauseIcon'         src='assets/icons/pause_icon.svg'>
+        <img id='volumeUpIcon'      src='assets/icons/volume_up_icon.svg'>
+        <img id='volumeDownIcon'    src='assets/icons/volume_down_icon.svg'>
+        <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg'>
 
         <!-- Everything Else -->
-        <img id='d1' class='dalek' src='assets/images/random/daleks/dalek1.jpg'>
-        <img id='d2' class='dalek' src='assets/images/random/daleks/dalek2.jpg'>
-        <img id='d3' class='dalek' src='assets/images/random/daleks/dalek3.jpg'>
-        <img id='d4' class='dalek' src='assets/images/random/daleks/dalek4.jpg'>
-        <img id='d5' class='dalek' src='assets/images/random/daleks/dalek5.jpg'>
-        <img id='d6' class='dalek' src='assets/images/random/daleks/dalek6.jpg'>
+        <img src='assets/images/jinx_0.jpg'>
+        <img src='assets/images/jinx_1.jpg'>
+        <img src='assets/images/jinx_2.jpg'>
+        <img src='assets/images/j4_0.jpg'>
+        <img src='assets/images/j4_1.jpg'>
+        <img src='assets/images/j4_2.jpg'>
+        <img src='assets/images/lee_0.jpg'>
+        <img src='assets/images/lee_1.jpg'>
+        <img src='assets/images/lee_2.jpg'>
+        <img src='assets/images/zyra_0.jpg'>
+        <img src='assets/images/zyra_1.jpg'>
 
         <video id='csclip1' src='assets/video/csclip1.mp4'></video>
+        <video id='pubg1'   src='assets/video/pubg1.mp4'></video>
       </a-assets>
       
       <!-- Camera Rig -->
@@ -50,10 +59,10 @@
 
       <a-sky color='skyblue'></a-sky>
 
-      <a-media-circle position='1 2.5 -2' num-video='1' num-audio='2' num-gallery='2' opacity='0.8'></a-media-circle>
+      <a-media-circle position='1 2.5 -2' names='g_jinx g_lee g_j4'></a-media-circle>
 
       <a-poi color="#585685" position='-2 2 -2'>
-        <a-media-circle position='0 0 0.01' num-video='1' num-audio='1' num-gallery='2' opacity='0'></a-media-circle>
+        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee'></a-media-circle>
       </a-poi>
 
     </a-scene>
