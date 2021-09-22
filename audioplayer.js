@@ -4,9 +4,9 @@ if (typeof AFRAME === 'undefined') {
   }
   
   /*
-   * Video player primitive : <a-video-player>
+   * Audio player primitive : <a-audio-player>
    *
-   * ...
+   * Wrapper for the audio player component
    */
   AFRAME.registerPrimitive('a-audio-player', {
     // Default components
@@ -20,6 +20,11 @@ if (typeof AFRAME === 'undefined') {
     }
   });
   
+  /*
+   * Audio player component : audio-player
+   *
+   * 
+   */
   AFRAME.registerComponent('audio-player', {
     // Editable properties
     schema: {
