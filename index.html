@@ -1,9 +1,12 @@
 <html>
 <!DOCTYPE html>
   <head>
+    <meta charset='utf-8'>
+    <meta name=viewport content='width=device-width'>
+    <title> Circle Gallery POI </title>
+
     <script src='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.0.4/aframe.min.js'></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
     
     <script src='poi.js'></script>    
     <script src='videoplayer.js'></script>
@@ -45,8 +48,8 @@
         <img src='assets/images/zyra_0.jpg'>
         <img src='assets/images/zyra_1.jpg'>
 
-        <video id='csclip1' src='assets/video/csclip1.mp4'></video>
-        <video id='pubg1'   src='assets/video/pubg1.mp4'></video>
+        <video id='csclip' src='assets/video/csclip.mp4'></video>
+        <video id='pubg'   src='assets/video/pubg.mp4'></video>
       </a-assets>
       
       <!-- Camera Rig -->
@@ -62,26 +65,9 @@
       <a-media-circle position='1 2.5 -2' names='g_jinx g_lee g_j4'></a-media-circle>
 
       <a-poi color="#585685" position='-2 2 -2'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee'></a-media-circle>
+        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg'></a-media-circle>
       </a-poi>
 
     </a-scene>
   </body>
 </html>
-
-<!--a-box id='block'
-        galleryizable__red='images: slide1 slide2 slide3; bubbleText: Block;'
-        class='clickable'
-        material='color: #e3748a;'
-        width='1' height='1' depth='1' position='2 0.5 -1'>
-      </a-box-->
-
-      <!--a-sphere id='sphere'
-        galleryizable__blue='images: slide1 slide2 earth; bubbleText: Sphere;'
-        class='clickable'
-        color='#0a24c9'
-        radius='0.5' position='-1.75 0.5 -1'>
-        <!--a-entity rotation='140 0 0' position='0 0 0' 
-        particle-system='preset: dust;positionSpread: 0.5 0.5 0.5;
-        maxAge:1.5;size:0.25;particleCount:10;'></a-entity>
-      </a-sphere-->

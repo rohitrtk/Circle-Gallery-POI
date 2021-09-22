@@ -59,7 +59,6 @@ AFRAME.registerComponent('video-player', {
   },
 
   events: {
-
     // Create viewer on click
     click: function(event) {
       if(this.isViewerOpen()) {
@@ -108,44 +107,62 @@ AFRAME.registerComponent('video-player-viewer', {
     let el = this.el;
     let data = this.data;
 
-    this.name = data.name;
-
     el.setAttribute('position', '0 0.1 -0.5');
     el.setAttribute('scale', '0.5 0.5');
+    
+    this.name = data.name;
+    
+    for(let v of document.querySelectorAll('video')) {
+      console.log(`${v.src} | ${this.name}`);
 
-    // The video that gets displayed
-    this.vid = document.createElement('a-video');
-    el.appendChild(this.vid);
-    this.vid.setAttribute('src', '#csclip1');
-    this.vid.setAttribute('width', 2);
-    this.vid.setAttribute('height', 9/8);
-    this.vid.setAttribute('volume-controller', `video: ${document.querySelector('#csclip1')}`);
-    this.vid.classList.add('clickable');
+      if(v.src.includes(this.name)) {
+        this.video  = v;
+        this.src    = v.src;
+        break;
+      }
+    }
+    
+    // The video window that gets displayed
+    this.vidWindow = document.createElement('a-video');
+    el.appendChild(this.vidWindow);
+    this.vidWindow.setAttribute('src', this.src);
+    this.video.autoplay = false;
+    this.vidWindow.setAttribute('width', 2);
+    this.vidWindow.setAttribute('height', 9/8);
+    //this.vidWindow.setAttribute('volume-controller', `video: ${this.name}`);
+    this.vidWindow.classList.add('clickable');
     
     // Click closes the video viewer
-    this.vid.addEventListener('click', (event) => {
-      if(event.target !== this.vid) {
+    this.vidWindow.addEventListener('click', (event) => {
+      if(event.target !== this.vidWindow) {
         return;
       }
 
-      let v = document.querySelector('#csclip1');
+      //let v = document.querySelector(this.src);
+      //console.log(v);
+      //console.log(document.querySelector('#csclip'));
       
       // Pause the video to prevent it from playing while the viewer
       // isn't being displayed and reset the time to the start before
       // removing the element
-      v.pause();
-      v.currentTime = 0;
+      this.video.pause();
+      
+      this.video.currentTime = 0;
 
       el.remove();
     });
-    
+
     // Play and pause controls
-    this.ppc = document.createElement('a-image');
-    el.appendChild(this.ppc);
-    this.ppc.setAttribute('position', ' 0 -0.6 0.1');
-    this.ppc.setAttribute('scale', '0.075 0.075');
-    this.ppc.setAttribute('play-pause', '');
-    this.ppc.classList.add('clickable');
+    //this.ppc = document.createElement('a-image');
+    //el.appendChild(this.ppc);
+    //this.ppc.setAttribute('position', ' 0 -0.6 0.1');
+    //this.ppc.setAttribute('scale', '0.075 0.075');
+    //this.ppc.setAttribute('play-pause.video', `video: ${this.video}`);
+    //this.ppc.classList.add('clickable');
+
+    // Play and then pause to get the video to display
+    this.video.play();
+    this.video.pause();
   },
 
   multiple: false
@@ -155,17 +172,17 @@ AFRAME.registerComponent('video-player-viewer', {
  * Play pause component : play-pause
  *
  * Simple play/pause component.
- */
+ */ /*
 AFRAME.registerComponent('play-pause', {
   schema: {
-    name: { type: 'string' }
+    video: {type: {}}
   },
 
   init: function() {
     let el = this.el;
+    let data = this.data;
 
-    // === === Should probably move this section
-    this.video = document.querySelector('#csclip1');
+    this.video = data.video;
     this.video.loop = true;
     this.video.volume = 1;
     
@@ -173,7 +190,6 @@ AFRAME.registerComponent('play-pause', {
     // as opposed to a black screen
     this.video.play();
     this.video.pause();
-    // === ===
 
     // Set the current icon to the play since the video is now paused
     el.setAttribute('src', '#playIcon');
@@ -201,17 +217,18 @@ AFRAME.registerComponent('play-pause', {
  * Volume controller component : volume-controller
  *
  *
- */
+ 
 AFRAME.registerComponent('volume-controller', {
   schema: {
-    video : {}
+    video: {type: {}}
   },
 
   init: function() {
     let el = this.el;
-    let video = document.querySelector('#csclip1');
+    let data = this.data;
+    let video = data.video;
     let volDelta = 0.2;
-
+    
     this.volUp = document.createElement('a-image');
     el.appendChild(this.volUp);
     this.volUp.setAttribute('src', '#volumeUpIcon');
@@ -240,4 +257,4 @@ AFRAME.registerComponent('volume-controller', {
       }
     });
   }
-});
+});*/

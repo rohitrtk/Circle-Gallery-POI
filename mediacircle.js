@@ -65,7 +65,7 @@ AFRAME.registerComponent('media-circle', {
     if(names === '') {
       throw new Error('Media circle needs names');
     }
-    console.log(names);
+    
     this.numMedia = names.length;
 
     // Array of video, audio, and gallery names
