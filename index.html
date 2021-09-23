@@ -13,6 +13,7 @@
     <script src='audioplayer.js'></script>
     <script src='imagegallery.js'></script>
     <script src='mediacircle.js'></script>
+    <script src='cameraRig.js'></script>
   </head>
   <body>
     <script src='script.js' defer></script>
@@ -48,17 +49,19 @@
         <img src='assets/images/zyra_0.jpg'>
         <img src='assets/images/zyra_1.jpg'>
 
-        <video src='assets/video/csclip.mp4'></video>
-        <video src='assets/video/pubg.mp4'></video>
+        <video id="csclip" src='assets/video/csclip.mp4'></video>
+        <video id="pubg" src='assets/video/pubg.mp4'></video>
       </a-assets>
       
-      <!-- Camera Rig -->
-      <a-entity id='rig' position='0 1.6 0'>
-        <a-entity id='camera' camera='active: true' 
-        look-controls wasd-controls='enabled: true; fly: true; acceleration: 150;'
+      <!--Camera Rig-->
+      <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 150;'>
+        <a-entity id='mouse-click-cam' camera='active: true'
         raycaster='objects: .clickable' cursor='rayOrigin: mouse;'>
         </a-entity>
-      </a-entity>
+        <a-entity id='point-click-cam'
+        raycaster='objects: .clickable' cursor='rayOrigin: entity;'>
+        </a-entity>
+      </a-camera-rig>
 
       <a-sky color='skyblue'></a-sky>
 
