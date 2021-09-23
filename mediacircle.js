@@ -75,8 +75,6 @@ AFRAME.registerComponent('media-circle', {
 
     for(const n of names) {
       let m = n.split('_');
-      //let prefix = n.substring(0, 2);
-      //let name = n.substring(2, n.length);
 
       switch(m[0]) {
         case 'v':
@@ -91,14 +89,10 @@ AFRAME.registerComponent('media-circle', {
       }
     }
 
-    this.numVideo   = this.vNames.length;
-    this.numAudio   = this.aNames.length;
-    this.numGallery = this.gNames.length;
-
     // Media counters
-    let vc = this.numVideo;
-    let ac = this.numAudio;
-    let gc = this.numGallery;
+    let vc = this.vNames.length;
+    let ac = this.aNames.length;
+    let gc = this.gNames.length;
 
     let angle = 2 * Math.PI / this.numMedia;
     for(let i = 0; i < this.numMedia; i++) {
@@ -134,27 +128,27 @@ AFRAME.registerComponent('media-circle', {
 
       // Draw lines
       let line = document.createElement('a-entity');
-      line.setAttribute('class', 'line');
       line.setAttribute('line', `start:0 0 0.001; end: ${g * x} ${g * y} 0.001; color: #FFFFFF; opacity: ${data.opacity}`);
       line.setAttribute('rotation', `0 0 ${THREE.Math.radToDeg(1.5 * angle)}`);
+      line.classList.add('line');
 
       el.appendChild(line);
     }
 
     // Draw outline
     let outline = document.createElement('a-ring');
-    outline.setAttribute('class', 'ring');
     outline.setAttribute('color', '#000000');
     outline.setAttribute('radius-inner', '0.99');
     outline.setAttribute('radius-outer', '1.01');
     outline.setAttribute('opacity', data.opacity);
+    outline.classList.add('ring');
     
     el.appendChild(outline);
   },
 
   // Class name button check
-  cnbCheck: function(cn) {
-    return cn.includes('imagegallery') || cn.includes('videoplayer') || cn.includes('audioplayer');
+  cnbCheck: function(cc) {
+    return cc.contains('imagegallery') || cc.contains('videoplayer') || cc.contains('audioplayer');
   },
 
   update: function() {
@@ -164,23 +158,23 @@ AFRAME.registerComponent('media-circle', {
     try {
       el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
       for(let child of el.children) {
-        let childClass = child.getAttribute('class');
+        const childClass = child.classList;
         
         if(childClass === null) {
           console.log('Child class null!');
           continue;
         }
-
+        
         if(this.cnbCheck(childClass)) {
           child.setAttribute('material', `opacity: ${data.opacity};`);
-        } else if(childClass == 'line') {
+        } else if(childClass.contains('line')) {
           child.setAttribute('line', `opacity: ${data.opacity}`);
-        } else if(childClass == 'ring') {
+        } else if(childClass.contains('ring')) {
           child.setAttribute('opacity', data.opacity);
         }
       }
     } catch(error) {
-      console.log(error);
+        console.log(error);
     }
   }
 });

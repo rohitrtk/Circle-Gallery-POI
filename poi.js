@@ -89,11 +89,10 @@ AFRAME.registerComponent('poi', {
       this.fadeComp.classList.add('clickable');
       
       for(const child of this.fadeComp.children) {
-        let c = child.getAttribute('class');
-        if(c === null) {
-          continue;
-        } else if(child.getAttribute('class').includes('imagegallery')) {
-          child.classList.add('clickable');
+        let c = child.classList;
+        
+        if(c.contains('imagegallery')) {
+          c.add('clickable');
         }
       }
     },
@@ -103,11 +102,10 @@ AFRAME.registerComponent('poi', {
       this.fadeComp.classList.remove('clickable');
       
       for(const child of this.fadeComp.children) {
-        let c = child.getAttribute('class');
-        if(c === null) {
-          continue;
-        } else if(child.getAttribute('class').includes('imagegallery')) {
-          child.classList.remove('clickable');
+        let c = child.classList;
+        
+        if(c.contains('imagegallery')) {
+          c.remove('clickable');
         }
       }
     }

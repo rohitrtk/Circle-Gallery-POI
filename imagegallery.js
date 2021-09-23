@@ -214,6 +214,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
       }
     }
 
+    // Throw an error if no images were loaded
     if(images.length == 0) {
       throw new Error(`Could not find any images with prefix ${this.name}`);
     }

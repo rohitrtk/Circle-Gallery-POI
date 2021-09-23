@@ -66,7 +66,7 @@ AFRAME.registerComponent('video-player', {
       }
 
       let camera = document.getElementById('camera');
-      let viewer = document.createElement('a-video');
+      let viewer = document.createElement('a-entity');
 
       camera.append(viewer);
       viewer.setAttribute('id', 'viewer');
@@ -111,56 +111,33 @@ AFRAME.registerComponent('video-player-viewer', {
     el.setAttribute('scale', '0.5 0.5');
     
     this.name = data.name;
-    
-    for(let v of document.querySelectorAll('video')) {
-      console.log(`${v.src} | ${this.name}`);
 
+    // Video window that gets displayed
+    this.video = document.createElement('a-video');
+    el.appendChild(this.video);
+
+    // Set video id
+    for(let v of document.querySelectorAll('video')) {      
       if(v.src.includes(this.name)) {
-        this.video  = v;
-        this.src    = v.src;
+        this.video.setAttribute('id', `${this.name}`);
         break;
       }
     }
-    
-    // The video window that gets displayed
-    this.vidWindow = document.createElement('a-video');
-    el.appendChild(this.vidWindow);
-    this.vidWindow.setAttribute('src', this.src);
-    this.video.autoplay = false;
-    this.vidWindow.setAttribute('width', 2);
-    this.vidWindow.setAttribute('height', 9/8);
-    //this.vidWindow.setAttribute('volume-controller', `video: ${this.name}`);
-    this.vidWindow.classList.add('clickable');
-    
+    this.video.setAttribute('src', '#csclip');
+    console.log(`#${this.name}`);
+    this.video.setAttribute('width', 2);
+    this.video.setAttribute('height', 9/8);
+    //this.video.setAttribute('play-pause', `name: ${this.name}`);
+    this.video.classList.add('clickable');
     // Click closes the video viewer
-    this.vidWindow.addEventListener('click', (event) => {
-      if(event.target !== this.vidWindow) {
+    this.video.addEventListener('click', (event) => {
+      if(event.target !== this.video) {
         return;
       }
-
-      //let v = document.querySelector(this.src);
-      //console.log(v);
-      //console.log(document.querySelector('#csclip'));
-      
-      // Pause the video to prevent it from playing while the viewer
-      // isn't being displayed and reset the time to the start before
-      // removing the element
-      this.video.pause();
-      
-      this.video.currentTime = 0;
-
+      console.log('Video closed!');
       el.remove();
     });
-
-    // Play and pause controls
-    //this.ppc = document.createElement('a-image');
-    //el.appendChild(this.ppc);
-    //this.ppc.setAttribute('position', ' 0 -0.6 0.1');
-    //this.ppc.setAttribute('scale', '0.075 0.075');
-    //this.ppc.setAttribute('play-pause.video', `video: ${this.video}`);
-    //this.ppc.classList.add('clickable');
-
-    // Play and then pause to get the video to display
+    //this.vidWindow.setAttribute('volume-controller', `video: ${this.name}`);
     this.video.play();
     this.video.pause();
   },
@@ -172,40 +149,47 @@ AFRAME.registerComponent('video-player-viewer', {
  * Play pause component : play-pause
  *
  * Simple play/pause component.
- */ /*
+ */ 
 AFRAME.registerComponent('play-pause', {
   schema: {
-    video: {type: {}}
+    name: {type: 'string'}
   },
 
   init: function() {
     let el = this.el;
     let data = this.data;
 
-    this.video = data.video;
-    this.video.loop = true;
-    this.video.volume = 1;
-    
+    this.video = document.querySelectorAll(`#${data.name}`);
+    this.video.volume = 0.1;
+    console.log(this.video);
     // Play and then pause to get the first frame of the video to appear
     // as opposed to a black screen
     this.video.play();
     this.video.pause();
 
-    // Set the current icon to the play since the video is now paused
-    el.setAttribute('src', '#playIcon');
-    el.classList.add('clickable');
+    // Create icon to the play since the video is now paused
+    this.ppc = document.createElement('a-image');
+    el.appendChild(this.ppc);
+    this.ppc.setAttribute('position', '0 -0.65 0');
+    this.ppc.setAttribute('scale', '0.1 0.1');
+    this.ppc.setAttribute('src', '#playIcon');
+    this.ppc.classList.add('clickable');
   },
 
   events: {
     click: function(event) {
-      console.log('clicked');
+      if(event.target !== this.ppc) {
+        return;
+      }
+
+      console.log('Play/pause clicked!');
       
       if(this.video.paused) {
         this.video.play();
-        this.el.setAttribute('src', '#pauseIcon');
+        this.ppc.setAttribute('src', '#pauseIcon');
       } else {
         this.video.pause();
-        this.el.setAttribute('src', '#playIcon');
+        this.ppc.setAttribute('src', '#playIcon');
       }
     }
   },
@@ -258,3 +242,11 @@ AFRAME.registerComponent('volume-controller', {
     });
   }
 });*/
+
+// Play and pause controls
+    //this.ppc = document.createElement('a-image');
+    //el.appendChild(this.ppc);
+    //this.ppc.setAttribute('position', ' 0 -0.6 0.1');
+    //this.ppc.setAttribute('scale', '0.075 0.075');
+    //this.ppc.setAttribute('play-pause.video', `video: ${this.video}`);
+    //this.ppc.classList.add('clickable');
