@@ -104,25 +104,33 @@ AFRAME.registerComponent('audio-player-viewer', {
     let el = this.el;
     let data = this.data;
 
-    el.setAttribute('position', '0 0 -0.5');
-    el.setAttribute('scale', '0.1 0.1');
-
     this.name = data.name;
-
-    this.button = document.createElement('a-image');
-    el.appendChild(this.button);
-    this.button.setAttribute('src', '#playIcon');
-    this.button.setAttribute('sound', `src:#${this.name}`);
-    this.button.classList.add('clickable');
-
-    this.sound = this.button.components.sound;
-    this.sound.playSound();
-
-    this.button.addEventListener('click', (event) => {
-      this.sound.stopSound();
-      el.remove();
-    })
+    
+    this.audioEl = document.createElement('a-sound');
+    el.appendChild(this.audioEl);
+    this.audioEl.setAttribute('geometry', 'primitive: plane');
+    this.audioEl.setAttribute('position', '0 0 -0.5');
+    this.audioEl.setAttribute('audio-handler', `name: ${this.name}`);
   },
 
   multiple: false
 });
+
+AFRAME.registerComponent('audio-handler', {
+  schema: {
+    name: {type: 'string'}
+  },
+  
+  init: function() {
+    let data = this.data;
+    let el = this.el;
+
+    this.audio = el.components.sound;
+    console.log(this.audio);
+    el.setAttribute('src', `#${data.name}`);
+    el.classList.add('clickable');
+    el.addEventListener('click', (event) => {
+      this.audio.playSound();
+    });
+  }
+})
