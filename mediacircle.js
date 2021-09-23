@@ -74,18 +74,19 @@ AFRAME.registerComponent('media-circle', {
     this.gNames = [];
 
     for(const n of names) {
-      let prefix = n.substring(0, 2);
-      let name = n.substring(2, n.length);
+      let m = n.split('_');
+      //let prefix = n.substring(0, 2);
+      //let name = n.substring(2, n.length);
 
-      switch(prefix) {
-        case 'v_':
-          this.vNames.push(name);
+      switch(m[0]) {
+        case 'v':
+          this.vNames.push(m[1]);
           break;
-        case 'a_':
-          this.aNames.push(name);
+        case 'a':
+          this.aNames.push(m[1]);
           break;
-        case 'g_':
-          this.gNames.push(name);
+        case 'g':
+          this.gNames.push(m[1]);
           break;
       }
     }
