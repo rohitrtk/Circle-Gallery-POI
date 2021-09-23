@@ -18,7 +18,7 @@
     <script src='script.js' defer></script>
 
     <!-- Main scene -->
-    <a-scene id='scene'>
+    <a-scene id='scene' background='color: skyblue'>
 
       <!-- Asset Management System -->
       <a-assets id='AMS'>
@@ -48,8 +48,8 @@
         <img src='assets/images/zyra_0.jpg'>
         <img src='assets/images/zyra_1.jpg'>
 
-        <video src='assets/video/csclip.mp4'></video>
-        <video src='assets/video/pubg.mp4'></video>
+        <video id='csclip'  src='assets/video/csclip.mp4'></video>
+        <video id='pubg'    src='assets/video/pubg.mp4'></video>
       </a-assets>
       
       <!-- Camera Rig -->
@@ -59,8 +59,6 @@
         raycaster='objects: .clickable' cursor='rayOrigin: mouse;'>
         </a-entity>
       </a-entity>
-
-      <a-sky color='skyblue'></a-sky>
 
       <a-media-circle position='1 2.5 -2' names='g_jinx g_lee g_j4'></a-media-circle>
 

@@ -4,6 +4,14 @@ if (typeof AFRAME === 'undefined') {
 }
 
 /*
+ * USE OF VIDEOPLAYER.JS
+ *
+ * In the html, the media circle defines the various media sources (g_abc, a_xyz, v_123). The
+ * source of interest is "v_...". After the underscore, the name should match both the actual
+ * video id and mp4 file. As such, the id and mp4 name should also match.
+ */
+
+/*
  * Video player primitive : <a-video-player>
  *
  * Wraps the video player component into a primitive. 
@@ -71,10 +79,9 @@ AFRAME.registerComponent('video-player', {
       camera.append(viewer);
       viewer.setAttribute('id', 'viewer');
       viewer.setAttribute('video-player-viewer', `name: ${this.name};`);
-
-      console.log('Playing video');
     },
 
+    // Highlighting stuff
     mouseenter: function(event) {
       if(this.isViewerOpen()) {
         return;
@@ -99,6 +106,7 @@ AFRAME.registerComponent('video-player', {
  * video closes the video player viewer.
  */
 AFRAME.registerComponent('video-player-viewer', {
+  // Editable properties
   schema: {
     name: { type: 'string' }
   },
@@ -116,30 +124,29 @@ AFRAME.registerComponent('video-player-viewer', {
     this.video = document.createElement('a-video');
     el.appendChild(this.video);
 
-    // Set video id
-    for(let v of document.querySelectorAll('video')) {      
-      if(v.src.includes(this.name)) {
-        this.video.setAttribute('id', `${this.name}`);
-        break;
-      }
-    }
-    this.video.setAttribute('src', '#csclip');
-    console.log(`#${this.name}`);
+    this.video.setAttribute('src', `#${this.name}`);
     this.video.setAttribute('width', 2);
     this.video.setAttribute('height', 9/8);
-    //this.video.setAttribute('play-pause', `name: ${this.name}`);
+    this.video.setAttribute('play-pause', `name: ${this.name}`);
+    this.video.setAttribute('volume-controller', `name: ${this.name}`);
     this.video.classList.add('clickable');
-    // Click closes the video viewer
+    
+    // The actual video that can be played, paused, etc.
+    let v = document.querySelector(`#${this.name}`);
+    v.play();
+    v.pause();
+    v.volume = 0.5;
+
+    // Close the video and reset properties on click
     this.video.addEventListener('click', (event) => {
       if(event.target !== this.video) {
         return;
       }
-      console.log('Video closed!');
+      v.pause();
+      v.currentTime = 0;
+
       el.remove();
     });
-    //this.vidWindow.setAttribute('volume-controller', `video: ${this.name}`);
-    this.video.play();
-    this.video.pause();
   },
 
   multiple: false
@@ -159,13 +166,7 @@ AFRAME.registerComponent('play-pause', {
     let el = this.el;
     let data = this.data;
 
-    this.video = document.querySelectorAll(`#${data.name}`);
-    this.video.volume = 0.1;
-    console.log(this.video);
-    // Play and then pause to get the first frame of the video to appear
-    // as opposed to a black screen
-    this.video.play();
-    this.video.pause();
+    this.video = document.querySelector(`#${data.name}`);
 
     // Create icon to the play since the video is now paused
     this.ppc = document.createElement('a-image');
@@ -174,15 +175,19 @@ AFRAME.registerComponent('play-pause', {
     this.ppc.setAttribute('scale', '0.1 0.1');
     this.ppc.setAttribute('src', '#playIcon');
     this.ppc.classList.add('clickable');
+
+    this.video.addEventListener('ended', (event) => {
+      this.ppc.setAttribute('src', '#playIcon');
+    });
   },
 
   events: {
+    // If the video is playing, set the button to pause and
+    // if the video is paused, set the button to play
     click: function(event) {
       if(event.target !== this.ppc) {
         return;
       }
-
-      console.log('Play/pause clicked!');
       
       if(this.video.paused) {
         this.video.play();
@@ -200,17 +205,20 @@ AFRAME.registerComponent('play-pause', {
 /*
  * Volume controller component : volume-controller
  *
- *
- 
+ * Simple volumer controller component
+ */
 AFRAME.registerComponent('volume-controller', {
+  // Editable properties
   schema: {
-    video: {type: {}}
+    name: {type: 'string'}
   },
 
   init: function() {
     let el = this.el;
     let data = this.data;
-    let video = data.video;
+
+    this.video = document.querySelector(`#${data.name}`);
+
     let volDelta = 0.2;
     
     this.volUp = document.createElement('a-image');
@@ -220,9 +228,8 @@ AFRAME.registerComponent('volume-controller', {
     this.volUp.setAttribute('scale', '0.075 0.075');
     this.volUp.classList.add('clickable');
     this.volUp.addEventListener('click', (event) => {
-      video.volume = Math.min(video.volume + volDelta, 1);
-      
-      if(video.volume > 0) {
+    this.video.volume = Math.min(this.video.volume + volDelta, 1);
+      if(this.video.volume > 0) {
         this.volDown.setAttribute('src', '#volumeDownIcon');
       }
     });
@@ -234,19 +241,10 @@ AFRAME.registerComponent('volume-controller', {
     this.volDown.setAttribute('scale', '0.075 0.075');
     this.volDown.classList.add('clickable');
     this.volDown.addEventListener('click', (event) => {
-      video.volume = Math.max(video.volume - volDelta, 0);
-      
-      if(video.volume < volDelta) {
+    this.video.volume = Math.max(this.video.volume - volDelta, 0);
+      if(this.video.volume < volDelta) {
         this.volDown.setAttribute('src', '#volumeMuteIcon');
       }
     });
   }
-});*/
-
-// Play and pause controls
-    //this.ppc = document.createElement('a-image');
-    //el.appendChild(this.ppc);
-    //this.ppc.setAttribute('position', ' 0 -0.6 0.1');
-    //this.ppc.setAttribute('scale', '0.075 0.075');
-    //this.ppc.setAttribute('play-pause.video', `video: ${this.video}`);
-    //this.ppc.classList.add('clickable');
+});
