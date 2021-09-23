@@ -67,7 +67,7 @@ AFRAME.registerComponent('image-gallery', {
         return;
       } 
 
-      let camera = document.getElementById('camera');
+      let camera = document.getElementById('rig');
       let viewer = document.createElement('a-entity');
       
       camera.appendChild(viewer);
