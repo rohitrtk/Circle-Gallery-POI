@@ -8,7 +8,8 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.0.4/aframe.min.js'></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     
-    <script src='poi.js'></script>    
+    <script src='script.js' defer></script>
+    <script src='poi.js'></script>
     <script src='videoplayer.js'></script>
     <script src='audioplayer.js'></script>
     <script src='imagegallery.js'></script>
@@ -16,9 +17,9 @@
     <script src='cameraRig.js'></script>
   </head>
   <body>
-    <script src='script.js' defer></script>
 
     <!-- Main scene -->
+    <!-- https://aframe.io/docs/1.2.0/components/stats.html -->
     <a-scene id='scene' background='color: skyblue' stats>
 
       <!-- Asset Management System -->
@@ -37,25 +38,26 @@
         <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg'>
 
         <!-- Videos -->
-        <video id="csclip" src='assets/video/csclip.mp4'></video>
-        <video id="pubg" src='assets/video/pubg.mp4'></video>
+        <video id="csclip"          src='assets/video/csclip.mp4'></video>
+        <video id="pubg"            src='assets/video/pubg.mp4'></video>
         
         <!-- Audio -->
-        <!--audio id='cantinaband' src='assets/audio/cantinaband.mp3' autoplay='true'></audio-->
         <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto'></a-asset-item>
 
         <!-- Images -->
-        <img src='assets/images/jinx_0.jpg'>
-        <img src='assets/images/jinx_1.jpg'>
-        <img src='assets/images/jinx_2.jpg'>
-        <img src='assets/images/j4_0.jpg'>
-        <img src='assets/images/j4_1.jpg'>
-        <img src='assets/images/j4_2.jpg'>
-        <img src='assets/images/lee_0.jpg'>
-        <img src='assets/images/lee_1.jpg'>
-        <img src='assets/images/lee_2.jpg'>
-        <img src='assets/images/zyra_0.jpg'>
-        <img src='assets/images/zyra_1.jpg'>
+        <div id='galleryimages'>
+          <img src='assets/images/jinx_0.jpg'>
+          <img src='assets/images/jinx_1.jpg'>
+          <img src='assets/images/jinx_2.jpg'>
+          <img src='assets/images/j4_0.jpg'>
+          <img src='assets/images/j4_1.jpg'>
+          <img src='assets/images/j4_2.jpg'>
+          <img src='assets/images/lee_0.jpg'>
+          <img src='assets/images/lee_1.jpg'>
+          <img src='assets/images/lee_2.jpg'>
+          <img src='assets/images/zyra_0.jpg'>
+          <img src='assets/images/zyra_1.jpg'>
+        </div>
       </a-assets>
       
       <!--Camera Rig-->

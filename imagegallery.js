@@ -202,15 +202,17 @@ AFRAME.registerComponent('image-gallery-viewer', {
 
     this.images = [];
 
-    let images = document.getElementsByTagName('img');
-
+    let images = document.getElementById('galleryimages').getElementsByTagName('img');
+    
     for(let i = 0; i < images.length; i++) {
-      let n = images[i].src.split('.');
+      let imgSrc = images[i].src;
+
+      let n = imgSrc.split('.');
       let m = n[n.length - 2].split('/');
       let name = m[m.length - 1];
       
       if(name.includes(this.name)) {
-        this.images.push(images[i].src);
+        this.images.push(imgSrc);
       }
     }
 
