@@ -27,7 +27,7 @@ AFRAME.registerPrimitive('a-media-circle', {
     'color'       : 'media-circle.color',
     'transparent' : 'media-circle.material.transparent',
     'opacity'     : 'media-circle.opacity',
-    'names'   : 'media-circle.names'
+    'names'       : 'media-circle.names'
   }
 });
 
@@ -164,7 +164,7 @@ AFRAME.registerComponent('media-circle', {
           console.log('Child class null!');
           continue;
         }
-        
+
         if(this.cnbCheck(childClass)) {
           child.setAttribute('material', `opacity: ${data.opacity};`);
         } else if(childClass.contains('line')) {

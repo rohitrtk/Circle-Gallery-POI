@@ -36,7 +36,15 @@
         <img id='volumeDownIcon'    src='assets/icons/volume_down_icon.svg'>
         <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg'>
 
-        <!-- Everything Else -->
+        <!-- Videos -->
+        <video id="csclip" src='assets/video/csclip.mp4'></video>
+        <video id="pubg" src='assets/video/pubg.mp4'></video>
+        
+        <!-- Audio -->
+        <!--audio id='cantinaband' src='assets/audio/cantinaband.mp3' autoplay='true'></audio-->
+        <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto'></a-asset-item>
+
+        <!-- Images -->
         <img src='assets/images/jinx_0.jpg'>
         <img src='assets/images/jinx_1.jpg'>
         <img src='assets/images/jinx_2.jpg'>
@@ -48,9 +56,6 @@
         <img src='assets/images/lee_2.jpg'>
         <img src='assets/images/zyra_0.jpg'>
         <img src='assets/images/zyra_1.jpg'>
-
-        <video id="csclip" src='assets/video/csclip.mp4'></video>
-        <video id="pubg" src='assets/video/pubg.mp4'></video>
       </a-assets>
       
       <!--Camera Rig-->
@@ -66,7 +71,7 @@
       <a-media-circle position='1 2.5 -2' names='g_jinx g_lee g_j4'></a-media-circle>
 
       <a-poi color="#585685" position='-2 2 -2'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg'></a-media-circle>
+        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg a_cantinaband'></a-media-circle>
       </a-poi>
 
     </a-scene>
