@@ -10,8 +10,7 @@ if (typeof AFRAME === 'undefined') {
  */
 AFRAME.registerPrimitive('a-waypoint-network', {
   defaultComponents: {
-    'waypoint-network': {},
-    'class': 'waypointNetwork'
+    'waypoint-network': {}
   }
 });
 
@@ -24,14 +23,35 @@ AFRAME.registerPrimitive('a-waypoint-network', {
 AFRAME.registerComponent('waypoint-network', {
   init: function () {
     this.waypoints = [];
-
-    for (const child of this.el.children) {
+    
+    for (let child of this.el.children) {
       if (!child.classList.contains('waypoint')) {
         continue;
       }
 
       this.waypoints.push(child);
     }
+
+    const it = this.makeWaypointIterator(0, this.waypoints.length);
+    let wp = it.next();
+    while(!wp.done) {
+      //wp.value.nextWaypoint = 
+      console.log(wp.value);
+      wp = it.next();
+    }
+
+    this.el.classList.add('waypointNetwork');
+  },
+
+  makeWaypointIterator: function*(start = 0, end = Infinity) {
+    let count = 0;
+
+    for(let i = start; i < end; i++) {
+      count++;
+      yield this.waypoints[i];
+    }
+
+    return count;
   }
 });
 
@@ -42,8 +62,13 @@ AFRAME.registerComponent('waypoint-network', {
  */
 AFRAME.registerPrimitive('a-waypoint', {
   defaultComponents: {
-    'waypoint': {},
-    'class': 'waypoint'
+    'waypoint': {}
+  },
+
+  mappings: {
+    'wp-position'   : 'waypoint.position',
+    'next-waypoint' : 'waypoint.nextWaypoint',
+    'prev-waypoint' : 'waypoint.prevWaypoint'
   }
 });
 
@@ -54,10 +79,9 @@ AFRAME.registerPrimitive('a-waypoint', {
  */
 AFRAME.registerComponent('waypoint', {
   schema: {
-    'name'        : { type: 'string', default: '' },
     'position'    : { type: 'vec3',   default: {x: 0, y: 0.1, z: 0}},
-    'nextWaypoint': { type: 'string', default: null },
-    'prevWaypoint': { type: 'string', default: null }
+    'nextWaypoint': { type: 'string', default: '' },
+    'prevWaypoint': { type: 'string', default: '' }
   },
 
   init: function () {
@@ -67,7 +91,7 @@ AFRAME.registerComponent('waypoint', {
     this.position     = data.position;
     this.nextWaypoint = data.nextWaypoint;
     this.prevWaypoint = data.prevWaypoint;
-
+    
     el.setAttribute('geometry', {
       primitive: 'circle',
       radius: 0.25
@@ -80,5 +104,7 @@ AFRAME.registerComponent('waypoint', {
       color: '#FFFFFF',
       shader: 'flat'
     });
+
+    el.classList.add('waypoint');
   }
 });
