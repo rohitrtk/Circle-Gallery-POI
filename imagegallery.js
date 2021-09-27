@@ -54,7 +54,7 @@ AFRAME.registerComponent('image-gallery', {
     this.name = data.name;
   },
 
-  // Returns true if an image gallery viewer is already open
+  // Returns true if any type of viewer is already open
   isViewerOpen: function() {
     return !!document.getElementById('viewer');
   },

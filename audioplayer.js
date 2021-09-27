@@ -6,7 +6,7 @@ if (typeof AFRAME === 'undefined') {
   /**
    * Audio player primitive : <a-audio-player>
    *
-   * Wrapper for the audio player component
+   * Wrapper for the audio player component.
    */
   AFRAME.registerPrimitive('a-audio-player', {
     // Default components
@@ -50,6 +50,7 @@ if (typeof AFRAME === 'undefined') {
       this.name = data.name;
     },
   
+    // Returns true if any type of viewer is open
     isViewerOpen: function() {
       return !!document.getElementById('viewer');
     },
@@ -91,9 +92,11 @@ if (typeof AFRAME === 'undefined') {
   /**
    * Audio player viewer component : audio-player-viewer
    * 
-   * ...
+   * The viewer for the audio player. Is displayed once the user clicks
+   * on an audio player component. A player button is displayed and on click
+   * will change to a pause button and start playing audio. The audio is determined
+   * by what is this components name which links to a source in the AMS.
    */
-
 AFRAME.registerComponent('audio-player-viewer', {
   // Editable properties
   schema: {
@@ -101,36 +104,35 @@ AFRAME.registerComponent('audio-player-viewer', {
   },
 
   init: function() {
-    let el = this.el;
-    let data = this.data;
-
-    this.name = data.name;
+    this.name = this.data.name;
     
-    this.audioEl = document.createElement('a-sound');
-    el.appendChild(this.audioEl);
-    this.audioEl.setAttribute('geometry', 'primitive: plane');
-    this.audioEl.setAttribute('position', '0 0 -0.5');
-    this.audioEl.setAttribute('audio-handler', `name: ${this.name}`);
+    this.player = document.createElement('a-image');
+    this.el.appendChild(this.player);
+    this.player.setAttribute('src', '#playIcon');
+    this.player.setAttribute('width', '0.5');
+    this.player.setAttribute('height', '0.5');
+    this.player.setAttribute('scale', '0.3 0.3');
+    this.player.setAttribute('position', '0 0 -0.5');
+    this.player.setAttribute('sound', `src: #${this.name}`);
+    this.player.classList.add('clickable');
+
+    // Get the sound component
+    this.audio = this.player.components.sound;
+    
+    // Is the audio playing?
+    this.isPlaying = false;
+    this.player.addEventListener('click', (event) => {
+      if(this.isPlaying) {
+        this.audio.playSound();
+        this.player.setAttribute('src', '#pauseIcon');
+      } else {
+        this.audio.pauseSound();
+        this.player.setAttribute('src', '#playIcon');
+      }
+
+      this.isPlaying = !this.isPlaying;
+    });
   },
 
   multiple: false
 });
-
-AFRAME.registerComponent('audio-handler', {
-  schema: {
-    name: {type: 'string'}
-  },
-  
-  init: function() {
-    let data = this.data;
-    let el = this.el;
-
-    this.audio = el.components.sound;
-    console.log(this.audio);
-    el.setAttribute('src', `#${data.name}`);
-    el.classList.add('clickable');
-    el.addEventListener('click', (event) => {
-      this.audio.playSound();
-    });
-  }
-})
