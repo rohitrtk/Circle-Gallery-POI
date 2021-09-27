@@ -62,7 +62,7 @@ if (typeof AFRAME === 'undefined') {
           return;
         }
 
-        let camera = document.getElementById('camera');
+        let camera = document.getElementById('rig');
         let viewer = document.createElement('a-entity');
 
         camera.append(viewer);
@@ -109,20 +109,20 @@ if (typeof AFRAME === 'undefined') {
     // Background
     this.bg = document.createElement('a-plane');
     this.el.appendChild(this.bg);
+    this.bg.object3D.position.set(0, -0.15, -0.5);
+    this.bg.object3D.scale.set(0.125, 0.125, 1);
     this.bg.setAttribute('width', '0.5');
     this.bg.setAttribute('height', '0.5');
-    this.bg.setAttribute('scale', '0.125 0.125');
     this.bg.setAttribute('color', '#db6973');
-    this.bg.setAttribute('position', '0 -0.15 -0.5');
     this.bg.classList.add('clickable');
 
     // Play/pause image
     this.player = document.createElement('a-image');
     this.bg.appendChild(this.player);
+    this.player.object3D.position.set(0, 0.25, 0.1);
     this.player.setAttribute('src', '#playIcon');
     this.player.setAttribute('width', '0.5');
     this.player.setAttribute('height', '0.5');
-    this.player.setAttribute('position', '0 0.25 0.1');
     this.player.setAttribute('sound', `src: #${this.name}`);
     this.player.classList.add('clickable');
 
@@ -137,9 +137,9 @@ if (typeof AFRAME === 'undefined') {
     // Audio image
     this.pp = document.createElement('a-image');
     this.bg.appendChild(this.pp);
+    this.pp.object3D.position.set(0, 0.75, 0.1);
+    this.pp.object3D.scale.set(0.5, 0.5, 1);
     this.pp.setAttribute('src', '#exit');
-    this.pp.setAttribute('position', '0 0.75 0.1');
-    this.pp.setAttribute('scale', '0.5 0.5');
     this.pp.classList.add('clickable');
 
     // Close button (pp) event listener

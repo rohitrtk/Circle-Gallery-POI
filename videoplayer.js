@@ -73,7 +73,7 @@ AFRAME.registerComponent('video-player', {
         return;
       }
 
-      let camera = document.getElementById('camera');
+      let camera = document.getElementById('rig');
       let viewer = document.createElement('a-entity');
 
       camera.append(viewer);
@@ -115,8 +115,8 @@ AFRAME.registerComponent('video-player-viewer', {
     let el = this.el;
     let data = this.data;
 
-    el.setAttribute('position', '0 0.1 -0.5');
-    el.setAttribute('scale', '0.5 0.5');
+    el.object3D.position.set(0, 0.1, -0.5);
+    el.object3D.scale.set(0.5, 0.5, 1);
     
     this.name = data.name;
 
@@ -171,8 +171,8 @@ AFRAME.registerComponent('play-pause', {
     // Create icon to the play since the video is now paused
     this.ppc = document.createElement('a-image');
     el.appendChild(this.ppc);
-    this.ppc.setAttribute('position', '0 -0.65 0');
-    this.ppc.setAttribute('scale', '0.1 0.1');
+    this.ppc.object3D.position.set(0, -0.65, 0);
+    this.ppc.object3D.scale.set(0.1, 0.1, 1);
     this.ppc.setAttribute('src', '#playIcon');
     this.ppc.classList.add('clickable');
 
@@ -224,8 +224,8 @@ AFRAME.registerComponent('volume-controller', {
     this.volUp = document.createElement('a-image');
     el.appendChild(this.volUp);
     this.volUp.setAttribute('src', '#volumeUpIcon');
-    this.volUp.setAttribute('position', '0.2 -0.6 0.1');
-    this.volUp.setAttribute('scale', '0.075 0.075');
+    this.volUp.object3D.position.set(0.2, -0.6, 0.1);
+    this.volUp.object3D.scale.set(0.075, 0.075, 1);
     this.volUp.classList.add('clickable');
     this.volUp.addEventListener('click', (event) => {
     this.video.volume = Math.min(this.video.volume + volDelta, 1);
@@ -237,8 +237,8 @@ AFRAME.registerComponent('volume-controller', {
     this.volDown = document.createElement('a-image');
     el.appendChild(this.volDown);
     this.volDown.setAttribute('src', '#volumeDownIcon');
-    this.volDown.setAttribute('position', '-0.2 -0.6 0.1');
-    this.volDown.setAttribute('scale', '0.075 0.075');
+    this.volDown.object3D.position.set(-0.2, -0.6, 0.1);
+    this.volDown.object3D.scale.set(0.075, 0.075, 1);
     this.volDown.classList.add('clickable');
     this.volDown.addEventListener('click', (event) => {
     this.video.volume = Math.max(this.video.volume - volDelta, 0);

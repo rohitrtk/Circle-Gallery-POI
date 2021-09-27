@@ -117,14 +117,14 @@ AFRAME.registerComponent('image-gallery-viewer', {
     
     this.imageIndex = 0;
 
-    el.setAttribute('position', '0 0 -0.5');
-    el.setAttribute('scale', '0.5 0.5')
+    el.object3D.position.set(0, 0, -0.5);
+    el.object3D.scale.set(0.5, 0.5, 1);
 
     // Main window
     this.mw = document.createElement('a-plane');
     el.appendChild(this.mw);
+    this.mw.object3D.position.set(0, 0.25, 0);
     this.mw.setAttribute('color', '#FFFFFF');
-    this.mw.setAttribute('position', '0 0.25 0');
     this.mw.setAttribute('width', '1.4');
     this.mw.setAttribute('height', '0.9');
     this.mw.setAttribute('shader', 'flat');
@@ -132,7 +132,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
     // Left window
     this.lw = document.createElement('a-plane');
     this.mw.appendChild(this.lw);
-    this.lw.setAttribute('position', '-0.6 -0.6 0.1');
+    this.lw.object3D.position.set(-0.6, -0.6, 0.1);
     this.lw.setAttribute('width', '0.4');
     this.lw.setAttribute('height', '0.2');
     this.lw.setAttribute('rotation', '0 35 0');
@@ -147,7 +147,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
     // Right Window
     this.rw = document.createElement('a-plane');
     this.mw.appendChild(this.rw);
-    this.rw.setAttribute('position', '0.6 -0.6 0.1');
+    this.rw.object3D.position.set(0.6, -0.6, 0.1);
     this.rw.setAttribute('width', '0.4');
     this.rw.setAttribute('height', '0.2');
     this.rw.setAttribute('rotation', '0 -35 0');
@@ -162,7 +162,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
     // Close Window
     this.cw = document.createElement('a-circle');
     this.mw.appendChild(this.cw);
-    this.cw.setAttribute('position', '0.555 0.3 0.1');
+    this.cw.object3D.position.set(0.555, 0.3, 0.1);
     this.cw.setAttribute('color', '#FFFFFF');
     this.cw.setAttribute('transparent', 'true');
     this.cw.setAttribute('radius', '0.1');

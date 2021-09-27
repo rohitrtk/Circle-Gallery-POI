@@ -120,8 +120,8 @@ AFRAME.registerComponent('media-circle', {
         temp.setAttribute('name', `${this.gNames[gc]}`);
       }
       
-      temp.setAttribute('position', `${f * x} ${f * y} 0.001`);
-      temp.setAttribute('scale', '0.4 0.4 0.4');
+      temp.object3D.position.set(f * x, f * y, 0.001);
+      temp.object3D.scale.set(0.4, 0.4, 0.4);
       temp.setAttribute('material', `opacity: ${data.opacity};`);
       
       el.appendChild(temp);
