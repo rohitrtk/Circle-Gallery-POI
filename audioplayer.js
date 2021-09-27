@@ -97,22 +97,32 @@ if (typeof AFRAME === 'undefined') {
    * will change to a pause button and start playing audio. The audio is determined
    * by what is this components name which links to a source in the AMS.
    */
-AFRAME.registerComponent('audio-player-viewer', {
-  // Editable properties
-  schema: {
-    name: {type: 'string'}
-  },
-
-  init: function() {
-    this.name = this.data.name;
+  AFRAME.registerComponent('audio-player-viewer', {
+    // Editable properties
+    schema: {
+      name: {type: 'string'}
+    },
     
+    init: function() {
+    this.name = this.data.name;
+
+    // Background
+    this.bg = document.createElement('a-plane');
+    this.el.appendChild(this.bg);
+    this.bg.setAttribute('width', '0.5');
+    this.bg.setAttribute('height', '0.5');
+    this.bg.setAttribute('scale', '0.125 0.125');
+    this.bg.setAttribute('color', '#db6973');
+    this.bg.setAttribute('position', '0 -0.15 -0.5');
+    this.bg.classList.add('clickable');
+
+    // Play/pause image
     this.player = document.createElement('a-image');
-    this.el.appendChild(this.player);
+    this.bg.appendChild(this.player);
     this.player.setAttribute('src', '#playIcon');
     this.player.setAttribute('width', '0.5');
     this.player.setAttribute('height', '0.5');
-    this.player.setAttribute('scale', '0.3 0.3');
-    this.player.setAttribute('position', '0 0 -0.5');
+    this.player.setAttribute('position', '0 0.25 0.1');
     this.player.setAttribute('sound', `src: #${this.name}`);
     this.player.classList.add('clickable');
 
@@ -121,15 +131,33 @@ AFRAME.registerComponent('audio-player-viewer', {
     
     // Is the audio playing?
     this.isPlaying = false;
+
+    
+
+    // Audio image
+    this.pp = document.createElement('a-image');
+    this.bg.appendChild(this.pp);
+    this.pp.setAttribute('src', '#exit');
+    this.pp.setAttribute('position', '0 0.75 0.1');
+    this.pp.setAttribute('scale', '0.5 0.5');
+    this.pp.classList.add('clickable');
+
+    // Close button (pp) event listener
+    this.pp.addEventListener('click', (event) => {
+      this.audio.stopSound();
+      this.el.remove();
+    })
+
+    // Player event listener
     this.player.addEventListener('click', (event) => {
       if(this.isPlaying) {
         this.audio.playSound();
+        
         this.player.setAttribute('src', '#pauseIcon');
       } else {
         this.audio.pauseSound();
         this.player.setAttribute('src', '#playIcon');
       }
-
       this.isPlaying = !this.isPlaying;
     });
   },
