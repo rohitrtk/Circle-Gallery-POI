@@ -67,12 +67,11 @@ AFRAME.registerComponent('image-gallery', {
         return;
       } 
 
-      let camera = document.getElementById('rig');
-      let viewer = document.createElement('a-entity');
+      let viewer = document.createElement('a-image-gallery-viewer');
+      viewer.setAttribute('name', this.name);
       
+      let camera = document.getElementById('rig');
       camera.appendChild(viewer);
-      viewer.setAttribute('id', 'viewer');
-      viewer.setAttribute('image-gallery-viewer', `name: ${this.name};`);
     },
 
     mouseenter: function(event) {
@@ -89,6 +88,21 @@ AFRAME.registerComponent('image-gallery', {
   },
 
   multiple: true
+});
+
+/**
+ * Image gallery viewer primitive : <a-image-gallery-viewer>
+ * 
+ * Wrapper for the image gallery viewer component
+ */
+AFRAME.registerPrimitive('a-image-gallery-viewer', {
+  defaultComponents: {
+    'image-gallery-viewer' : {}
+  },
+
+  mappings: {
+    name: 'image-gallery-viewer.name'
+  }
 });
 
 /*
@@ -112,53 +126,69 @@ AFRAME.registerComponent('image-gallery-viewer', {
     
     this.name = data.name;
 
+    //el.classList.add('viewer');
+    el.setAttribute('id', 'viewer');
+
     // Must be called before setting images!
     this.loadImages();
     
     this.imageIndex = 0;
 
-    el.object3D.position.set(0, 0, -0.5);
-    el.object3D.scale.set(0.5, 0.5, 1);
-
     // Main window
-    this.mw = document.createElement('a-plane');
+    this.mw = document.createElement('a-entity');
+    this.mw.object3D.position.set(0, 0.1, -0.5);
+    this.mw.object3D.scale.set(0.5, 0.5);
+    this.mw.setAttribute('id', 'igv_mw');
+    this.mw.setAttribute('layer', {
+      type: 'quad',
+      src: this.images[this.imageIndex]
+    });
     el.appendChild(this.mw);
-    this.mw.object3D.position.set(0, 0.25, 0);
-    this.mw.setAttribute('color', '#FFFFFF');
-    this.mw.setAttribute('width', '1.4');
-    this.mw.setAttribute('height', '0.9');
-    this.mw.setAttribute('shader', 'flat');
 
-    // Left window
     this.lw = document.createElement('a-plane');
-    this.mw.appendChild(this.lw);
+    this.lw.object3D.position.set(-0.4, -0.1, -0.5);
+    this.lw.object3D.rotation.set(0, THREE.Math.degToRad(31), 0);
+    this.lw.object3D.scale.set(0.15, 0.15);
+    this.lw.setAttribute('opacity', 0);
+    this.lw.setAttribute('id', 'igv_lw');
+    this.lw.setAttribute('layer', {
+      type: 'quad',
+      src: this.images[this.imageIndex]
+    });
+    this.lw.classList.add('clickable');
+    this.lw.addEventListener('click', (event) => {
+      console.log('click');
+    });
+    el.appendChild(this.lw);
+
+    /*
+    // Left window
+    this.lw = document.createElement('a-entity');
     this.lw.object3D.position.set(-0.6, -0.6, 0.1);
-    this.lw.setAttribute('width', '0.4');
-    this.lw.setAttribute('height', '0.2');
-    this.lw.setAttribute('rotation', '0 35 0');
-    this.lw.setAttribute('opacity', '0.6');
-    this.lw.setAttribute('shader', 'flat');
+    this.lw.object3D.rotation.set(0, THREE.Math.degToRad(35), 0);
+    this.lw.setAttribute('id', 'igv_lw');
+    this.lw.setAttribute('layer', { type: 'quad', width: 0.4, height: 0.4 });
     this.lw.classList.add('clickable');
     this.lw.addEventListener('click', (event) => {
       this.imageIndex = Math.max(0, this.imageIndex - 1);
       this.updateWindows();
     });
+    this.mw.appendChild(this.lw);
 
     // Right Window
-    this.rw = document.createElement('a-plane');
-    this.mw.appendChild(this.rw);
+    this.rw = document.createElement('a-entity');
     this.rw.object3D.position.set(0.6, -0.6, 0.1);
-    this.rw.setAttribute('width', '0.4');
-    this.rw.setAttribute('height', '0.2');
-    this.rw.setAttribute('rotation', '0 -35 0');
-    this.rw.setAttribute('opacity', '0.6');
-    this.rw.setAttribute('shader', 'flat');
+    this.rw.object3D.rotation.set(0, THREE.Math.degToRad(-35), 0);
+    this.rw.object3D.scale.set(0.5, 0.5);
+    this.rw.setAttribute('id', 'igv_rw');
+    this.rw.setAttribute('layer', { type: 'quad', width: 0.4, height: 0.4 });
     this.rw.classList.add('clickable');
     this.rw.addEventListener('click', (e) => {
       this.imageIndex = Math.min(this.images.length - 1, this.imageIndex + 1);
       this.updateWindows();
     });
-
+    this.mw.appendChild(this.rw);
+    
     // Close Window
     this.cw = document.createElement('a-circle');
     this.mw.appendChild(this.cw);
@@ -179,18 +209,18 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.cwb.setAttribute('color', '#000000');
     this.cwb.setAttribute('radius', '0.1');
     
-    this.updateWindows();
+    this.updateWindows();*/
   },
 
   // Updates the images on the middle, left, and right windows. Also hides
   // the right and left windows if necessary.
   updateWindows: function() {
-    this.lw.setAttribute('visible', this.imageIndex > 0 ? 'true' : 'false');
-    this.rw.setAttribute('visible', this.imageIndex < this.images.length - 1 ? 'true' : 'false');
-
-    this.mw.setAttribute('src', this.images[this.imageIndex]);
-    this.rw.setAttribute('src', this.images[this.imageIndex + 1]);
-    this.lw.setAttribute('src', this.images[this.imageIndex - 1]);
+    //this.lw.setAttribute('visible', this.imageIndex > 0 ? 'true' : 'false');
+    //this.rw.setAttribute('visible', this.imageIndex < this.images.length - 1 ? 'true' : 'false');
+    
+    //this.mw.setAttribute('layer', 'src', this.images[this.imageIndex]);
+    //this.rw.setAttribute('layer', 'src', this.images[this.imageIndex + 1]);
+    //this.lw.setAttribute('layer', 'src', this.images[this.imageIndex - 1]);
   },
 
   // Loads the images given an image name prefix
