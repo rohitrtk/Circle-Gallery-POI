@@ -32,17 +32,30 @@ AFRAME.registerComponent('waypoint-network', {
       this.waypoints.push(child);
     }
 
-    const it = this.makeWaypointIterator(0, this.waypoints.length);
-    let wp = it.next();
+    // For each waypoint, set the next waypoint and the previous waypoint.
+    // If a waypoint is the start or end of the network, it will have
+    // a blank string as its value.
+    const it  = this.makeWaypointIterator(0, this.waypoints.length);
+    let wp    = it.next();
+    let pwp   = wp;
+    
     while(!wp.done) {
-      //wp.value.nextWaypoint = 
-      console.log(wp.value);
       wp = it.next();
+      
+      if(wp.done) {
+        break;
+      }
+
+      pwp.value.setAttribute('waypoint', 'nextWaypoint', wp.value.getAttribute('id'));
+      wp.value.setAttribute('waypoint', 'prevWaypoint', pwp.value.getAttribute('id'));
+
+      pwp = wp;
     }
 
     this.el.classList.add('waypointNetwork');
   },
 
+  // Returns an iterator for the waypoints
   makeWaypointIterator: function*(start = 0, end = Infinity) {
     let count = 0;
 
