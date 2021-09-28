@@ -63,12 +63,8 @@
       
       <!--Camera Rig-->
       <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 150;'>
-        <a-entity id='mouse-click-cam' camera='active: true'
-        raycaster='objects: .clickable' cursor='rayOrigin: mouse;'>
-        </a-entity>
-        <a-entity id='point-click-cam'
-        raycaster='objects: .clickable' cursor='rayOrigin: entity;'>
-        </a-entity>
+        <a-entity id='mouse-click-cam' camera='active: true' raycaster='objects: .clickable, .waypoint' cursor='rayOrigin: mouse;'></a-entity>
+        <a-entity id='point-click-cam' raycaster='objects: .clickable' cursor='rayOrigin: entity;'></a-entity>
       </a-camera-rig>
 
       <a-media-circle position='1 2.5 -2' names='g_jinx g_lee g_j4'></a-media-circle>
@@ -78,10 +74,10 @@
       </a-poi>
 
       <a-waypoint-network>
-        <a-waypoint id='waypoint_0' wp-position='0 0.1 0'></a-waypoint>
-        <a-waypoint id='waypoint_1' wp-position='1 0.1 0'></a-waypoint>
-        <a-waypoint id='waypoint_2' wp-position='2 0.1 0'></a-waypoint>
-        <a-waypoint id='waypoint_3' wp-position='3 0.1 0'></a-waypoint>
+        <a-waypoint id='waypoint_0' position='-5 0.1 0'></a-waypoint>
+        <a-waypoint id='waypoint_1' position='-1 0.1 0'></a-waypoint>
+        <a-waypoint id='waypoint_2' position='3 0.1 0'></a-waypoint>
+        <a-waypoint id='waypoint_3' position='7 0.1 0'></a-waypoint>
       </a-waypoint-network>
 
     </a-scene>

@@ -17,8 +17,10 @@ AFRAME.registerPrimitive('a-waypoint-network', {
 /**
  * Waypoint network component : waypoint-netowork
  * 
- * Designed to contain waypoints in an entity (as opposed to stuffing
- * waypoints into an a-entity component).
+ * Can contain a grouping of waypoints and has functionallity
+ * for travesring said waypoints. The waypoints in the network,
+ * will automatically register the orderering from first to last
+ * and give each waypoint its next and previous waypoint if applicable.
  */
 AFRAME.registerComponent('waypoint-network', {
   init: function () {
@@ -79,7 +81,6 @@ AFRAME.registerPrimitive('a-waypoint', {
   },
 
   mappings: {
-    'wp-position'   : 'waypoint.position',
     'next-waypoint' : 'waypoint.nextWaypoint',
     'prev-waypoint' : 'waypoint.prevWaypoint'
   }
@@ -88,11 +89,16 @@ AFRAME.registerPrimitive('a-waypoint', {
 /**
  * Waypoint component
  * 
- * ...
+ * Contains the fuctionallity for the waypoints. Each waypoint knows how to animate
+ * the camera rigs position to the waypoints position. It also contains data on the
+ * next and previous waypoint.
+ * 
+ * Properties:
+ *  - nextWaypoint: Id of the next waypoint
+ *  - prevWaypoint: Id of the previous waypoint
  */
 AFRAME.registerComponent('waypoint', {
   schema: {
-    'position'    : { type: 'vec3',   default: {x: 0, y: 0.1, z: 0}},
     'nextWaypoint': { type: 'string', default: '' },
     'prevWaypoint': { type: 'string', default: '' }
   },
@@ -101,7 +107,7 @@ AFRAME.registerComponent('waypoint', {
     let el    = this.el;
     let data  = this.data;
 
-    this.position     = data.position;
+    this.position     = el.object3D.position;
     this.nextWaypoint = data.nextWaypoint;
     this.prevWaypoint = data.prevWaypoint;
     
@@ -110,8 +116,11 @@ AFRAME.registerComponent('waypoint', {
       radius: 0.25
     });
 
-    el.object3D.position.set(this.position.x, this.position.y, this.position.z);
     el.object3D.rotation.set(-Math.PI / 2, 0, 0);
+
+    // Material stuff
+    this.defaultColour      = '#FFFFFF';
+    this.highlightedColour  = '#f5b942';
 
     el.setAttribute('material', {
       color: '#FFFFFF',
@@ -119,5 +128,27 @@ AFRAME.registerComponent('waypoint', {
     });
 
     el.classList.add('waypoint');
+  },
+
+  events: {
+    click: function(event) {
+      // I have no idea how the interpreter knows what rig is, it just does
+      rig.setAttribute('animation', {
+        property:   'position',
+        to:         { x: this.position.x, y: this.position.y + 1.6, z: this.position.z },
+        from:       rig.object3D.position,
+        easing:     'easeInCubic',
+        autoplay:   true,
+        dur:        1000
+      });
+    },
+    
+    mouseenter: function(event) {
+      this.el.setAttribute('material', 'color', this.highlightedColour);
+    },
+
+    mouseleave: function(event) {
+      this.el.setAttribute('material', 'color', this.defaultColour);
+    }
   }
 });
