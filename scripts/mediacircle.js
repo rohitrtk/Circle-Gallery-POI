@@ -61,7 +61,7 @@ AFRAME.registerComponent('media-circle', {
     el.classList.remove('clickable');
 
     // Get names array by splitting the data on space
-    names = data.names.split(' ');
+    let names = data.names.split(' ');
     if(names === '') {
       throw new Error('Media circle needs names');
     }
@@ -73,58 +73,35 @@ AFRAME.registerComponent('media-circle', {
     this.aNames = [];
     this.gNames = [];
 
-    for(const n of names) {
-      let m = n.split('_');
+    this.loadNames(names);
 
-      switch(m[0]) {
-        case 'v':
-          this.vNames.push(m[1]);
-          break;
-        case 'a':
-          this.aNames.push(m[1]);
-          break;
-        case 'g':
-          this.gNames.push(m[1]);
-          break;
-      }
+    // Media counter object
+    let mediaCounters = {
+      v: this.vNames.length,
+      a: this.aNames.length,
+      g: this.gNames.length
     }
-
-    // Media counters
-    let vc = this.vNames.length;
-    let ac = this.aNames.length;
-    let gc = this.gNames.length;
 
     let angle = 2 * Math.PI / this.numMedia;
     for(let i = 0; i < this.numMedia; i++) {
+      // Draw button and append for each media
+      let temp = this.loadMedia(mediaCounters);
+      el.appendChild(temp);
+      temp.object3D.scale.set(0.4, 0.4, 0.4);
+      temp.setAttribute('material', `opacity: ${data.opacity};`);
+      
+      if(this.numMedia <= 1) {
+        temp.object3D.position.set(0, 0, 0.001);
+        break;
+      }
+      
       // Math stuff
       let x = Math.cos(angle * i);
       let y = Math.sin(angle * i);
       let f = 0.6;    // Controls the placement of the buttons
       let g = 0.985   // Controls the ending placement of the lines
-
-      // Draw buttons
-      let temp = null;
-      
-      // Load all videos, then all audio, then all galleries
-      if(vc > 0) {        // Load videos if we still have videos to load
-        vc--;
-        temp = document.createElement('a-video-player');
-        temp.setAttribute('name', `${this.vNames[vc]}`);
-      } else if(ac > 0) { // Load audio if we still have audio to load
-        ac--;
-        temp = document.createElement('a-audio-player');
-        temp.setAttribute('name', `${this.aNames[ac]}`);
-      } else if(gc > 0) { // Load galleries if we still have galleries to load
-        gc--;
-        temp = document.createElement('a-image-gallery');
-        temp.setAttribute('name', `${this.gNames[gc]}`);
-      }
       
       temp.object3D.position.set(f * x, f * y, 0.001);
-      temp.object3D.scale.set(0.4, 0.4, 0.4);
-      temp.setAttribute('material', `opacity: ${data.opacity};`);
-      
-      el.appendChild(temp);
 
       // Draw lines
       let line = document.createElement('a-entity');
@@ -149,6 +126,48 @@ AFRAME.registerComponent('media-circle', {
   // Class name button check
   cnbCheck: function(cc) {
     return cc.contains('imagegallery') || cc.contains('videoplayer') || cc.contains('audioplayer');
+  },
+
+  loadNames: function(namesArray) {
+    for(const name of namesArray) {
+      let type = name.charAt(0);
+      let fn   = name.slice(2);
+
+      switch(type) {
+        case 'v':
+          this.vNames.push(fn);
+          break;
+        case 'a':
+          this.aNames.push(fn);
+          break;
+        case 'g':
+          this.gNames.push(fn);
+          break;
+      }
+    }
+  },
+
+  loadMedia: function(counters) {
+    let media = null;
+
+    // Load all videos, then all audio, then all galleries
+    if(counters.v > 0) {        // Load videos if we still have videos to load
+      counters.v--;
+      media = document.createElement('a-video-player');
+      media.setAttribute('name', `${this.vNames[counters.v]}`);
+    } else if(counters.a > 0) { // Load audio if we still have audio to load
+      counters.a--;
+      media = document.createElement('a-audio-player');
+      media.setAttribute('name', `${this.aNames[counters.a]}`);
+    } else if(counters.g > 0) { // Load galleries if we still have galleries to load
+      counters.g--;
+      media = document.createElement('a-image-gallery');
+      media.setAttribute('name', `${this.gNames[counters.g]}`);
+    } else {
+      throw new Error('An error occured looking for media.');
+    }
+
+    return media;
   },
 
   update: function() {
