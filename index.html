@@ -16,7 +16,7 @@
     <script src='mediacircle.js'></script>
     <script src='cameraRig.js'></script>
     <script src='waypoint.js'></script>
-    <script src='layer.js'></script>
+    <script src='layer.js' defer></script>
   </head>
   <body>
 
@@ -57,7 +57,7 @@
           <img src='assets/images/lee_0.jpg'>
           <img src='assets/images/lee_1.jpg'>
           <img src='assets/images/lee_2.jpg'>
-          <img src='assets/images/zyra_0.jpg'>
+          <img src='assets/images/zyra_0.jpg' id='zyra2'>
           <img src='assets/images/zyra_1.jpg' id='zyra1'>
         </div>
       </a-assets>
@@ -80,12 +80,6 @@
         <a-waypoint id='waypoint_2' position='3 0.1 0'></a-waypoint>
         <a-waypoint id='waypoint_3' position='7 0.1 0'></a-waypoint>
       </a-waypoint-network>
-
-      <a-entity layer='type: quad; src: #zyra1' position='2 2 2'>
-        <a-entity id='mine' class='clickable' material='transparent: true; color: #FFF; shader: flat' geometry='primitive: plane; buffer: true; height: 1.080; width: 1.080'></a-entity>
-      </a-entity>
-
-      <a-layer src='#zyra1' position='2 6 2'></a-layer>
 
     </a-scene>
   </body>

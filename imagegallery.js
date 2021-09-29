@@ -135,64 +135,39 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.imageIndex = 0;
 
     // Main window
-    this.mw = document.createElement('a-entity');
+    this.mw = document.createElement('a-layer');
     this.mw.object3D.position.set(0, 0.1, -0.5);
     this.mw.object3D.scale.set(0.5, 0.5);
-    this.mw.setAttribute('id', 'igv_mw');
-    this.mw.setAttribute('layer', {
-      type: 'quad',
-      src: this.images[this.imageIndex]
-    });
+    this.mw.setAttribute('id', 'igv_mainWindow');
     el.appendChild(this.mw);
 
-    this.lw = document.createElement('a-plane');
+    this.lw = document.createElement('a-layer');
     this.lw.object3D.position.set(-0.4, -0.1, -0.5);
     this.lw.object3D.rotation.set(0, THREE.Math.degToRad(31), 0);
     this.lw.object3D.scale.set(0.15, 0.15);
-    this.lw.setAttribute('opacity', 0);
-    this.lw.setAttribute('id', 'igv_lw');
-    this.lw.setAttribute('layer', {
-      type: 'quad',
-      src: this.images[this.imageIndex]
-    });
-    this.lw.classList.add('clickable');
-    this.lw.addEventListener('click', (event) => {
-      console.log('click');
-    });
-    el.appendChild(this.lw);
-
-    /*
-    // Left window
-    this.lw = document.createElement('a-entity');
-    this.lw.object3D.position.set(-0.6, -0.6, 0.1);
-    this.lw.object3D.rotation.set(0, THREE.Math.degToRad(35), 0);
-    this.lw.setAttribute('id', 'igv_lw');
-    this.lw.setAttribute('layer', { type: 'quad', width: 0.4, height: 0.4 });
-    this.lw.classList.add('clickable');
+    this.lw.setAttribute('id', 'igv_leftWindow');
     this.lw.addEventListener('click', (event) => {
       this.imageIndex = Math.max(0, this.imageIndex - 1);
       this.updateWindows();
     });
-    this.mw.appendChild(this.lw);
+    el.appendChild(this.lw);
 
-    // Right Window
-    this.rw = document.createElement('a-entity');
-    this.rw.object3D.position.set(0.6, -0.6, 0.1);
-    this.rw.object3D.rotation.set(0, THREE.Math.degToRad(-35), 0);
-    this.rw.object3D.scale.set(0.5, 0.5);
-    this.rw.setAttribute('id', 'igv_rw');
-    this.rw.setAttribute('layer', { type: 'quad', width: 0.4, height: 0.4 });
-    this.rw.classList.add('clickable');
-    this.rw.addEventListener('click', (e) => {
+    this.rw = document.createElement('a-layer');
+    this.rw.object3D.position.set(0.4, -0.1, -0.5);
+    this.rw.object3D.rotation.set(0, THREE.Math.degToRad(-31), 0);
+    this.rw.object3D.scale.set(0.15, 0.15);
+    this.rw.setAttribute('id', 'igv_leftWindow');
+    this.rw.addEventListener('click', (event) => {
       this.imageIndex = Math.min(this.images.length - 1, this.imageIndex + 1);
       this.updateWindows();
     });
-    this.mw.appendChild(this.rw);
+    el.appendChild(this.rw);
     
     // Close Window
     this.cw = document.createElement('a-circle');
     this.mw.appendChild(this.cw);
-    this.cw.object3D.position.set(0.555, 0.3, 0.1);
+    this.cw.object3D.position.set(0.47, 0.42, 0.1);
+    this.cw.object3D.scale.set(0.4, 0.4);
     this.cw.setAttribute('color', '#FFFFFF');
     this.cw.setAttribute('transparent', 'true');
     this.cw.setAttribute('radius', '0.1');
@@ -209,18 +184,18 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.cwb.setAttribute('color', '#000000');
     this.cwb.setAttribute('radius', '0.1');
     
-    this.updateWindows();*/
+    this.updateWindows();
   },
 
   // Updates the images on the middle, left, and right windows. Also hides
   // the right and left windows if necessary.
   updateWindows: function() {
-    //this.lw.setAttribute('visible', this.imageIndex > 0 ? 'true' : 'false');
-    //this.rw.setAttribute('visible', this.imageIndex < this.images.length - 1 ? 'true' : 'false');
+    this.lw.setAttribute('visible', this.imageIndex > 0 ? 'true' : 'false');
+    this.rw.setAttribute('visible', this.imageIndex < this.images.length - 1 ? 'true' : 'false');
     
-    //this.mw.setAttribute('layer', 'src', this.images[this.imageIndex]);
-    //this.rw.setAttribute('layer', 'src', this.images[this.imageIndex + 1]);
-    //this.lw.setAttribute('layer', 'src', this.images[this.imageIndex - 1]);
+    this.mw.setAttribute('src', this.images[this.imageIndex]);
+    this.rw.setAttribute('src', this.images[this.imageIndex + 1]);
+    this.lw.setAttribute('src', this.images[this.imageIndex - 1]);
   },
 
   // Loads the images given an image name prefix
