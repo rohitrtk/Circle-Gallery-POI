@@ -5,7 +5,7 @@
     <meta name=viewport content='width=device-width'>
     <title> Circle Gallery POI </title>
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.0.4/aframe.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.2.0/aframe.min.js'></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     
     <script src='script.js' defer></script>
@@ -16,6 +16,7 @@
     <script src='mediacircle.js'></script>
     <script src='cameraRig.js'></script>
     <script src='waypoint.js'></script>
+    <script src='layer.js' defer></script>
   </head>
   <body>
 
@@ -39,8 +40,8 @@
         <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg'>
 
         <!-- Videos -->
-        <video id="csclip"          src='assets/video/csclip.mp4'></video>
-        <video id="pubg"            src='assets/video/pubg.mp4'></video>
+        <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080'></video>
+        <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080'></video>
         
         <!-- Audio -->
         <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto'></a-asset-item>
@@ -62,7 +63,7 @@
       </a-assets>
       
       <!--Camera Rig-->
-      <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 150;'>
+      <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 100;'>
         <a-entity id='mouse-click-cam' camera='active: true' raycaster='objects: .clickable, .waypoint' cursor='rayOrigin: mouse;'></a-entity>
         <a-entity id='point-click-cam' raycaster='objects: .clickable' cursor='rayOrigin: entity;'></a-entity>
       </a-camera-rig>

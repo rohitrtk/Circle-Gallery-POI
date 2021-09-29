@@ -73,12 +73,11 @@ AFRAME.registerComponent('video-player', {
         return;
       }
 
-      let camera = document.getElementById('rig');
       let viewer = document.createElement('a-entity');
-
-      camera.append(viewer);
-      viewer.setAttribute('id', 'viewer');
       viewer.setAttribute('video-player-viewer', `name: ${this.name};`);
+      
+      let camera = document.getElementById('rig');
+      camera.append(viewer);
     },
 
     // Highlighting stuff
@@ -115,21 +114,23 @@ AFRAME.registerComponent('video-player-viewer', {
     let el = this.el;
     let data = this.data;
 
+    el.setAttribute('id', 'viewer');
+
     el.object3D.position.set(0, 0.1, -0.5);
     el.object3D.scale.set(0.5, 0.5, 1);
     
     this.name = data.name;
 
     // Video window that gets displayed
-    this.video = document.createElement('a-video');
+    this.video = document.createElement('a-layer');
     el.appendChild(this.video);
 
     this.video.setAttribute('src', `#${this.name}`);
-    this.video.setAttribute('width', 2);
-    this.video.setAttribute('height', 9/8);
+    this.video.setAttribute('width', 1.920);
+    this.video.setAttribute('height', 1.080);
     this.video.setAttribute('play-pause', `name: ${this.name}`);
     this.video.setAttribute('volume-controller', `name: ${this.name}`);
-    this.video.classList.add('clickable');
+    
     
     // The actual video that can be played, paused, etc.
     let v = document.querySelector(`#${this.name}`);
@@ -139,9 +140,10 @@ AFRAME.registerComponent('video-player-viewer', {
 
     // Close the video and reset properties on click
     this.video.addEventListener('click', (event) => {
-      if(event.target !== this.video) {
+      if(!event.target.classList.contains('clickablePlane')) {
         return;
       }
+      
       v.pause();
       v.currentTime = 0;
 

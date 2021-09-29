@@ -67,12 +67,11 @@ AFRAME.registerComponent('image-gallery', {
         return;
       } 
 
-      let camera = document.getElementById('rig');
-      let viewer = document.createElement('a-entity');
+      let viewer = document.createElement('a-image-gallery-viewer');
+      viewer.setAttribute('name', this.name);
       
+      let camera = document.getElementById('rig');
       camera.appendChild(viewer);
-      viewer.setAttribute('id', 'viewer');
-      viewer.setAttribute('image-gallery-viewer', `name: ${this.name};`);
     },
 
     mouseenter: function(event) {
@@ -89,6 +88,21 @@ AFRAME.registerComponent('image-gallery', {
   },
 
   multiple: true
+});
+
+/**
+ * Image gallery viewer primitive : <a-image-gallery-viewer>
+ * 
+ * Wrapper for the image gallery viewer component
+ */
+AFRAME.registerPrimitive('a-image-gallery-viewer', {
+  defaultComponents: {
+    'image-gallery-viewer' : {}
+  },
+
+  mappings: {
+    name: 'image-gallery-viewer.name'
+  }
 });
 
 /*
@@ -112,57 +126,48 @@ AFRAME.registerComponent('image-gallery-viewer', {
     
     this.name = data.name;
 
+    el.setAttribute('id', 'viewer');
+
     // Must be called before setting images!
     this.loadImages();
     
     this.imageIndex = 0;
 
-    el.object3D.position.set(0, 0, -0.5);
-    el.object3D.scale.set(0.5, 0.5, 1);
-
     // Main window
-    this.mw = document.createElement('a-plane');
+    this.mw = document.createElement('a-layer');
+    this.mw.object3D.position.set(0, 0.1, -0.5);
+    this.mw.object3D.scale.set(0.5, 0.5);
+    this.mw.setAttribute('id', 'igv_mainWindow');
     el.appendChild(this.mw);
-    this.mw.object3D.position.set(0, 0.25, 0);
-    this.mw.setAttribute('color', '#FFFFFF');
-    this.mw.setAttribute('width', '1.4');
-    this.mw.setAttribute('height', '0.9');
-    this.mw.setAttribute('shader', 'flat');
 
-    // Left window
-    this.lw = document.createElement('a-plane');
-    this.mw.appendChild(this.lw);
-    this.lw.object3D.position.set(-0.6, -0.6, 0.1);
-    this.lw.setAttribute('width', '0.4');
-    this.lw.setAttribute('height', '0.2');
-    this.lw.setAttribute('rotation', '0 35 0');
-    this.lw.setAttribute('opacity', '0.6');
-    this.lw.setAttribute('shader', 'flat');
-    this.lw.classList.add('clickable');
+    this.lw = document.createElement('a-layer');
+    this.lw.object3D.position.set(-0.4, -0.1, -0.5);
+    this.lw.object3D.rotation.set(0, THREE.Math.degToRad(31), 0);
+    this.lw.object3D.scale.set(0.15, 0.15);
+    this.lw.setAttribute('id', 'igv_leftWindow');
     this.lw.addEventListener('click', (event) => {
       this.imageIndex = Math.max(0, this.imageIndex - 1);
       this.updateWindows();
     });
+    el.appendChild(this.lw);
 
-    // Right Window
-    this.rw = document.createElement('a-plane');
-    this.mw.appendChild(this.rw);
-    this.rw.object3D.position.set(0.6, -0.6, 0.1);
-    this.rw.setAttribute('width', '0.4');
-    this.rw.setAttribute('height', '0.2');
-    this.rw.setAttribute('rotation', '0 -35 0');
-    this.rw.setAttribute('opacity', '0.6');
-    this.rw.setAttribute('shader', 'flat');
-    this.rw.classList.add('clickable');
-    this.rw.addEventListener('click', (e) => {
+    this.rw = document.createElement('a-layer');
+    this.rw.object3D.position.set(0.4, -0.1, -0.5);
+    this.rw.object3D.rotation.set(0, THREE.Math.degToRad(-31), 0);
+    this.rw.object3D.scale.set(0.15, 0.15);
+    this.rw.setAttribute('id', 'igv_rightWindow');
+    this.rw.addEventListener('click', (event) => {
       this.imageIndex = Math.min(this.images.length - 1, this.imageIndex + 1);
       this.updateWindows();
     });
-
+    el.appendChild(this.rw);
+    
     // Close Window
     this.cw = document.createElement('a-circle');
     this.mw.appendChild(this.cw);
-    this.cw.object3D.position.set(0.555, 0.3, 0.1);
+    this.cw.object3D.position.set(0.47, 0.42, 0.1);
+    this.cw.object3D.scale.set(0.4, 0.4);
+    this.cw.setAttribute('id', 'igv_closeWindow');
     this.cw.setAttribute('color', '#FFFFFF');
     this.cw.setAttribute('transparent', 'true');
     this.cw.setAttribute('radius', '0.1');
@@ -187,7 +192,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
   updateWindows: function() {
     this.lw.setAttribute('visible', this.imageIndex > 0 ? 'true' : 'false');
     this.rw.setAttribute('visible', this.imageIndex < this.images.length - 1 ? 'true' : 'false');
-
+    
     this.mw.setAttribute('src', this.images[this.imageIndex]);
     this.rw.setAttribute('src', this.images[this.imageIndex + 1]);
     this.lw.setAttribute('src', this.images[this.imageIndex - 1]);
