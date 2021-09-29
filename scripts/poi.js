@@ -17,17 +17,17 @@ if (typeof AFRAME === 'undefined') {
 AFRAME.registerPrimitive('a-poi', {
   // Default components
   defaultComponents: {
-    poi                 :{},
-    geometry            :{primitive:'plane'},
+    'geometry' : {primitive: 'plane'},
+    'material' : {},
+    'poi'      : {},
   },
 
   // Default mappings
   mappings: {
-    'src'               :'poi.src',
-    'raycast-collider'  :'poi.raycastCollider',
-    'color'             :'poi.color',
-    'toggle-cast'       :'poi.needsCast',
-    'toggles'           :'poi.toggles',
+    'width'  : 'geometry.width',
+    'height' : 'geometry.height',
+    'color'  : 'poi.color',
+    'src'    : 'poi.src'
   }
 });
 
@@ -55,13 +55,17 @@ AFRAME.registerComponent('poi', {
   // Default components
   schema: {
     src     :{type: 'string'},
-    color   :{type: 'string', default: 'red'}
+    color   :{type: 'string', default: 'none'}
   },
 
   init: function() {
     let el = this.el;
     let data = this.data;
 
+    if(data.color === 'none') {
+      data.color = Utility.randomColourHex();
+      console.log(data.color);
+    }
     el.setAttribute('material', `color: ${data.color}; shader: flat;`);
     el.setAttribute('src', data.src);
     el.classList.add('clickable');
@@ -70,7 +74,6 @@ AFRAME.registerComponent('poi', {
     this.opacity = 0;
 
     // Throttling tick function to run twice per second as opposed to 90 times per second
-    // https://aframe.io/docs/1.2.0/introduction/best-practices.html#tick-handlers
     this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
 
     // Get first child element and use that for fade in/out
@@ -78,7 +81,7 @@ AFRAME.registerComponent('poi', {
     if(this.fadeComp === undefined) {
       throw new Error('POI has no child component.');
     }
-
+    
     this.fadeComp.setAttribute('opacity', this.opacity);
   },
   
