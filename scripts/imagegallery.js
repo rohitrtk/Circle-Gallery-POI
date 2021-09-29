@@ -130,7 +130,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
 
     // Must be called before setting images!
     this.loadImages();
-    
+
     this.imageIndex = 0;
 
     // Main window
@@ -211,10 +211,10 @@ AFRAME.registerComponent('image-gallery-viewer', {
     
     for(let i = 0; i < images.length; i++) {
       let imgSrc = images[i].src;
-
-      let n = imgSrc.split('.');
-      let m = n[n.length - 2].split('/');
-      let name = m[m.length - 1];
+      
+      let n       = imgSrc.split('.');
+      let m       = n[n.length - 2].split('/');
+      let name    = m[m.length - 1];
       
       if(name.includes(this.name)) {
         this.images.push(imgSrc);
