@@ -59,6 +59,7 @@ AFRAME.registerComponent('clickable-layer', {
       opacity     : data.opacity
     });
     this.plane.classList.add('clickable');
+    this.plane.classList.add('clickablePlane');
 
     el.appendChild(this.plane);
   },
@@ -68,8 +69,10 @@ AFRAME.registerComponent('clickable-layer', {
     let data = this.data;
     
     el.setAttribute('layer', {
-      type  : 'quad',
-      src   : data.src
+      type    : 'quad',
+      src     : data.src,
+      width   : data.width,
+      height  : data.height
     });
   }
 });

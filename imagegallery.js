@@ -126,7 +126,6 @@ AFRAME.registerComponent('image-gallery-viewer', {
     
     this.name = data.name;
 
-    //el.classList.add('viewer');
     el.setAttribute('id', 'viewer');
 
     // Must be called before setting images!
@@ -156,7 +155,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.rw.object3D.position.set(0.4, -0.1, -0.5);
     this.rw.object3D.rotation.set(0, THREE.Math.degToRad(-31), 0);
     this.rw.object3D.scale.set(0.15, 0.15);
-    this.rw.setAttribute('id', 'igv_leftWindow');
+    this.rw.setAttribute('id', 'igv_rightWindow');
     this.rw.addEventListener('click', (event) => {
       this.imageIndex = Math.min(this.images.length - 1, this.imageIndex + 1);
       this.updateWindows();
@@ -168,6 +167,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.mw.appendChild(this.cw);
     this.cw.object3D.position.set(0.47, 0.42, 0.1);
     this.cw.object3D.scale.set(0.4, 0.4);
+    this.cw.setAttribute('id', 'igv_closeWindow');
     this.cw.setAttribute('color', '#FFFFFF');
     this.cw.setAttribute('transparent', 'true');
     this.cw.setAttribute('radius', '0.1');
