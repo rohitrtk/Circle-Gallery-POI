@@ -16,6 +16,7 @@
     <script src='mediacircle.js'></script>
     <script src='cameraRig.js'></script>
     <script src='waypoint.js'></script>
+    <script src='layer.js'></script>
   </head>
   <body>
 
@@ -62,7 +63,7 @@
       </a-assets>
       
       <!--Camera Rig-->
-      <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 150;'>
+      <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 100;'>
         <a-entity id='mouse-click-cam' camera='active: true' raycaster='objects: .clickable, .waypoint' cursor='rayOrigin: mouse;'></a-entity>
         <a-entity id='point-click-cam' raycaster='objects: .clickable' cursor='rayOrigin: entity;'></a-entity>
       </a-camera-rig>
@@ -80,6 +81,11 @@
         <a-waypoint id='waypoint_3' position='7 0.1 0'></a-waypoint>
       </a-waypoint-network>
 
+      <a-entity layer='type: quad; src: #zyra1' position='2 2 2'>
+        <a-entity id='mine' class='clickable' material='transparent: true; color: #FFF; shader: flat' geometry='primitive: plane; buffer: true; height: 1.080; width: 1.080'></a-entity>
+      </a-entity>
+
+      <a-layer src='#zyra1' position='2 6 2'></a-layer>
 
     </a-scene>
   </body>
