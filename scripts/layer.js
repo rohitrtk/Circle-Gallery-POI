@@ -14,9 +14,10 @@ AFRAME.registerPrimitive('a-layer', {
 
   // Default mappings
   mappings: {
-    'src'     : 'clickable-layer.src', 
-    'width'   : 'clickable-layer.width',
-    'height'  : 'clickable-layer.height'
+    'src'           : 'clickable-layer.src', 
+    'width'         : 'clickable-layer.width',
+    'height'        : 'clickable-layer.height',
+    'click-enabled' : 'clickable-layer.clickEnabled'
   }
 });
 
@@ -36,9 +37,10 @@ AFRAME.registerPrimitive('a-layer', {
  */
 AFRAME.registerComponent('clickable-layer', {
   schema: {
-    src     : {type: 'string', default: ''},
-    width   : {type: 'number', default: 1.080},
-    height  : {type: 'number', default: 1.080}
+    src           : {type: 'string', default: ''},
+    width         : {type: 'number', default: 1.080},
+    height        : {type: 'number', default: 1.080},
+    clickEnabled  : {type: 'boolean', default: true}
   },
 
   init: function() {
@@ -58,8 +60,11 @@ AFRAME.registerComponent('clickable-layer', {
       shader      : 'flat',
       opacity     : data.opacity
     });
-    this.plane.classList.add('clickable');
-    this.plane.classList.add('clickablePlane');
+
+    if(this.data.clickEnabled) {
+      this.plane.classList.add('clickable');
+      this.plane.classList.add('clickablePlane');
+    }
 
     el.appendChild(this.plane);
   },
