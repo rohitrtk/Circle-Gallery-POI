@@ -21,11 +21,15 @@ AFRAME.registerComponent('webcam-player', {
   init: function() {
     let el = this.el;
     
+    this.streamEnabled = false;
+
+    // Layer that webcam will be streamed onto
     let layer = document.createElement('a-layer');
     layer.setAttribute('click-enabled', false);
     layer.setAttribute('src', '#webcam');
     el.appendChild(layer);
 
+    // Enable/disable stream button
     let edb = document.createElement('a-entity');
     edb.setAttribute('geometry', {
       primitive: 'box',
@@ -41,50 +45,48 @@ AFRAME.registerComponent('webcam-player', {
     edb.classList.add('clickable');
     layer.appendChild(edb);
 
-    this.streamEnabled = false;
+    // Button text
+    let text = document.createElement('a-text');
+    text.setAttribute('value', 'ON');
+    text.setAttribute('color', '#000000');
+    text.setAttribute('align', 'center');
+    text.object3D.position.set(0, 0, 0.03);
+    edb.appendChild(text);
 
+    // Stream disabled icon
+    let icon = document.createElement('a-image');
+    icon.object3D.position.set(0, 0, 0.05);
+    icon.setAttribute('src', '#webcamOffIcon');
+    layer.appendChild(icon);
+    
+    // Button click event listener
     edb.addEventListener('click', event => {
       this.streamEnabled = !this.streamEnabled;
+      this.stream().catch(err => {
+        console.log(err.message);
+        this.streamEnabled = !this.streamEnabled;
+      });
 
+      text.setAttribute('value', this.streamEnabled ? 'OFF' : 'ON');
+      icon.setAttribute('visible', this.streamEnabled ? false : true);
+    });
+  },
+
+  // Starts/stops the stream
+  stream: async function() {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+    });
+
+    let $video = document.getElementById('webcam');
+    $video.srcObject = stream;
+    $video.onloadeddata = () => {
       if(this.streamEnabled) {
-        this.startStream().catch(err => {
-          console.log(`Unable to start stream: ${err.message}`);
-          this.streamEnabled = false;
-        });
-      } else {
-        this.stopStream().catch(err => {
-          console.log(`Unable to stop stream: ${err.message}`);
-          this.streamEnabled = true;
-        });
+        $video.play();
+        return;
       }
-    });
 
-    
-  },
-
-  startStream: async function() {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true
-    });
-
-    let $video = document.getElementById('webcam');
-    $video.srcObject = stream;
-    $video.onloadeddata = () => {
-      $video.play();
-      console.log($video);
-    }
-  },
-
-  stopStream: async function() {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true
-    });
-
-    let $video = document.getElementById('webcam');
-    $video.srcObject = stream;
-    $video.onloadeddata = () => {
       $video.pause();
     }
   }
