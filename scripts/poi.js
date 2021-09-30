@@ -64,8 +64,8 @@ AFRAME.registerComponent('poi', {
 
     if(data.color === 'none') {
       data.color = Utility.randomColourHex();
-      console.log(data.color);
     }
+    
     el.setAttribute('material', `color: ${data.color}; shader: flat;`);
     el.setAttribute('src', data.src);
     el.classList.add('clickable');

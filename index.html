@@ -17,6 +17,8 @@
     <script src='scripts/cameraRig.js'></script>
     <script src='scripts/waypoint.js'></script>
     <script src='scripts/layer.js'></script>
+    <script src='scripts/streamplayer.js'></script>
+
     <script src='scripts/utility.js'></script>
   </head>
   <body>
@@ -29,40 +31,46 @@
       <a-assets id='AMS'>
         
         <!-- Icons -->
-        <img id='exit'              src='assets/icons/close2.svg'>
-        <img id='videosIcon'        src='assets/icons/videos_icon.svg'>
-        <img id='audioIcon'         src='assets/icons/audios_icon.svg'>
-        <img id='galleryIcon'       src='assets/icons/images_icon.svg'>
-        <img id='storiesIcon'       src='assets/icons/stories_icon.svg'>
-        <img id='playIcon'          src='assets/icons/play_icon.svg'>
-        <img id='pauseIcon'         src='assets/icons/pause_icon.svg'>
-        <img id='volumeUpIcon'      src='assets/icons/volume_up_icon.svg'>
-        <img id='volumeDownIcon'    src='assets/icons/volume_down_icon.svg'>
-        <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg'>
+        <img id='exit'              src='assets/icons/close2.svg' crossorigin>
+        <img id='videosIcon'        src='assets/icons/videos_icon.svg' crossorigin>
+        <img id='audioIcon'         src='assets/icons/audios_icon.svg' crossorigin>
+        <img id='galleryIcon'       src='assets/icons/images_icon.svg' crossorigin>
+        <img id='storiesIcon'       src='assets/icons/stories_icon.svg' crossorigin>
+        <img id='playIcon'          src='assets/icons/play_icon.svg' crossorigin>
+        <img id='pauseIcon'         src='assets/icons/pause_icon.svg' crossorigin>
+        <img id='volumeUpIcon'      src='assets/icons/volume_up_icon.svg' crossorigin>
+        <img id='volumeDownIcon'    src='assets/icons/volume_down_icon.svg' crossorigin>
+        <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg' crossorigin>
+        <img id='webcamOffIcon'     src='assets/icons/videocam_off_icon.svg' crossorigin>
 
         <!-- Videos -->
-        <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080'></video>
-        <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080'></video>
+        <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080' crossorigin></video>
+        <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080' crossorigin></video>
         
         <!-- Audio -->
-        <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto'></a-asset-item>
+        <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
 
         <!-- Images -->
         <div id='galleryimages'>
-          <img src='assets/images/jinx_0.jpg'>
-          <img src='assets/images/jinx_1.jpg'>
-          <img src='assets/images/jinx_2.jpg'>
-          <img src='assets/images/j4_0.jpg'>
-          <img src='assets/images/j4_1.jpg'>
-          <img src='assets/images/j4_2.jpg'>
-          <img src='assets/images/lee_0.jpg'>
-          <img src='assets/images/lee_1.jpg'>
-          <img src='assets/images/lee_2.jpg'>
-          <img src='assets/images/zyra_0.jpg'>
-          <img src='assets/images/zyra_1.jpg'>
+          <img src='assets/images/jinx_0.jpg' crossorigin>
+          <img src='assets/images/jinx_1.jpg' crossorigin>
+          <img src='assets/images/jinx_2.jpg' crossorigin>
+          <img src='assets/images/j4_0.jpg' crossorigin>
+          <img src='assets/images/j4_1.jpg' crossorigin>
+          <img src='assets/images/j4_2.jpg' crossorigin>
+          <img src='assets/images/lee_0.jpg' crossorigin>
+          <img src='assets/images/lee_1.jpg' crossorigin>
+          <img src='assets/images/lee_2.jpg' crossorigin>
+          <img src='assets/images/zyra_0.jpg' crossorigin>
+          <img src='assets/images/zyra_1.jpg' crossorigin>
         </div>
+
+        <!-- For use of webcam -->
+        <video id='webcam' src='' crossorigin></video>
       </a-assets>
       
+      <a-webcam-player position='3 2.5 3' src='#webcam'></a-webcam-player>
+
       <!--Camera Rig-->
       <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 100;'>
         <a-entity id='mouse-click-cam' camera='active: true' raycaster='objects: .clickable, .waypoint' cursor='rayOrigin: mouse;'></a-entity>
