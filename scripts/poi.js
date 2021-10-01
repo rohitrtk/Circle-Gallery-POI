@@ -90,6 +90,7 @@ AFRAME.registerComponent('poi', {
     this.mediaCircle = document.createElement('a-media-circle');
     this.mediaCircle.object3D.position.set(0, 0, 0.01);
     this.mediaCircle.setAttribute('opacity', this.opacity);
+    el.appendChild(this.mediaCircle);
 
     let scene = document.querySelector('#scene');
     scene.addEventListener('loaded', () => {

@@ -30,14 +30,27 @@ AFRAME.registerComponent('medialoader', {
         continue;
       }
 
+      let extension = src.split('.').at(-1);
       let fileName = src.split('/').at(-1);
       let name = fileName.split('_').at(0);
       
       if(this.dict[name] === undefined) {
-        this.dict[name] = [];
+        this.dict[name] = {
+          image: [],
+          video: [],
+          audio: []
+        };
       }
       
-      this.dict[name].push(src);
+      if(extension.includes('jpg') || extension.includes('png')) {
+        this.dict[name].image.push(src);
+      } else if(extension.includes('mp4')) {
+        this.dict[name].video.push(src);
+      } else if(extension.includes('mp3')) {
+        this.dict[name].audio.push(src);
+      } else {
+        throw new Error(`Unknown media type for file ${name}`);
+      }
     }
   }
 });

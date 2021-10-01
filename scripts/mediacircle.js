@@ -18,8 +18,7 @@ if (typeof AFRAME === 'undefined') {
 AFRAME.registerPrimitive('a-media-circle', {
   // Default components
   defaultComponents: {
-    'mediacircle': {},
-    'look-at': ''
+    'mediacircle': {}
   },
 
   // Property mappings
@@ -27,8 +26,7 @@ AFRAME.registerPrimitive('a-media-circle', {
     'color'       : 'mediacircle.color',
     'transparent' : 'mediacircle.material.transparent',
     'opacity'     : 'mediacircle.opacity',
-    'names'       : 'mediacircle.names',
-    'names2'      : 'mediacircle.names2'
+    'sources'     : 'mediacircle.sources'
   }
 });
 
@@ -48,15 +46,14 @@ AFRAME.registerPrimitive('a-media-circle', {
 AFRAME.registerComponent('mediacircle', {
   // Editable properties
   schema: {
-    names         : {type: 'string', default: ''},
-    opacity       : {type: 'number', default: 1.0},
-    sources       : {type: 'array', default: []}
+    sources       : {type: 'array', default: []},
+    opacity       : {type: 'number', default: 1.0}
   },
 
   init: function() {
     let el = this.el;
     let data = this.data;
-
+    
     // Graphical stuff
     el.setAttribute('geometry',  {
       primitive: 'circle',
@@ -70,21 +67,6 @@ AFRAME.registerComponent('mediacircle', {
     });
     el.object3D.scale.set(1, 1, 1);
     el.classList.remove('clickable');
-
-    // Get names array by splitting the data on space
-    let names = data.names.split(' ');
-    if(names === '') {
-      throw new Error('Media circle needs names');
-    }
-    
-    this.numMedia = names.length;
-
-    // Array of video, audio, and gallery names
-    this.vNames = [];
-    this.aNames = [];
-    this.gNames = [];
-
-    this.loadNames(names);
 
     // Media counter object
     let mediaCounters = {
@@ -146,25 +128,6 @@ AFRAME.registerComponent('mediacircle', {
     return cc.contains('imagegallery') || cc.contains('videoplayer') || cc.contains('audioplayer');
   },
 
-  loadNames: function(namesArray) {
-    for(const name of namesArray) {
-      let type = name.charAt(0);
-      let fn   = name.slice(2);
-
-      switch(type) {
-        case 'v':
-          this.vNames.push(fn);
-          break;
-        case 'a':
-          this.aNames.push(fn);
-          break;
-        case 'g':
-          this.gNames.push(fn);
-          break;
-      }
-    }
-  },
-
   loadMedia: function(counters) {
     let media = null;
 
@@ -182,7 +145,7 @@ AFRAME.registerComponent('mediacircle', {
       media = document.createElement('a-image-gallery');
       media.setAttribute('name', `${this.gNames[counters.g]}`);
     } else {
-      throw new Error('An error occured looking for media.');
+      //throw new Error('An error occured looking for media.');
     }
 
     return media;
@@ -191,7 +154,7 @@ AFRAME.registerComponent('mediacircle', {
   update: function() {
     let el = this.el;
     let data = this.data;
-    
+    console.log(data.sources);
     try {
       el.setAttribute('material', {
         color: '#180647',
