@@ -57,7 +57,7 @@ AFRAME.registerComponent('image-gallery', {
       transparent: true
     });
     el.classList.add('imagegallery');
-    el.classList.add('clickable');
+    el.classList.remove('clickable');
     
     this.name = data.name;
   },
@@ -219,7 +219,7 @@ AFRAME.registerComponent('image-gallery-viewer', {
 
     this.images = [];
 
-    let images = document.getElementById('galleryimages').getElementsByTagName('img');
+    let images = document.getElementById('media').getElementsByTagName('img');
     
     for(let i = 0; i < images.length; i++) {
       let imgSrc = images[i].src;

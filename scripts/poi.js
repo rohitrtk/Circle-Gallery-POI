@@ -27,7 +27,8 @@ AFRAME.registerPrimitive('a-poi', {
     'width'  : 'geometry.width',
     'height' : 'geometry.height',
     'color'  : 'poi.color',
-    'src'    : 'poi.src'
+    'src'    : 'poi.src',
+    'name'   : 'poi.name'
   }
 });
 
@@ -54,15 +55,18 @@ AFRAME.registerPrimitive('a-poi', {
 AFRAME.registerComponent('poi', {
   // Default components
   schema: {
-    src     :{type: 'string'},
-    color   :{type: 'string', default: 'none'}
+    name    :{type: 'string', default: ''},
+    src     :{type: 'string', default: ''},
+    color   :{type: 'string', default: ''}
   },
 
   init: function() {
     let el = this.el;
     let data = this.data;
 
-    if(data.color === 'none') {
+    this.name = data.name;
+
+    if(data.color === '') {
       data.color = Utility.randomColourHex();
     }
     
@@ -79,25 +83,33 @@ AFRAME.registerComponent('poi', {
     // Throttling tick function to run twice per second as opposed to 90 times per second
     this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
 
-    // Get first child element and use that for fade in/out
-    this.fadeComp = el.children[0];
-    if(this.fadeComp === undefined) {
+    // Get the first mediacircle attached to this poi or throw an
+    // error if there is no media circle attached to this poi
+    this.mediaCircle = null;
+    for(const child of el.children) {
+      if(child.nodeName === 'A-MEDIA-CIRCLE') {
+        this.mediaCircle = child;
+        break;
+      }
+    }
+    
+    if(this.mediaCircle === null) {
       throw new Error('POI has no child component.');
     }
     
-    this.fadeComp.setAttribute('opacity', this.opacity);
+    this.mediaCircle.setAttribute('opacity', this.opacity);
   },
   
   events: {
     // Setting child event listeners for fading in/out
     mouseenter: function(event) {
       this.opacity = Math.min(this.opacity + 1, 100);
-      this.fadeComp.classList.add('clickable');
+      this.mediaCircle.classList.add('clickable');
       
-      for(const child of this.fadeComp.children) {
+      for(const child of this.mediaCircle.children) {
         let c = child.classList;
         
-        if(c.contains('imagegallery')) {
+        if(c.contains('imagegallery') || c.contains('videoplayer') || c.contains('audioplayer')) {
           c.add('clickable');
         }
       }
@@ -105,12 +117,12 @@ AFRAME.registerComponent('poi', {
 
     mouseleave: function(event) {
       this.opacity = Math.max(this.opacity - 1, 0);
-      this.fadeComp.classList.remove('clickable');
+      this.mediaCircle.classList.remove('clickable');
       
-      for(const child of this.fadeComp.children) {
+      for(const child of this.mediaCircle.children) {
         let c = child.classList;
         
-        if(c.contains('imagegallery')) {
+        if(c.contains('imagegallery') || c.contains('videoplayer') || c.contains('audioplayer')) {
           c.remove('clickable');
         }
       }
@@ -118,8 +130,8 @@ AFRAME.registerComponent('poi', {
   },
 
   tick: function(t, dt) {
-    if(this.fadeComp !== undefined) {
-      this.fadeComp.setAttribute('animation__fade', {
+    if(this.mediaCircle !== undefined) {
+      this.mediaCircle.setAttribute('animation__fade', {
         easing: 'easeInOutSine',
         property: 'opacity',
         to: this.opacity,

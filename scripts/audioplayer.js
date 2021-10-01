@@ -53,7 +53,7 @@ if (typeof AFRAME === 'undefined') {
         transparent:  true
       });
       el.classList.add('audioplayer');
-      el.classList.add('clickable');
+      el.classList.remove('clickable');
   
       this.name = data.name;
     },

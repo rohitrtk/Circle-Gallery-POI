@@ -18,16 +18,17 @@ if (typeof AFRAME === 'undefined') {
 AFRAME.registerPrimitive('a-media-circle', {
   // Default components
   defaultComponents: {
-    'media-circle': {},
+    'mediacircle': {},
     'look-at': ''
   },
 
   // Property mappings
   mappings: {
-    'color'       : 'media-circle.color',
-    'transparent' : 'media-circle.material.transparent',
-    'opacity'     : 'media-circle.opacity',
-    'names'       : 'media-circle.names'
+    'color'       : 'mediacircle.color',
+    'transparent' : 'mediacircle.material.transparent',
+    'opacity'     : 'mediacircle.opacity',
+    'names'       : 'mediacircle.names',
+    'names2'      : 'mediacircle.names2'
   }
 });
 
@@ -44,11 +45,12 @@ AFRAME.registerPrimitive('a-media-circle', {
  *  - numGallery: The number of galleries this media circle has available to browse
  *  - opacity: Components opacity level
  */
-AFRAME.registerComponent('media-circle', {
+AFRAME.registerComponent('mediacircle', {
   // Editable properties
   schema: {
     names         : {type: 'string', default: ''},
-    opacity       : {type: 'number', default: 1.0}
+    opacity       : {type: 'number', default: 1.0},
+    names2        : {type: 'array',  default: []}
   },
 
   init: function() {

@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     
     <script src='scripts/script.js' defer></script>
+    <script src='scripts/medialoader.js'></script>
     <script src='scripts/poi.js'></script>
     <script src='scripts/videoplayer.js'></script>
     <script src='scripts/audioplayer.js'></script>
@@ -25,7 +26,7 @@
 
     <!-- Main scene -->
     <!-- https://aframe.io/docs/1.2.0/components/stats.html -->
-    <a-scene id='scene' background='color: skyblue' stats>
+    <a-scene id='scene' background='color: skyblue' stats medialoader>
 
       <!-- Asset Management System -->
       <a-assets id='AMS'>
@@ -43,15 +44,15 @@
         <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg' crossorigin>
         <img id='webcamOffIcon'     src='assets/icons/videocam_off_icon.svg' crossorigin>
 
-        <!-- Videos -->
-        <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080' crossorigin></video>
-        <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080' crossorigin></video>
-        
-        <!-- Audio -->
-        <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+        <div id='media'>
+          <!-- Videos -->
+          <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080' crossorigin></video>
+          <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080' crossorigin></video>
+          
+          <!-- Audio -->
+          <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
 
-        <!-- Images -->
-        <div id='galleryimages'>
+          <!-- Images -->
           <img src='assets/images/jinx_0.jpg' crossorigin>
           <img src='assets/images/jinx_1.jpg' crossorigin>
           <img src='assets/images/jinx_2.jpg' crossorigin>
@@ -64,7 +65,6 @@
           <img src='assets/images/zyra_0.jpg' crossorigin>
           <img src='assets/images/zyra_1.jpg' crossorigin>
         </div>
-
         <!-- For use of webcam -->
         <video id='webcam' src='' crossorigin></video>
       </a-assets>

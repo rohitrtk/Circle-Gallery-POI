@@ -65,7 +65,7 @@ AFRAME.registerComponent('video-player', {
       transparent: true
     });
     el.classList.add('videoplayer');
-    el.classList.add('clickable');
+    el.classList.remove('clickable');
 
     this.name = data.name;
   },
