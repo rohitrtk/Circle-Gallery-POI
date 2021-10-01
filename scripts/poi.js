@@ -15,6 +15,10 @@ if (typeof AFRAME === 'undefined') {
  *  - geometry: Contains info for the geometry of this object
  */
 AFRAME.registerPrimitive('a-poi', {
+  dependencies: [
+    'medialoader'
+  ],
+
   // Default components
   defaultComponents: {
     'geometry' : {primitive: 'plane'},
@@ -72,34 +76,32 @@ AFRAME.registerComponent('poi', {
     
     el.setAttribute('material', {
       color: data.color,
+      src: data.src,
       shader: 'flat'
     });
-    el.setAttribute('src', data.src);
     el.classList.add('clickable');
+    
+    // Throttling tick function to run twice per second as opposed to 90 times per second
+    this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
     
     // Used for opacity animation
     this.opacity = 0;
 
-    // Throttling tick function to run twice per second as opposed to 90 times per second
-    this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
-
-    // Get the first mediacircle attached to this poi or throw an
-    // error if there is no media circle attached to this poi
-    this.mediaCircle = null;
-    for(const child of el.children) {
-      if(child.nodeName === 'A-MEDIA-CIRCLE') {
-        this.mediaCircle = child;
-        break;
-      }
-    }
-    
-    if(this.mediaCircle === null) {
-      throw new Error('POI has no child component.');
-    }
-    
+    this.mediaCircle = document.createElement('a-media-circle');
+    this.mediaCircle.object3D.position.set(0, 0, 0.01);
     this.mediaCircle.setAttribute('opacity', this.opacity);
+
+    let scene = document.querySelector('#scene');
+    scene.addEventListener('loaded', () => {
+      let ml = scene.components.medialoader;
+      let sources = ml.dict[this.name];
+
+      if(sources !== undefined) {
+        this.mediaCircle.setAttribute('sources', sources);
+      }
+    });
   },
-  
+
   events: {
     // Setting child event listeners for fading in/out
     mouseenter: function(event) {

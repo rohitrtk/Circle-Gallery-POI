@@ -8,18 +8,18 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.2.0/aframe.min.js'></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     
-    <script src='scripts/script.js' defer></script>
     <script src='scripts/medialoader.js'></script>
-    <script src='scripts/poi.js'></script>
+    <script src='scripts/imagegallery.js'></script>
     <script src='scripts/videoplayer.js'></script>
     <script src='scripts/audioplayer.js'></script>
-    <script src='scripts/imagegallery.js'></script>
     <script src='scripts/mediacircle.js'></script>
+    <script src='scripts/poi.js'></script>
     <script src='scripts/cameraRig.js'></script>
     <script src='scripts/waypoint.js'></script>
     <script src='scripts/layer.js'></script>
     <script src='scripts/streamplayer.js'></script>
-
+    
+    <script src='scripts/script.js' defer></script>
     <script src='scripts/utility.js'></script>
   </head>
   <body>
@@ -44,7 +44,7 @@
         <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg' crossorigin>
         <img id='webcamOffIcon'     src='assets/icons/videocam_off_icon.svg' crossorigin>
 
-        <div id='media'>
+        <a-entity id='media'>
           <!-- Videos -->
           <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080' crossorigin></video>
           <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080' crossorigin></video>
@@ -64,7 +64,7 @@
           <img src='assets/images/lee_2.jpg' crossorigin>
           <img src='assets/images/zyra_0.jpg' crossorigin>
           <img src='assets/images/zyra_1.jpg' crossorigin>
-        </div>
+        </a-entity>
         <!-- For use of webcam -->
         <video id='webcam' src='' crossorigin></video>
       </a-assets>
@@ -77,20 +77,20 @@
         <a-entity id='point-click-cam' raycaster='objects: .clickable' cursor='rayOrigin: entity;'></a-entity>
       </a-camera-rig>
 
-      <a-poi position='-5 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg a_cantinaband'></a-media-circle>
+      <a-poi position='-5 1 -2' width='0.5' height='0.5' name='lee'>
+        <!--a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg a_cantinaband'></a-media-circle-->
       </a-poi>
 
       <a-poi position='-1 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_jinx g_j4 v_csclip a_cantinaband'></a-media-circle>
+        <!--a-media-circle position='0 0 0.01' opacity='0' names='g_jinx g_j4 v_csclip a_cantinaband'></a-media-circle-->
       </a-poi>
 
       <a-poi position='3 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='v_csclip'></a-media-circle>
+        <!--a-media-circle position='0 0 0.01' opacity='0' names='v_csclip'></a-media-circle-->
       </a-poi>
       
       <a-poi position='7 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra v_pubg'></a-media-circle>
+        <!--a-media-circle position='0 0 0.01' opacity='0' names='g_zyra v_pubg'></a-media-circle-->
       </a-poi>
 
       <a-waypoint-network>

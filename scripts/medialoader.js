@@ -21,7 +21,7 @@ AFRAME.registerComponent('medialoader', {
       throw new Error('A div element with an id of "media" does not exist.');
     }
 
-    this.mediaDict = {};
+    this.dict = {};
 
     for(const media of mediaDiv.children) {
       let src = media.src;
@@ -33,11 +33,11 @@ AFRAME.registerComponent('medialoader', {
       let fileName = src.split('/').at(-1);
       let name = fileName.split('_').at(0);
       
-      if(this.mediaDict[name] === undefined) {
-        this.mediaDict[name] = [];
+      if(this.dict[name] === undefined) {
+        this.dict[name] = [];
       }
       
-      this.mediaDict[name].push(src);
+      this.dict[name].push(src);
     }
   }
 });

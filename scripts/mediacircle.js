@@ -50,7 +50,7 @@ AFRAME.registerComponent('mediacircle', {
   schema: {
     names         : {type: 'string', default: ''},
     opacity       : {type: 'number', default: 1.0},
-    names2        : {type: 'array',  default: []}
+    sources       : {type: 'array', default: []}
   },
 
   init: function() {
