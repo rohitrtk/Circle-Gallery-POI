@@ -71,7 +71,7 @@ AFRAME.registerComponent('image-gallery', {
     // If there is no open viewer, create a new image gallery viewer and
     // append it to the camera as a child
     click: function(event) {
-      if(this.isViewerOpen() || this.el.getAttribute('material').opacity < 0.5) {
+      if(this.isViewerOpen()) {
         return;
       } 
 
@@ -139,10 +139,10 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.name = data.name;
 
     el.setAttribute('id', 'viewer');
-
+    
     // Must be called before setting images!
     this.loadImages();
-
+    
     this.imageIndex = 0;
 
     // Main window

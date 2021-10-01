@@ -48,6 +48,7 @@ AFRAME.registerComponent('clickable-layer', {
     let data = this.data;
 
     this.plane = document.createElement('a-entity');
+    this.plane.setAttribute('visible', false);
     this.plane.setAttribute('geometry', {
       primitive : 'plane',
       width     : data.width,
