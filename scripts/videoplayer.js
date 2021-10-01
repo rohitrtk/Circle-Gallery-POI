@@ -135,35 +135,33 @@ AFRAME.registerComponent('video-player-viewer', {
     
     this.name = data.name;
 
-    // Video window that gets displayed
-    this.video = document.createElement('a-layer');
-    el.appendChild(this.video);
+    // Video element that gets displayed
+    this.videoEl = document.createElement('a-layer');
+    el.appendChild(this.videoEl);
 
-    this.video.setAttribute('src', `#${this.name}`);
-    this.video.setAttribute('width', 1.920);
-    this.video.setAttribute('height', 1.080);
-    this.video.setAttribute('play-pause', {
-      name: this.name
-    });
-    this.video.setAttribute('volume-controller', {
-      name: this.name
-    });
-    
+    this.videoEl.setAttribute('src', `#${this.name}`);
+    this.videoEl.setAttribute('width', 1.920);
+    this.videoEl.setAttribute('height', 1.080);
+    this.videoEl.setAttribute('playpause', '');
+    this.videoEl.setAttribute('volumecontroller', '');
     
     // The actual video that can be played, paused, etc.
-    let v = document.querySelector(`#${this.name}`);
-    v.play();
-    v.pause();
-    v.volume = 0.5;
+    let video = document.querySelector(`#${this.name}`);
+    video.play();
+    video.pause();
+    video.volume = 0.5;
+
+    this.videoEl.components.playpause.video         = video;
+    this.videoEl.components.volumecontroller.video  = video;
 
     // Close the video and reset properties on click
-    this.video.addEventListener('click', (event) => {
+    this.videoEl.addEventListener('click', (event) => {
       if(!event.target.classList.contains('clickablePlane')) {
         return;
       }
       
-      v.pause();
-      v.currentTime = 0;
+      video.pause();
+      video.currentTime = 0;
 
       el.remove();
     });
@@ -173,20 +171,17 @@ AFRAME.registerComponent('video-player-viewer', {
 });
 
 /*
- * Play pause component : play-pause
+ * Play pause component : playpause
  *
  * Simple play/pause component.
  */ 
-AFRAME.registerComponent('play-pause', {
+AFRAME.registerComponent('playpause', {
   schema: {
     name: {type: 'string'}
   },
 
   init: function() {
     let el = this.el;
-    let data = this.data;
-
-    this.video = document.querySelector(`#${data.name}`);
 
     // Create icon to the play since the video is now paused
     this.ppc = document.createElement('a-image');
@@ -223,11 +218,11 @@ AFRAME.registerComponent('play-pause', {
 });
 
 /*
- * Volume controller component : volume-controller
+ * Volume controller component : volumecontroller
  *
- * Simple volumer controller component
+ * Simple volume controller component
  */
-AFRAME.registerComponent('volume-controller', {
+AFRAME.registerComponent('volumecontroller', {
   // Editable properties
   schema: {
     name: {type: 'string'}
@@ -235,10 +230,7 @@ AFRAME.registerComponent('volume-controller', {
 
   init: function() {
     let el = this.el;
-    let data = this.data;
-
-    this.video = document.querySelector(`#${data.name}`);
-
+    
     let volDelta = 0.2;
     
     this.volUp = document.createElement('a-image');
