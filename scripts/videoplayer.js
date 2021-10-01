@@ -54,8 +54,16 @@ AFRAME.registerComponent('video-player', {
     this.selectedColour   = '#f5b942';
     this.srcImage         = '#videosIcon';
 
-    el.setAttribute('geometry', 'primitive:plane; width:1; height:1');
-    el.setAttribute('material', `color: ${this.defaultColour}; src: ${this.srcImage}; transparent: true`);
+    el.setAttribute('geometry', {
+      primitive: 'plane',
+      width: 1,
+      height: 1
+    });
+    el.setAttribute('material', {
+      color: this.defaultColour,
+      src: this.srcImage,
+      transparent: true
+    });
     el.classList.add('videoplayer');
     el.classList.add('clickable');
 
@@ -74,7 +82,9 @@ AFRAME.registerComponent('video-player', {
       }
 
       let viewer = document.createElement('a-entity');
-      viewer.setAttribute('video-player-viewer', `name: ${this.name};`);
+      viewer.setAttribute('video-player-viewer', {
+        name: this.name
+      });
       
       let camera = document.getElementById('rig');
       camera.append(viewer);
@@ -86,11 +96,15 @@ AFRAME.registerComponent('video-player', {
         return;
       }
 
-      this.el.setAttribute('material', `color: ${this.selectedColour}`);
+      this.el.setAttribute('material', {
+        color: this.selectedColour
+      });
     },
 
     mouseleave: function(event) {
-      this.el.setAttribute('material', `color: ${this.defaultColour}`);
+      this.el.setAttribute('material', {
+        color: this.defaultColour
+      });
     }
   },
 
@@ -128,8 +142,12 @@ AFRAME.registerComponent('video-player-viewer', {
     this.video.setAttribute('src', `#${this.name}`);
     this.video.setAttribute('width', 1.920);
     this.video.setAttribute('height', 1.080);
-    this.video.setAttribute('play-pause', `name: ${this.name}`);
-    this.video.setAttribute('volume-controller', `name: ${this.name}`);
+    this.video.setAttribute('play-pause', {
+      name: this.name
+    });
+    this.video.setAttribute('volume-controller', {
+      name: this.name
+    });
     
     
     // The actual video that can be played, paused, etc.
@@ -174,7 +192,7 @@ AFRAME.registerComponent('play-pause', {
     this.ppc = document.createElement('a-image');
     el.appendChild(this.ppc);
     this.ppc.object3D.position.set(0, -0.65, 0);
-    this.ppc.object3D.scale.set(0.1, 0.1, 1);
+    this.ppc.object3D.scale.set(0.1, 0.1, 0.1);
     this.ppc.setAttribute('src', '#playIcon');
     this.ppc.classList.add('clickable');
 

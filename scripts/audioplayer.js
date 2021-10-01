@@ -42,8 +42,16 @@ if (typeof AFRAME === 'undefined') {
       this.selectedColour   = '#f5b942';
       this.srcImage         = '#audioIcon';
   
-      el.setAttribute('geometry', 'primitive:plane; width:1; height:1');
-      el.setAttribute('material', `color: ${this.defaultColour}; src: ${this.srcImage}; transparent: true`);
+      el.setAttribute('geometry', {
+        primitive:  'plane',
+        width:      1,
+        height:     1
+      });
+      el.setAttribute('material', {
+        color:        this.defaultColour,
+        src:          this.srcImage,
+        transparent:  true
+      });
       el.classList.add('audioplayer');
       el.classList.add('clickable');
   
@@ -67,7 +75,9 @@ if (typeof AFRAME === 'undefined') {
 
         camera.append(viewer);
         viewer.setAttribute('id', 'viewer');
-        viewer.setAttribute('audio-player-viewer', `name: ${this.name};`);
+        viewer.setAttribute('audio-player-viewer', {
+          name: this.name
+        });
 
         console.log('Playing audio');
       },
@@ -78,11 +88,15 @@ if (typeof AFRAME === 'undefined') {
           return;
         }
 
-        this.el.setAttribute('material', `color: ${this.selectedColour}`);
+        this.el.setAttribute('material', {
+          color: this.selectedColour
+        });
       },
   
       mouseleave: function(event) {
-        this.el.setAttribute('material', `color: ${this.defaultColour}`);
+        this.el.setAttribute('material', {
+          color: this.defaultColour
+        });
       }
     },
   

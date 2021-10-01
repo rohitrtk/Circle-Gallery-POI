@@ -56,8 +56,17 @@ AFRAME.registerComponent('media-circle', {
     let data = this.data;
 
     // Graphical stuff
-    el.setAttribute('geometry', 'primitive:circle; radius:1; scale: 1 1 1');
-    el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
+    el.setAttribute('geometry',  {
+      primitive: 'circle',
+      radius: 1
+    });
+    el.setAttribute('material', {
+      color: '#180647',
+      transparent: true,
+      opacity: data.opacity,
+      shader: 'flat'
+    });
+    el.object3D.scale.set(1, 1, 1);
     el.classList.remove('clickable');
 
     // Get names array by splitting the data on space
@@ -88,7 +97,9 @@ AFRAME.registerComponent('media-circle', {
       let temp = this.loadMedia(mediaCounters);
       el.appendChild(temp);
       temp.object3D.scale.set(0.4, 0.4, 0.4);
-      temp.setAttribute('material', `opacity: ${data.opacity};`);
+      temp.setAttribute('material', {
+        opacity: data.opacity
+      });
       
       if(this.numMedia <= 1) {
         temp.object3D.position.set(0, 0, 0.001);
@@ -105,8 +116,13 @@ AFRAME.registerComponent('media-circle', {
 
       // Draw lines
       let line = document.createElement('a-entity');
-      line.setAttribute('line', `start:0 0 0.001; end: ${g * x} ${g * y} 0.001; color: #FFFFFF; opacity: ${data.opacity}`);
-      line.setAttribute('rotation', `0 0 ${THREE.Math.radToDeg(1.5 * angle)}`);
+      line.setAttribute('line', {
+        start:    {x: 0, y: 0, z:0.001},
+        end:      {x: g * x, y: g * y, z: 0.001},
+        color:    '#FFFFFF',
+        opacity:  data.opacity
+      });
+      line.object3D.rotation.set(0, 0, 1.5 * angle);
       line.classList.add('line');
 
       el.appendChild(line);
@@ -175,7 +191,13 @@ AFRAME.registerComponent('media-circle', {
     let data = this.data;
     
     try {
-      el.setAttribute('material', `color: #180647; transparent: true; opacity: ${data.opacity}; shader: flat`);
+      el.setAttribute('material', {
+        color: '#180647',
+        transparent: true,
+        opacity: data.opacity,
+        shader: 'flat'
+      });
+
       for(let child of el.children) {
         const childClass = child.classList;
         
@@ -185,9 +207,13 @@ AFRAME.registerComponent('media-circle', {
         }
 
         if(this.cnbCheck(childClass)) {
-          child.setAttribute('material', `opacity: ${data.opacity};`);
+          child.setAttribute('material', {
+            opacity: data.opacity
+          });
         } else if(childClass.contains('line')) {
-          child.setAttribute('line', `opacity: ${data.opacity}`);
+          child.setAttribute('line', {
+            opacity: data.opacity
+          });
         } else if(childClass.contains('ring')) {
           child.setAttribute('opacity', data.opacity);
         }

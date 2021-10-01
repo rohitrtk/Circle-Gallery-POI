@@ -135,7 +135,11 @@ AFRAME.registerComponent('waypoint', {
       // I have no idea how the interpreter knows what rig is, it just does
       rig.setAttribute('animation', {
         property:   'position',
-        to:         { x: this.position.x, y: this.position.y + 1.6, z: this.position.z },
+        to: { 
+          x: this.position.x,
+          y: this.position.y + 1.6,
+          z: this.position.z
+        },
         from:       rig.object3D.position,
         easing:     'easeInCubic',
         autoplay:   true,
@@ -144,11 +148,15 @@ AFRAME.registerComponent('waypoint', {
     },
     
     mouseenter: function(event) {
-      this.el.setAttribute('material', 'color', this.highlightedColour);
+      this.el.setAttribute('material', {
+        color: this.highlightedColour
+      });
     },
 
     mouseleave: function(event) {
-      this.el.setAttribute('material', 'color', this.defaultColour);
+      this.el.setAttribute('material', {
+        color: this.defaultColour
+      });
     }
   }
 });

@@ -11,13 +11,24 @@ AFRAME.registerPrimitive('a-webcam-player', {
     'webcam-player': {}
   },
 
-  mappings: {}
+  mappings: {
+    'src': 'webcam-player.src'
+  }
 });
 
 /**
  * Webcam player component : webcam-player
+ * 
+ * Streams the users webcam on to a plane in the scene.
+ * 
+ * Properties:
+ *  - src: The webcam source
  */
 AFRAME.registerComponent('webcam-player', {
+  schema: {
+    'src': {type: 'string', default: ''}
+  },
+
   init: function() {
     let el = this.el;
     
@@ -26,7 +37,7 @@ AFRAME.registerComponent('webcam-player', {
     // Layer that webcam will be streamed onto
     let layer = document.createElement('a-layer');
     layer.setAttribute('click-enabled', false);
-    layer.setAttribute('src', '#webcam');
+    layer.setAttribute('src', this.data.src);
     el.appendChild(layer);
 
     // Enable/disable stream button

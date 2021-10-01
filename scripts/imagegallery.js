@@ -46,8 +46,16 @@ AFRAME.registerComponent('image-gallery', {
     this.selectedColour   = '#f5b942';
     this.srcImage         = '#galleryIcon'; 
 
-    el.setAttribute('geometry', 'primitive:plane; width:1; height:1');
-    el.setAttribute('material', `color: ${this.defaultColour}; src: ${this.srcImage}; transparent: true`);
+    el.setAttribute('geometry', {
+      primitive: 'plane',
+      width: 1,
+      height: 1
+    });
+    el.setAttribute('material', {
+      color: this.defaultColour,
+      src: this.srcImage,
+      transparent: true
+    });
     el.classList.add('imagegallery');
     el.classList.add('clickable');
     
@@ -79,11 +87,15 @@ AFRAME.registerComponent('image-gallery', {
         return;
       }
 
-      this.el.setAttribute('material', `color: ${this.selectedColour}`);
+      this.el.setAttribute('material', {
+        color: this.selectedColour
+      });
     },
 
     mouseleave: function(event) {
-      this.el.setAttribute('material', `color: ${this.defaultColour}`);
+      this.el.setAttribute('material', {
+        color: this.defaultColour
+      });
     }
   },
 

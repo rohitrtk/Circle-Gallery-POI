@@ -66,7 +66,10 @@ AFRAME.registerComponent('poi', {
       data.color = Utility.randomColourHex();
     }
     
-    el.setAttribute('material', `color: ${data.color}; shader: flat;`);
+    el.setAttribute('material', {
+      color: data.color,
+      shader: 'flat'
+    });
     el.setAttribute('src', data.src);
     el.classList.add('clickable');
     
@@ -116,7 +119,12 @@ AFRAME.registerComponent('poi', {
 
   tick: function(t, dt) {
     if(this.fadeComp !== undefined) {
-      this.fadeComp.setAttribute('animation__fade', `property: opacity; to: ${this.opacity}; dur: 1000; easing: easeInOutSine`);
+      this.fadeComp.setAttribute('animation__fade', {
+        easing: 'easeInOutSine',
+        property: 'opacity',
+        to: this.opacity,
+        dur: 1000
+      });
     }
   }
 });
