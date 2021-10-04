@@ -68,7 +68,6 @@ AFRAME.registerComponent('video-player', {
     el.classList.remove('clickable');
 
     this.src = data.src;
-    console.log(this.src);
   },
 
   isViewerOpen: function() {

@@ -21,19 +21,26 @@ AFRAME.registerPrimitive('a-media-loader', {
  */
 AFRAME.registerComponent('medialoader', {
   init: function() {
-    let el = this.el;
+    const el = this.el;
     
     this.dict = {};
 
-    for(const media of el.children) {
-      let src = media.src;
+    checkMedia = (tagName) => {
+      if(tagName === 'VIDEO' || tagName === 'A-ASSET-ITEM' ||
+        tagName === 'IMG' || tagName === 'AUDIO') {
+          return true;
+        }
+      return false;
+    }
 
-      if(src === undefined) {
+    for(const media of el.children) {
+      if(!checkMedia(media.tagName)) {
         continue;
       }
-
-      const ss = Utility.srcSplitter(src);
-      const name = ss.name;
+      
+      const src       = media.tagName === 'A-ASSET-ITEM' ? media.getAttribute('src') : media.src;
+      const ss        = Utility.srcSplitter(src);
+      const name      = ss.name;
       const extension = ss.extension;
 
       if(this.dict[name] === undefined) {

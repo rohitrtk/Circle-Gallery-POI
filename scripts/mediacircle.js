@@ -151,7 +151,7 @@ AFRAME.registerComponent('mediacircle', {
     } else if (counters.a > 0) { // Load audio if we still have audio to load
       counters.a--;
       media = document.createElement('a-audio-player');
-      media.setAttribute('name', data.audio[counters.a]);
+      media.setAttribute('source', data.audio[counters.a]);
     } else if (counters.g > 0) { // Load galleries if we still have galleries to load
       counters.g--;
       media = document.createElement('a-image-gallery');
