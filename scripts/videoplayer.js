@@ -149,7 +149,6 @@ AFRAME.registerComponent('video-player-viewer', {
     this.videoEl.setAttribute('volumecontroller', '');
     
     let video = document.querySelector(`#v_${id}`);
-    console.log(video);
     video.play();
     video.pause();
     video.volume = 0.5;

@@ -50,6 +50,13 @@
           
           <!-- Audio -->
           <a-asset-item src='assets/audio/lee_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/lee_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/jinx_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/jinx_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/j4_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/j4_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/zyra_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/zyra_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
 
           <!-- Images -->
           <img src='assets/images/jinx_0.jpg' crossorigin>
@@ -68,7 +75,7 @@
         <video id='webcam' src='' crossorigin></video>
       </a-assets>
       
-      <a-webcam-player position='3 2.5 3' src='#webcam'></a-webcam-player>
+      <a-webcam-player position='-8 1.5 0' rotation='0 90 0' src='#webcam'></a-webcam-player>
 
       <!--Camera Rig-->
       <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 100;'>
@@ -76,21 +83,16 @@
         <a-entity id='point-click-cam' raycaster='objects: .clickable' cursor='rayOrigin: entity;'></a-entity>
       </a-camera-rig>
 
-      <a-poi position='-5 1 -2' width='0.5' height='0.5' name='lee'>
-        <!--a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg a_cantinaband'></a-media-circle-->
-      </a-poi>
-
-     
+      <a-poi position='-5 1 -2' width='0.5' height='0.5' name='lee'></a-poi>
+      <a-poi position='-1 1 -2' width='0.5' height='0.5' name='jinx'></a-poi>
+      <a-poi position='3 1 -2' width='0.5' height='0.5' name='j4'></a-poi>
+      <a-poi position='7 1 -2' width='0.5' height='0.5' name='zyra'></a-poi>
 
       <a-waypoint-network>
         <a-waypoint id='waypoint_0' position='-5 0.1 0'></a-waypoint>
         <a-waypoint id='waypoint_1' position='-1 0.1 0'></a-waypoint>
         <a-waypoint id='waypoint_2' position='3 0.1 0'></a-waypoint>
         <a-waypoint id='waypoint_3' position='7 0.1 0'></a-waypoint>
-        <a-waypoint id='waypoint_4' position='-7 0.1 4'></a-waypoint>
-        <a-waypoint id='waypoint_5' position='-3 0.1 4'></a-waypoint>
-        <a-waypoint id='waypoint_6' position='1 0.1 4'></a-waypoint>
-        <a-waypoint id='waypoint_7' position='5 0.1 4'></a-waypoint>
       </a-waypoint-network>
 
     </a-scene>

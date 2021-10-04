@@ -101,6 +101,7 @@ AFRAME.registerComponent('poi', {
         this.mediaCircle.setAttribute('image', sources.image);
         this.mediaCircle.setAttribute('video', sources.video);
         this.mediaCircle.setAttribute('audio', sources.audio);
+        //console.log(sources);
       }
   
       el.appendChild(this.mediaCircle);
