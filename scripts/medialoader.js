@@ -2,6 +2,12 @@ if (typeof AFRAME === 'undefined') {
   throw new Error('Component attempted to register before AFRAME was available.');
 }
 
+AFRAME.registerPrimitive('a-media-loader', {
+  defaultComponents: {
+    'medialoader': {}
+  }
+});
+
 /**
  * Media loader component : medialoader
  * 
@@ -15,15 +21,11 @@ if (typeof AFRAME === 'undefined') {
  */
 AFRAME.registerComponent('medialoader', {
   init: function() {
-    let mediaDiv = document.getElementById('media');
+    let el = this.el;
     
-    if(mediaDiv === undefined) {
-      throw new Error('A div element with an id of "media" does not exist.');
-    }
-
     this.dict = {};
 
-    for(const media of mediaDiv.children) {
+    for(const media of el.children) {
       let src = media.src;
 
       if(src === undefined) {

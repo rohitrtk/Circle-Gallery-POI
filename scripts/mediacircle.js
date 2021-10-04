@@ -26,7 +26,9 @@ AFRAME.registerPrimitive('a-media-circle', {
     'color'       : 'mediacircle.color',
     'transparent' : 'mediacircle.material.transparent',
     'opacity'     : 'mediacircle.opacity',
-    'sources'     : 'mediacircle.sources'
+    'image'       : 'mediacircle.image',
+    'video'       : 'mediacircle.video',
+    'audio'       : 'mediacircle.audio'
   }
 });
 
@@ -46,14 +48,18 @@ AFRAME.registerPrimitive('a-media-circle', {
 AFRAME.registerComponent('mediacircle', {
   // Editable properties
   schema: {
-    sources       : {type: 'array', default: []},
-    opacity       : {type: 'number', default: 1.0}
+    image   : {type: 'array', default: []},
+    video   : {type: 'array', default: []},
+    audio   : {type: 'array', default: []},
+    opacity : {type: 'number', default: 1.0}
   },
+
+  dependencies: ['poi'],
 
   init: function() {
     let el = this.el;
     let data = this.data;
-    
+
     // Graphical stuff
     el.setAttribute('geometry',  {
       primitive: 'circle',
@@ -70,10 +76,10 @@ AFRAME.registerComponent('mediacircle', {
 
     // Media counter object
     let mediaCounters = {
-      v: this.vNames.length,
-      a: this.aNames.length,
-      g: this.gNames.length
-    }
+      v: data.video.length,
+      a: data.audio.length,
+      g: data.image.length
+    };
 
     let angle = 2 * Math.PI / this.numMedia;
     for(let i = 0; i < this.numMedia; i++) {
@@ -135,15 +141,15 @@ AFRAME.registerComponent('mediacircle', {
     if(counters.v > 0) {        // Load videos if we still have videos to load
       counters.v--;
       media = document.createElement('a-video-player');
-      media.setAttribute('name', `${this.vNames[counters.v]}`);
+      media.setAttribute('name', `${data.video[counters.v]}`);
     } else if(counters.a > 0) { // Load audio if we still have audio to load
       counters.a--;
       media = document.createElement('a-audio-player');
-      media.setAttribute('name', `${this.aNames[counters.a]}`);
+      media.setAttribute('name', `${data.audio[counters.a]}`);
     } else if(counters.g > 0) { // Load galleries if we still have galleries to load
       counters.g--;
       media = document.createElement('a-image-gallery');
-      media.setAttribute('name', `${this.gNames[counters.g]}`);
+      media.setAttribute('name', `${data.image[counters.g]}`);
     } else {
       //throw new Error('An error occured looking for media.');
     }
@@ -154,7 +160,7 @@ AFRAME.registerComponent('mediacircle', {
   update: function() {
     let el = this.el;
     let data = this.data;
-    console.log(data.sources);
+    
     try {
       el.setAttribute('material', {
         color: '#180647',

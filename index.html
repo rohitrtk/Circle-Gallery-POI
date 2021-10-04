@@ -25,7 +25,7 @@
 
     <!-- Main scene -->
     <!-- https://aframe.io/docs/1.2.0/components/stats.html -->
-    <a-scene id='scene' background='color: skyblue' stats medialoader>
+    <a-scene id='scene' background='color: skyblue' stats>
 
       <!-- Asset Management System -->
       <a-assets id='AMS'>
@@ -43,7 +43,7 @@
         <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg' crossorigin>
         <img id='webcamOffIcon'     src='assets/icons/videocam_off_icon.svg' crossorigin>
 
-        <a-entity id='media'>
+        <a-media-loader id='medialoader'>
           <!-- Videos -->
           <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080' crossorigin></video>
           <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080' crossorigin></video>
@@ -63,7 +63,7 @@
           <img src='assets/images/lee_2.jpg' crossorigin>
           <img src='assets/images/zyra_0.jpg' crossorigin>
           <img src='assets/images/zyra_1.jpg' crossorigin>
-        </a-entity>
+        </a-media-loader>
         <!-- For use of webcam -->
         <video id='webcam' src='' crossorigin></video>
       </a-assets>
@@ -80,17 +80,7 @@
         <!--a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg a_cantinaband'></a-media-circle-->
       </a-poi>
 
-      <a-poi position='-1 1 -2' width='0.5' height='0.5'>
-        <!--a-media-circle position='0 0 0.01' opacity='0' names='g_jinx g_j4 v_csclip a_cantinaband'></a-media-circle-->
-      </a-poi>
-
-      <a-poi position='3 1 -2' width='0.5' height='0.5'>
-        <!--a-media-circle position='0 0 0.01' opacity='0' names='v_csclip'></a-media-circle-->
-      </a-poi>
-      
-      <a-poi position='7 1 -2' width='0.5' height='0.5'>
-        <!--a-media-circle position='0 0 0.01' opacity='0' names='g_zyra v_pubg'></a-media-circle-->
-      </a-poi>
+     
 
       <a-waypoint-network>
         <a-waypoint id='waypoint_0' position='-5 0.1 0'></a-waypoint>

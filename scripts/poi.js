@@ -64,6 +64,8 @@ AFRAME.registerComponent('poi', {
     color   :{type: 'string', default: ''}
   },
 
+  dependencies: ['medialoader'],
+
   init: function() {
     let el = this.el;
     let data = this.data;
@@ -87,25 +89,31 @@ AFRAME.registerComponent('poi', {
     // Used for opacity animation
     this.opacity = 0;
 
-    this.mediaCircle = document.createElement('a-media-circle');
-    this.mediaCircle.object3D.position.set(0, 0, 0.01);
-    this.mediaCircle.setAttribute('opacity', this.opacity);
-    el.appendChild(this.mediaCircle);
-
-    let scene = document.querySelector('#scene');
-    scene.addEventListener('loaded', () => {
-      let ml = scene.components.medialoader;
-      let sources = ml.dict[this.name];
-
+    const mlEl = document.querySelector('#medialoader');
+    mlEl.addEventListener('loaded', () => {
+      const ml = mlEl.components.medialoader;
+      const sources = ml.dict[this.name];
+      
       if(sources !== undefined) {
-        this.mediaCircle.setAttribute('sources', sources);
+        this.mediaCircle = document.createElement('a-media-circle');
+        this.mediaCircle.object3D.position.set(0, 0, 0.01);
+        this.mediaCircle.setAttribute('opacity', this.opacity);
+        this.mediaCircle.setAttribute('image', sources.image);
+        this.mediaCircle.setAttribute('video', sources.video);
+        this.mediaCircle.setAttribute('audio', sources.audio);
       }
+  
+      el.appendChild(this.mediaCircle);
     });
   },
 
   events: {
     // Setting child event listeners for fading in/out
     mouseenter: function(event) {
+      if(this.mediaCircle === undefined) {
+        return;
+      }
+
       this.opacity = Math.min(this.opacity + 1, 100);
       this.mediaCircle.classList.add('clickable');
       
@@ -119,6 +127,10 @@ AFRAME.registerComponent('poi', {
     },
 
     mouseleave: function(event) {
+      if(this.mediaCircle === undefined) {
+        return;
+      }
+
       this.opacity = Math.max(this.opacity - 1, 0);
       this.mediaCircle.classList.remove('clickable');
       
@@ -133,13 +145,15 @@ AFRAME.registerComponent('poi', {
   },
 
   tick: function(t, dt) {
-    if(this.mediaCircle !== undefined) {
-      this.mediaCircle.setAttribute('animation__fade', {
-        easing: 'easeInOutSine',
-        property: 'opacity',
-        to: this.opacity,
-        dur: 1000
-      });
+    if(this.mediaCircle === undefined) {
+      return;
     }
+
+    this.mediaCircle.setAttribute('animation__fade', {
+      easing: 'easeInOutSine',
+      property: 'opacity',
+      to: this.opacity,
+      dur: 1000
+    });
   }
 });
