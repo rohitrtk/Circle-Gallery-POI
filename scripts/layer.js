@@ -1,18 +1,13 @@
-// Check that AFRAME has been defined and can be used
-if (typeof AFRAME === 'undefined') {
-  throw new Error('Component attempted to register before AFRAME was available.');
-}
+Utility.CHECK_AFRAME();
 
 /**
  * Wrapper for clickable layer primitive
  */
 AFRAME.registerPrimitive('a-layer', {
-  // Default components
   defaultComponents: {
     'clickable-layer': {}
   },
 
-  // Default mappings
   mappings: {
     'src'           : 'clickable-layer.src', 
     'width'         : 'clickable-layer.width',
@@ -37,15 +32,15 @@ AFRAME.registerPrimitive('a-layer', {
  */
 AFRAME.registerComponent('clickable-layer', {
   schema: {
-    src           : {type: 'string', default: ''},
-    width         : {type: 'number', default: 1.080},
-    height        : {type: 'number', default: 1.080},
-    clickEnabled  : {type: 'boolean', default: true}
+    src           : { type: 'string', default: '' },
+    width         : { type: 'number', default: 1.080 },
+    height        : { type: 'number', default: 1.080 },
+    clickEnabled  : { type: 'boolean', default: true }
   },
 
   init: function() {
     let el = this.el;
-    let data = this.data;
+    const data = this.data;
 
     this.plane = document.createElement('a-entity');
     this.plane.setAttribute('visible', false);
@@ -72,7 +67,7 @@ AFRAME.registerComponent('clickable-layer', {
 
   update: function() {
     let el = this.el;
-    let data = this.data;
+    const data = this.data;
     
     el.setAttribute('layer', {
       type    : 'quad',

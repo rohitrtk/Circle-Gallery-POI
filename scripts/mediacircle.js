@@ -1,7 +1,4 @@
-// Check that AFRAME has been defined and can be used
-if (typeof AFRAME === 'undefined') {
-  throw new Error('Component attempted to register before AFRAME was available.');
-}
+Utility.CHECK_AFRAME();
 
 /*
  * Media circle primitive : <a-media-circle>
@@ -9,26 +6,19 @@ if (typeof AFRAME === 'undefined') {
  * Designed to contain various media buttons which can be clicked.
  * All functionality for the buttons will be contained in their own
  * functions.
- * 
- * Properties:
- *  - media-circle: The main component of the primitive. Most functionality
- *      stems from this component.
- *  - look-at: Makes the primitive look at the specified target.
  */
 AFRAME.registerPrimitive('a-media-circle', {
-  // Default components
   defaultComponents: {
     'mediacircle': {}
   },
 
-  // Property mappings
   mappings: {
-    'color': 'mediacircle.color',
-    'transparent': 'mediacircle.material.transparent',
-    'opacity': 'mediacircle.opacity',
-    'image': 'mediacircle.image',
-    'video': 'mediacircle.video',
-    'audio': 'mediacircle.audio'
+    'color'       : 'mediacircle.color',
+    'transparent' : 'mediacircle.material.transparent',
+    'opacity'     : 'mediacircle.opacity',
+    'image'       : 'mediacircle.image',
+    'video'       : 'mediacircle.video',
+    'audio'       : 'mediacircle.audio'
   }
 });
 
@@ -46,7 +36,6 @@ AFRAME.registerPrimitive('a-media-circle', {
  *  - opacity: Components opacity level
  */
 AFRAME.registerComponent('mediacircle', {
-  // Editable properties
   schema: {
     image: { type: 'array', default: [] },
     video: { type: 'array', default: [] },
@@ -58,7 +47,7 @@ AFRAME.registerComponent('mediacircle', {
 
   init: function () {
     let el = this.el;
-    let data = this.data;
+    const data = this.data;
 
     // Graphical stuff
     el.setAttribute('geometry', {
@@ -140,7 +129,7 @@ AFRAME.registerComponent('mediacircle', {
   },
 
   loadMedia: function (counters) {
-    let data = this.data;
+    const data = this.data;
     let media = null;
 
     // Load all videos, then all audio, then all galleries
@@ -163,7 +152,7 @@ AFRAME.registerComponent('mediacircle', {
 
   update: function () {
     let el = this.el;
-    let data = this.data;
+    const data = this.data;
 
     try {
       el.setAttribute('material', {

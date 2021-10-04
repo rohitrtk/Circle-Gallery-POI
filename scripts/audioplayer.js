@@ -1,7 +1,4 @@
-// Check that AFRAME has been defined and can be used
-if (typeof AFRAME === 'undefined') {
-  throw new Error('Component attempted to register before AFRAME was available.');
-}
+Utility.CHECK_AFRAME();
 
 /**
  * Audio player primitive : <a-audio-player>
@@ -9,12 +6,10 @@ if (typeof AFRAME === 'undefined') {
  * Wrapper for the audio player component.
  */
 AFRAME.registerPrimitive('a-audio-player', {
-  // Default components
   defaultComponents: {
     'audio-player': {}
   },
 
-  // Default mappings
   mappings: {
     'source'  : 'audio-player.source'
   }
@@ -28,14 +23,13 @@ AFRAME.registerPrimitive('a-audio-player', {
  * component is clicked.
  */
 AFRAME.registerComponent('audio-player', {
-  // Editable properties
   schema: {
     source: { type: 'string' }
   },
 
   init: function() {
     let el = this.el;
-    let data = this.data;
+    const data = this.data;
 
     // Material stuff
     this.defaultColour    = '#FFFFFF';
@@ -58,7 +52,7 @@ AFRAME.registerComponent('audio-player', {
     this.source = data.source;
   },
 
-  // Returns true if any type of viewer is open
+  // Returns true if a viewer is open
   isViewerOpen: function() {
     return !!document.getElementById('viewer');
   },
@@ -106,13 +100,13 @@ AFRAME.registerComponent('audio-player', {
  * 
  * The viewer for the audio player. Is displayed once the user clicks
  * on an audio player component. A player button is displayed and on click
- * will change to a pause button and start playing audio. The audio is determined
- * by what is this components name which links to a source in the AMS.
+ * will change to a pause button and start playing audio. Audio played
+ * is determined by what source is passed in.
  */
 AFRAME.registerComponent('audio-player-viewer', {
   // Editable properties
   schema: {
-    source: {type: 'string'}
+    source: { type: 'string' }
   },
   
   init: function() {

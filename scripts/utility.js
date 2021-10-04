@@ -86,7 +86,12 @@ class Utility {
    * @returns {
    *  name      : string,
    *  id        : string,
-   *  extension : string}
+   *  extension : string} - Object with the sources
+   * file name and extension as properties. Object
+   * also returns an id which is just the name but has
+   * 1 of 'g_', 'a_', or 'v_' appended to the front. This
+   * is used to determine whether the file is an image, audio,
+   * or video file.
    */
   static srcSplitter(src) {
     const fileName  = src.split('/').at(-1);
@@ -100,5 +105,14 @@ class Utility {
       id: id,
       extension: extension
     };
+  }
+
+  /**
+   * Use this at the start of each script to check if AFRAME is defined.
+   */
+  static CHECK_AFRAME() {
+    if(typeof(AFRAME) === undefined) {
+      throw new Error('A component attempted to register before AFRAME was available.');
+    }
   }
 }

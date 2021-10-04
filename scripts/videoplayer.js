@@ -1,7 +1,4 @@
-// Check that AFRAME has been defined and can be used
-if (typeof AFRAME === 'undefined') {
-  throw new Error('Component attempted to register before AFRAME was available.');
-}
+Utility.CHECK_AFRAME();
 
 /*
  * USE OF VIDEOPLAYER.JS
@@ -17,12 +14,10 @@ if (typeof AFRAME === 'undefined') {
  * Wraps the video player component into a primitive. 
  */
 AFRAME.registerPrimitive('a-video-player', {
-  // Default components
   defaultComponents: {
     'video-player': {}
   },
 
-  // Default mappings
   mappings: {
     'src'  : 'video-player.src'
   }
@@ -40,7 +35,6 @@ AFRAME.registerPrimitive('a-video-player', {
  *  should be playing.
  */
 AFRAME.registerComponent('video-player', {
-  // Editable properties
   schema: {
     src: { type: 'string' }
   },

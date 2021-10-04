@@ -1,32 +1,17 @@
-if (typeof AFRAME === 'undefined') {
-  throw new Error('Component attempted to register before AFRAME was available.');
-}
-
+Utility.CHECK_AFRAME();
 /*
  * POI(Point of Interest) Primitive : <a-poi>
  * 
- * Indicates a point of interest in the scene. POI will have a child
- * object which is to be faded in or out upon cursor hover. That child
- * object can then be interacted with, usually it'll be a mediacircle,
- * to display images, video, etc.
- *
- * Properties:
- *  - poi: The main component for this primitive. Contains all logic and functionallity
- *  - geometry: Contains info for the geometry of this object
+ * Indicates a point of interest in the scene. POI will have a mediacircle
+ * object which is to be faded in or out upon cursor hover.
  */
 AFRAME.registerPrimitive('a-poi', {
-  dependencies: [
-    'medialoader'
-  ],
-
-  // Default components
   defaultComponents: {
     'geometry' : {primitive: 'plane'},
     'material' : {},
     'poi'      : {},
   },
 
-  // Default mappings
   mappings: {
     'width'  : 'geometry.width',
     'height' : 'geometry.height',
@@ -57,11 +42,10 @@ AFRAME.registerPrimitive('a-poi', {
  *  - color: Default colour for component
  */
 AFRAME.registerComponent('poi', {
-  // Default components
   schema: {
-    name    :{type: 'string', default: ''},
-    src     :{type: 'string', default: ''},
-    color   :{type: 'string', default: ''}
+    name    :{ type: 'string', default: '' },
+    src     :{ type: 'string', default: '' },
+    color   :{ type: 'string', default: '' }
   },
 
   dependencies: ['medialoader'],

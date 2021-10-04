@@ -1,7 +1,4 @@
-// Check that AFRAME has been defined and can be used
-if (typeof AFRAME === 'undefined') {
-  throw new Error('Component attempted to register before AFRAME was available.');
-}
+Utility.CHECK_AFRAME();
 
 /*
  * Image gallery primitive : <a-image-gallery>
@@ -10,12 +7,10 @@ if (typeof AFRAME === 'undefined') {
  * gallery component by default. 
  */
 AFRAME.registerPrimitive('a-image-gallery', {
-  // Default components
   defaultComponents: {
     'image-gallery': {}
   },
 
-  // Property mappings
   mappings: {
     'images': 'image-gallery.images'
   }
@@ -27,19 +22,17 @@ AFRAME.registerPrimitive('a-image-gallery', {
  * Contains the geometry for the image gallery and is responsible for
  * opening an image gallery viewer if the gallery is clicked. Geometry is
  * set to a transparent plane with a set source for an icon. Galleries should
- * usually be appended to a media circle. Image gallery has one property, which
- * is the name which should be a prefix of all images that will be available
- * in the gallery.
+ * usually be appended to a media circle. Image gallery takes in an array
+ * of strings. Each string corresponds to an image source.
  */
 AFRAME.registerComponent('image-gallery', {
-  // Editable properties
   schema: {
-    images: {type: 'array', default: []}
+    images: { type: 'array', default: [] }
   },
 
   init: function() {
     let el = this.el;
-    let data = this.data;
+    const data = this.data;
 
     // Material stuff
     this.defaultColour    = '#FFFFFF';
@@ -62,7 +55,7 @@ AFRAME.registerComponent('image-gallery', {
     this.images = data.images;
   },
 
-  // Returns true if any type of viewer is already open
+  // Returns true if a viewer is already open
   isViewerOpen: function() {
     return !!document.getElementById('viewer');
   },
@@ -120,21 +113,18 @@ AFRAME.registerPrimitive('a-image-gallery-viewer', {
 /*
  * Image gallery viewer component : image-gallery-viewer
  * 
- * Contains the outline for viewing images in an image gallery. The name is
- * the prefix of some set of images to be loaded in.
- *  Example: Suppose we have the following images in html: potato32.jpg, hellokitty12.png,
- *  potato.png, roflcopterz.gif. If an image gallery is passed 'potato' as its name
- *  parameter, potato32.jpg and potato.png would be loaded into the gallery while
- *  the others are not loaded.
+ * Contains the functionallity for viewing images in an image gallery. Takes
+ * in an array of strings. Each string is an image source to be displayed
+ * by the viewer.
  */
 AFRAME.registerComponent('image-gallery-viewer', {
   defaultComponents: {
-    images: {type: 'array', default: []}
+    images: { type: 'array', default: [] }
   },
 
   init: function() {
     let el = this.el;
-    let data = this.data;
+    const data = this.data;
     
     this.imageIndex = 0;
     this.images = data.images;
@@ -210,4 +200,4 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.rw.setAttribute('src', this.images[this.imageIndex + 1]);
     this.lw.setAttribute('src', this.images[this.imageIndex - 1]);
   }
-})
+});
