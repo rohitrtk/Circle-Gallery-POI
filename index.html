@@ -6,19 +6,19 @@
     <title> Circle Gallery POI </title>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.2.0/aframe.min.js'></script>
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     
-    <script src='scripts/script.js' defer></script>
-    <script src='scripts/poi.js'></script>
+    <script src='scripts/medialoader.js'></script>
+    <script src='scripts/imagegallery.js'></script>
     <script src='scripts/videoplayer.js'></script>
     <script src='scripts/audioplayer.js'></script>
-    <script src='scripts/imagegallery.js'></script>
     <script src='scripts/mediacircle.js'></script>
+    <script src='scripts/poi.js'></script>
     <script src='scripts/cameraRig.js'></script>
     <script src='scripts/waypoint.js'></script>
     <script src='scripts/layer.js'></script>
     <script src='scripts/streamplayer.js'></script>
-
+    
+    <script src='scripts/script.js' defer></script>
     <script src='scripts/utility.js'></script>
   </head>
   <body>
@@ -28,7 +28,7 @@
     <a-scene id='scene' background='color: skyblue' stats>
 
       <!-- Asset Management System -->
-      <a-assets id='AMS'>
+      <a-assets id='AMS' timeout='5000'>
         
         <!-- Icons -->
         <img id='exit'              src='assets/icons/close2.svg' crossorigin>
@@ -43,15 +43,22 @@
         <img id='volumeMuteIcon'    src='assets/icons/volume_mute_icon.svg' crossorigin>
         <img id='webcamOffIcon'     src='assets/icons/videocam_off_icon.svg' crossorigin>
 
-        <!-- Videos -->
-        <video id="csclip"          src='assets/video/csclip.mp4' width='1920' height='1080' crossorigin></video>
-        <video id="pubg"            src='assets/video/pubg.mp4' width='1920' height='1080' crossorigin></video>
-        
-        <!-- Audio -->
-        <a-asset-item id='cantinaband' src='assets/audio/cantinaband.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+        <a-media-loader id='medialoader'>
+          <!-- Videos -->
+          <video src='assets/video/lee_0.mp4' width='1920' height='1080' crossorigin></video>
+          <video src='assets/video/lee_1.mp4' width='1920' height='1080' crossorigin></video>
+          
+          <!-- Audio -->
+          <a-asset-item src='assets/audio/lee_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/lee_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/jinx_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/jinx_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/j4_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/j4_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/zyra_0.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
+          <a-asset-item src='assets/audio/zyra_1.mp3' response-type='arraybuffer' preload='auto' crossorigin></a-asset-item>
 
-        <!-- Images -->
-        <div id='galleryimages'>
+          <!-- Images -->
           <img src='assets/images/jinx_0.jpg' crossorigin>
           <img src='assets/images/jinx_1.jpg' crossorigin>
           <img src='assets/images/jinx_2.jpg' crossorigin>
@@ -63,13 +70,12 @@
           <img src='assets/images/lee_2.jpg' crossorigin>
           <img src='assets/images/zyra_0.jpg' crossorigin>
           <img src='assets/images/zyra_1.jpg' crossorigin>
-        </div>
-
+        </a-media-loader>
         <!-- For use of webcam -->
         <video id='webcam' src='' crossorigin></video>
       </a-assets>
       
-      <a-webcam-player position='3 2.5 3' src='#webcam'></a-webcam-player>
+      <a-webcam-player position='-8 1.5 0' rotation='0 90 0' src='#webcam'></a-webcam-player>
 
       <!--Camera Rig-->
       <a-camera-rig id='rig' position='0 1.6 0' look-controls wasd-controls='enabled: true; fly: true; acceleration: 100;'>
@@ -77,31 +83,16 @@
         <a-entity id='point-click-cam' raycaster='objects: .clickable' cursor='rayOrigin: entity;'></a-entity>
       </a-camera-rig>
 
-      <a-poi position='-5 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra g_jinx g_j4 g_lee v_csclip v_pubg a_cantinaband'></a-media-circle>
-      </a-poi>
-
-      <a-poi position='-1 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_jinx g_j4 v_csclip a_cantinaband'></a-media-circle>
-      </a-poi>
-
-      <a-poi position='3 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='v_csclip'></a-media-circle>
-      </a-poi>
-      
-      <a-poi position='7 1 -2' width='0.5' height='0.5'>
-        <a-media-circle position='0 0 0.01' opacity='0' names='g_zyra v_pubg'></a-media-circle>
-      </a-poi>
+      <a-poi position='-5 1 -2' width='0.5' height='0.5' name='lee'></a-poi>
+      <a-poi position='-1 1 -2' width='0.5' height='0.5' name='jinx'></a-poi>
+      <a-poi position='3 1 -2' width='0.5' height='0.5' name='j4'></a-poi>
+      <a-poi position='7 1 -2' width='0.5' height='0.5' name='zyra'></a-poi>
 
       <a-waypoint-network>
         <a-waypoint id='waypoint_0' position='-5 0.1 0'></a-waypoint>
         <a-waypoint id='waypoint_1' position='-1 0.1 0'></a-waypoint>
         <a-waypoint id='waypoint_2' position='3 0.1 0'></a-waypoint>
         <a-waypoint id='waypoint_3' position='7 0.1 0'></a-waypoint>
-        <a-waypoint id='waypoint_4' position='-7 0.1 4'></a-waypoint>
-        <a-waypoint id='waypoint_5' position='-3 0.1 4'></a-waypoint>
-        <a-waypoint id='waypoint_6' position='1 0.1 4'></a-waypoint>
-        <a-waypoint id='waypoint_7' position='5 0.1 4'></a-waypoint>
       </a-waypoint-network>
 
     </a-scene>

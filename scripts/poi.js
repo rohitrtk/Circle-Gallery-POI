@@ -15,6 +15,10 @@ if (typeof AFRAME === 'undefined') {
  *  - geometry: Contains info for the geometry of this object
  */
 AFRAME.registerPrimitive('a-poi', {
+  dependencies: [
+    'medialoader'
+  ],
+
   // Default components
   defaultComponents: {
     'geometry' : {primitive: 'plane'},
@@ -27,7 +31,8 @@ AFRAME.registerPrimitive('a-poi', {
     'width'  : 'geometry.width',
     'height' : 'geometry.height',
     'color'  : 'poi.color',
-    'src'    : 'poi.src'
+    'src'    : 'poi.src',
+    'name'   : 'poi.name'
   }
 });
 
@@ -54,63 +59,86 @@ AFRAME.registerPrimitive('a-poi', {
 AFRAME.registerComponent('poi', {
   // Default components
   schema: {
-    src     :{type: 'string'},
-    color   :{type: 'string', default: 'none'}
+    name    :{type: 'string', default: ''},
+    src     :{type: 'string', default: ''},
+    color   :{type: 'string', default: ''}
   },
+
+  dependencies: ['medialoader'],
 
   init: function() {
     let el = this.el;
     let data = this.data;
 
-    if(data.color === 'none') {
+    this.name = data.name;
+
+    if(data.color === '') {
       data.color = Utility.randomColourHex();
     }
     
     el.setAttribute('material', {
       color: data.color,
+      src: data.src,
       shader: 'flat'
     });
-    el.setAttribute('src', data.src);
     el.classList.add('clickable');
+    
+    // Throttling tick function to run twice per second as opposed to 90 times per second
+    this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
     
     // Used for opacity animation
     this.opacity = 0;
 
-    // Throttling tick function to run twice per second as opposed to 90 times per second
-    this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
-
-    // Get first child element and use that for fade in/out
-    this.fadeComp = el.children[0];
-    if(this.fadeComp === undefined) {
-      throw new Error('POI has no child component.');
-    }
-    
-    this.fadeComp.setAttribute('opacity', this.opacity);
-  },
+    const mlEl = document.querySelector('#medialoader');
+    mlEl.addEventListener('loaded', () => {
+      const ml = mlEl.components.medialoader;
+      const sources = ml.dict[this.name];
+      
+      if(sources !== undefined) {
+        this.mediaCircle = document.createElement('a-media-circle');
+        this.mediaCircle.object3D.position.set(0, 0, 0.01);
+        this.mediaCircle.setAttribute('opacity', this.opacity);
+        this.mediaCircle.setAttribute('image', sources.image);
+        this.mediaCircle.setAttribute('video', sources.video);
+        this.mediaCircle.setAttribute('audio', sources.audio);
+        //console.log(sources);
+      }
   
+      el.appendChild(this.mediaCircle);
+    });
+  },
+
   events: {
     // Setting child event listeners for fading in/out
     mouseenter: function(event) {
+      if(this.mediaCircle === undefined) {
+        return;
+      }
+
       this.opacity = Math.min(this.opacity + 1, 100);
-      this.fadeComp.classList.add('clickable');
+      this.mediaCircle.classList.add('clickable');
       
-      for(const child of this.fadeComp.children) {
+      for(const child of this.mediaCircle.children) {
         let c = child.classList;
         
-        if(c.contains('imagegallery')) {
+        if(c.contains('imagegallery') || c.contains('videoplayer') || c.contains('audioplayer')) {
           c.add('clickable');
         }
       }
     },
 
     mouseleave: function(event) {
+      if(this.mediaCircle === undefined) {
+        return;
+      }
+
       this.opacity = Math.max(this.opacity - 1, 0);
-      this.fadeComp.classList.remove('clickable');
+      this.mediaCircle.classList.remove('clickable');
       
-      for(const child of this.fadeComp.children) {
+      for(const child of this.mediaCircle.children) {
         let c = child.classList;
         
-        if(c.contains('imagegallery')) {
+        if(c.contains('imagegallery') || c.contains('videoplayer') || c.contains('audioplayer')) {
           c.remove('clickable');
         }
       }
@@ -118,13 +146,15 @@ AFRAME.registerComponent('poi', {
   },
 
   tick: function(t, dt) {
-    if(this.fadeComp !== undefined) {
-      this.fadeComp.setAttribute('animation__fade', {
-        easing: 'easeInOutSine',
-        property: 'opacity',
-        to: this.opacity,
-        dur: 1000
-      });
+    if(this.mediaCircle === undefined) {
+      return;
     }
+
+    this.mediaCircle.setAttribute('animation__fade', {
+      easing: 'easeInOutSine',
+      property: 'opacity',
+      to: this.opacity,
+      dur: 1000
+    });
   }
 });

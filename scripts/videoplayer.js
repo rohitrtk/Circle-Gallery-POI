@@ -24,7 +24,7 @@ AFRAME.registerPrimitive('a-video-player', {
 
   // Default mappings
   mappings: {
-    'name'  : 'video-player.name'
+    'src'  : 'video-player.src'
   }
 });
 
@@ -42,7 +42,7 @@ AFRAME.registerPrimitive('a-video-player', {
 AFRAME.registerComponent('video-player', {
   // Editable properties
   schema: {
-    name: { type: 'string' }
+    src: { type: 'string' }
   },
 
   init: function() {
@@ -65,9 +65,9 @@ AFRAME.registerComponent('video-player', {
       transparent: true
     });
     el.classList.add('videoplayer');
-    el.classList.add('clickable');
+    el.classList.remove('clickable');
 
-    this.name = data.name;
+    this.src = data.src;
   },
 
   isViewerOpen: function() {
@@ -83,7 +83,7 @@ AFRAME.registerComponent('video-player', {
 
       let viewer = document.createElement('a-entity');
       viewer.setAttribute('video-player-viewer', {
-        name: this.name
+        src: this.src
       });
       
       let camera = document.getElementById('rig');
@@ -121,7 +121,7 @@ AFRAME.registerComponent('video-player', {
 AFRAME.registerComponent('video-player-viewer', {
   // Editable properties
   schema: {
-    name: { type: 'string' }
+    src: { type: 'string' }
   },
 
   init: function() {
@@ -133,20 +133,22 @@ AFRAME.registerComponent('video-player-viewer', {
     el.object3D.position.set(0, 0.1, -0.5);
     el.object3D.scale.set(0.5, 0.5, 1);
     
-    this.name = data.name;
+    this.src = data.src;
 
     // Video element that gets displayed
     this.videoEl = document.createElement('a-layer');
     el.appendChild(this.videoEl);
 
-    this.videoEl.setAttribute('src', `#${this.name}`);
+    const ss = Utility.srcSplitter(this.src); 
+    const id = ss.id;
+    
+    this.videoEl.setAttribute('src', `#v_${id}`);
     this.videoEl.setAttribute('width', 1.920);
     this.videoEl.setAttribute('height', 1.080);
     this.videoEl.setAttribute('playpause', '');
     this.videoEl.setAttribute('volumecontroller', '');
     
-    // The actual video that can be played, paused, etc.
-    let video = document.querySelector(`#${this.name}`);
+    let video = document.querySelector(`#v_${id}`);
     video.play();
     video.pause();
     video.volume = 0.5;
