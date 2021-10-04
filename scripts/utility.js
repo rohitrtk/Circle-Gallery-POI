@@ -80,4 +80,25 @@ class Utility {
       b: this.randomInt(0, 256)
     }
   }
+
+  /**
+   * @param {string} - Source as a string
+   * @returns {
+   *  name      : string,
+   *  id        : string,
+   *  extension : string}
+   */
+  static srcSplitter(src) {
+    const fileName  = src.split('/').at(-1);
+    const fullName  = fileName.split('.');
+    const extension = fullName.at(-1);
+    const name      = fullName.at(0).split('_').at(0);
+    const id        = fullName.at(0);
+
+    return {
+      name: name,
+      id: id,
+      extension: extension
+    };
+  }
 }

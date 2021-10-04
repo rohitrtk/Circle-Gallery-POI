@@ -32,10 +32,10 @@ AFRAME.registerComponent('medialoader', {
         continue;
       }
 
-      let extension = src.split('.').at(-1);
-      let fileName = src.split('/').at(-1);
-      let name = fileName.split('_').at(0);
-      
+      const ss = Utility.srcSplitter(src);
+      const name = ss.name;
+      const extension = ss.extension;
+
       if(this.dict[name] === undefined) {
         this.dict[name] = {
           image: [],
@@ -46,10 +46,13 @@ AFRAME.registerComponent('medialoader', {
       
       if(extension.includes('jpg') || extension.includes('png')) {
         this.dict[name].image.push(src);
+        media.id = 'g_' + ss.id;
       } else if(extension.includes('mp4')) {
         this.dict[name].video.push(src);
+        media.id = 'v_' + ss.id;
       } else if(extension.includes('mp3')) {
         this.dict[name].audio.push(src);
+        media.id = 'a_' + ss.id;
       } else {
         throw new Error(`Unknown media type for file ${name}`);
       }

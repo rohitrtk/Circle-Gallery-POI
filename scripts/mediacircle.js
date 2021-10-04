@@ -78,7 +78,7 @@ AFRAME.registerComponent('mediacircle', {
     let mediaCounters = {
       v: data.video.length,
       a: data.audio.length,
-      g: 1
+      g: 1 // TEMP
     };
 
     let numMedia = 0;
@@ -147,7 +147,7 @@ AFRAME.registerComponent('mediacircle', {
     if (counters.v > 0) {        // Load videos if we still have videos to load
       counters.v--;
       media = document.createElement('a-video-player');
-      media.setAttribute('name', data.video[counters.v]);
+      media.setAttribute('src', data.video[counters.v]);
     } else if (counters.a > 0) { // Load audio if we still have audio to load
       counters.a--;
       media = document.createElement('a-audio-player');
