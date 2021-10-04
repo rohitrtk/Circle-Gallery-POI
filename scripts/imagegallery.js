@@ -17,7 +17,7 @@ AFRAME.registerPrimitive('a-image-gallery', {
 
   // Property mappings
   mappings: {
-    'name'      : 'image-gallery.name',
+    'images': 'image-gallery.images'
   }
 });
 
@@ -34,7 +34,7 @@ AFRAME.registerPrimitive('a-image-gallery', {
 AFRAME.registerComponent('image-gallery', {
   // Editable properties
   schema: {
-    name: { type: 'string' }
+    images: {type: 'array', default: []}
   },
 
   init: function() {
@@ -58,8 +58,8 @@ AFRAME.registerComponent('image-gallery', {
     });
     el.classList.add('imagegallery');
     el.classList.remove('clickable');
-    
-    this.name = data.name;
+
+    this.images = data.images;
   },
 
   // Returns true if any type of viewer is already open
@@ -76,7 +76,7 @@ AFRAME.registerComponent('image-gallery', {
       } 
 
       let viewer = document.createElement('a-image-gallery-viewer');
-      viewer.setAttribute('name', this.name);
+      viewer.setAttribute('images', this.images);
       
       let camera = document.getElementById('rig');
       camera.appendChild(viewer);
@@ -113,7 +113,7 @@ AFRAME.registerPrimitive('a-image-gallery-viewer', {
   },
 
   mappings: {
-    name: 'image-gallery-viewer.name'
+    images: 'image-gallery-viewer.images'
   }
 });
 
@@ -129,21 +129,22 @@ AFRAME.registerPrimitive('a-image-gallery-viewer', {
  */
 AFRAME.registerComponent('image-gallery-viewer', {
   defaultComponents: {
-    name: {type: 'string'}
+    images: {type: 'array', default: []}
   },
 
   init: function() {
     let el = this.el;
     let data = this.data;
     
-    this.name = data.name;
+    this.imageIndex = 0;
+    this.images = data.images;
+    // No clue why aframe decides to convert images to a string
+    // even though quite clearly we want it as an array
+    if(typeof(this.images) === 'string') {
+      this.images = this.images.split(',');
+    }
 
     el.setAttribute('id', 'viewer');
-    
-    // Must be called before setting images!
-    this.loadImages();
-    
-    this.imageIndex = 0;
 
     // Main window
     this.mw = document.createElement('a-layer');
@@ -208,34 +209,5 @@ AFRAME.registerComponent('image-gallery-viewer', {
     this.mw.setAttribute('src', this.images[this.imageIndex]);
     this.rw.setAttribute('src', this.images[this.imageIndex + 1]);
     this.lw.setAttribute('src', this.images[this.imageIndex - 1]);
-  },
-
-  // Loads the images given an image name prefix
-  loadImages: function() {
-    // Throw an error if the name is blank
-    if(this.name === '' || this.name === undefined) {
-      throw new Error('Image gallery viewer needs a name!');
-    }
-
-    this.images = [];
-
-    let images = document.getElementById('media').getElementsByTagName('img');
-    
-    for(let i = 0; i < images.length; i++) {
-      let imgSrc = images[i].src;
-      
-      let n       = imgSrc.split('.');
-      let m       = n[n.length - 2].split('/');
-      let name    = m[m.length - 1];
-      
-      if(name.includes(this.name)) {
-        this.images.push(imgSrc);
-      }
-    }
-
-    // Throw an error if no images were loaded
-    if(images.length == 0) {
-      throw new Error(`Could not find any images with prefix ${this.name}`);
-    }
-  },
+  }
 })
