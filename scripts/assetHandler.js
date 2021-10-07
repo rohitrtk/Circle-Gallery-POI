@@ -60,6 +60,7 @@ if (typeof AFRAME === 'undefined') {
         return asset.replace(/\.[^/.]+$/, "");
     },
     init () {
+      // may be a good idea to check connection speed here to see if we can skip low res, even with "load low" enabled - unless we want to keep an asset low res for data saving?
       var data = this.data;
       if (data.assetManager == "" || !document.getElementById(data.assetManager)) {
           console.error("Missing asset manager ID!");
@@ -75,14 +76,14 @@ if (typeof AFRAME === 'undefined') {
           let node = document.createElement(ext);
           node.classList.add(data.assetClasses[i]);
           manager.appendChild(node);
-          node.setAttribute('id', this.getFileName(data.assets[i]));
+          node.setAttribute('id', this.getFileName(data.assets[i]).split("/").pop());
           if (ext == "canvas") {
             
             continue;
           }
           node.setAttribute('src', data.assets[i]);
-          console.log(`Loaded low res ${this.getFileName(data.assets[i])}`);
-          document.dispatchEvent(new CustomEvent('lowResLoad', { detail: this.getFileName(data.assets[i]) }));
+          console.log(`Loaded low res ${data.assets[i]}`);
+          document.dispatchEvent(new CustomEvent('lowResLoad', { detail: this.getFileName(data.assets[i]).split("/").pop() }));
   
           // loading new image and swapping it in on completion
           var toSwap = new Image;
@@ -92,7 +93,7 @@ if (typeof AFRAME === 'undefined') {
               node.src = this.src;
               console.log(`Exchanged low res for high res ${refToThis.makeHigh(data.assets[i])}`);
               // might be smart to fire an event here; if the file is in use it won't update until the next load in unless forced
-              document.dispatchEvent(new CustomEvent('highResLoad', { detail: refToThis.getFileName(data.assets[i]) }));
+              document.dispatchEvent(new CustomEvent('highResLoad', { detail: refToThis.getFileName(data.assets[i]).split("/").pop() }));
           }
           toSwap.src = this.makeHigh(data.assets[i]);
         }
@@ -102,10 +103,10 @@ if (typeof AFRAME === 'undefined') {
           let node = document.createElement(ext);
           node.classList.add(data.assetClasses[i]);
           node.setAttribute('src', this.makeHigh(data.assets[i]));
-          node.setAttribute('id', this.getFileName(data.assets[i]));
+          node.setAttribute('id', this.getFileName(data.assets[i]).split("/").pop());
           manager.appendChild(node);
           console.log(`Loaded ${data.assets[i]}`)
-          document.dispatchEvent(new CustomEvent('highResLoad', { detail: this.getFileName(data.assets[i]) }));
+          document.dispatchEvent(new CustomEvent('highResLoad', { detail: this.getFileName(data.assets[i]).split("/").pop() }));
         }
       }
     },

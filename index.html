@@ -18,6 +18,8 @@
     <script src='scripts/waypoint.js'></script>
     <script src='scripts/layer.js'></script>
     <script src='scripts/streamplayer.js'></script>
+    <script src='scripts/assetHandler.js'></script>
+    <script src='scripts/skybox.js'></script>
     
     <script src='scripts/script.js' defer></script>
   </head>
@@ -74,6 +76,9 @@
         <!-- For use of webcam -->
         <video id='webcam' src='' crossorigin></video>
       </a-assets>
+
+      <a-skybox image="far_longhouse" fadetime="10"></a-skybox>
+      <a-asset-handler assets="assets/skyboxes/far_longhouse.jpg" asset-classes="skybox" asset-manager="AMS"></a-asset-handler>
       
       <a-webcam-player position='-8 1.5 0' rotation='0 90 0' src='#webcam'></a-webcam-player>
 
